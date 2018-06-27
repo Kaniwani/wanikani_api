@@ -13,9 +13,9 @@ with open('HISTORY.rst') as history_file:
 
 requirements = [ ]
 
-setup_requirements = [ ]
+setup_requirements = ['pytest-runner', ]
 
-test_requirements = [ ]
+test_requirements = ['pytest', ]
 
 setup(
     author="Gary Grant Graham",
@@ -32,7 +32,7 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ],
-    description="A wrapper for Wanikani's V2 API",
+    description="An API wrapper for Wanikani (V2)",
     install_requires=requirements,
     license="BSD license",
     long_description=readme + '\n\n' + history,

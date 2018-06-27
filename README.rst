@@ -20,7 +20,7 @@ wanikani_api
 
 
 
-A wrapper for Wanikani's V2 API
+An API wrapper for Wanikani (V2)
 
 
 * Free software: BSD license
