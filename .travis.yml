@@ -25,5 +25,5 @@ deploy:
     secure: PLEASE_REPLACE_ME
   on:
     tags: true
-    repo: tadgh/wanikani_api
+    repo: kaniwani/wanikani_api
     python: 3.6
