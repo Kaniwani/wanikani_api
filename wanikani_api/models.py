@@ -39,7 +39,7 @@ class UserInformation(Resource):
         self.profile_url = self._resource["profile_url"]
         self.started_at = parse8601(self._resource["started_at"])
         self.subscribed = self._resource["subscribed"]
-        self.current_vacation_started_at = parse8601(self._resource["started_at"])
+        self.current_vacation_started_at = parse8601(self._resource["current_vacation_started_at"])
 
 
 class Subject(Resource):
