@@ -18,52 +18,27 @@ class Resource:
             else json_data["id"]
         )
         self._resource = json_data["data"]
+        self._raw = json_data
 
     def __str__(self):
-        return pprint.pformat(self._resource)
-
-    @staticmethod
-    def factory(json_data):
-        subject_type = json_data["object"]
-        if subject_type == Radical.resource:
-            return Radical(json_data)
-        elif subject_type == Kanji.resource:
-            return Kanji(json_data)
-        elif subject_type == Vocabulary.resource:
-            return Vocabulary(json_data)
-        elif subject_type == Assignment.resource:
-            return Assignment(json_data)
-        elif subject_type == Reset.resource:
-            return Reset(json_data)
-        elif subject_type == ReviewStatistic.resource:
-            return ReviewStatistic(json_data)
-        elif subject_type == StudyMaterial.resource:
-            return StudyMaterial(json_data)
-        elif subject_type == Summary.resource:
-            return Summary(json_data)
-        elif subject_type == Review.resource:
-            return Review(json_data)
-        elif subject_type == LevelProgression.resource:
-            return LevelProgression(json_data)
-        else:
-            raise UnknownResourceException(
-                "We have no clue how to handle resource of type: {}".format(
-                    subject_type
-                )
-            )
+        return pprint.pformat(self._raw)
 
 
 class Collection(Resource):
+    resource = "collection"
+
     def __init__(self, json_data):
         super().__init__(json_data)
         self.next_page_url = json_data["pages"]["next_url"]
         self.previous_page_url = json_data["pages"]["previous_url"]
         self.items_per_page = json_data["pages"]["per_page"]
         self.total_count = json_data["total_count"]
-        self.data = [Resource.factory(item) for item in json_data["data"]]
+        self.data = [factory(item) for item in json_data["data"]]
 
 
 class UserInformation(Resource):
+    resource = "user"
+
     def __init__(self, json_data):
         super().__init__(json_data)
         self.username = self._resource["username"]
@@ -270,3 +245,30 @@ def parse8601(time_field):
         return dateutil.parser.parse(time_field)
     else:
         return None
+
+
+resources = {
+    UserInformation.resource: UserInformation,
+    Assignment.resource: Assignment,
+    Review.resource: Review,
+    ReviewStatistic.resource: ReviewStatistic,
+    LevelProgression.resource: LevelProgression,
+    StudyMaterial.resource: StudyMaterial,
+    Reset.resource: Reset,
+    Kanji.resource: Kanji,
+    Vocabulary.resource: Vocabulary,
+    Radical.resource: Radical,
+    Summary.resource: Summary,
+    Collection.resource: Collection,
+}
+
+
+def factory(resource_json):
+    try:
+        return resources[resource_json["object"]](resource_json)
+    except KeyError:
+        raise UnknownResourceException(
+            "We have no clue how to handle resource of type: {}".format(
+                resource_json["object"]
+            )
+        )

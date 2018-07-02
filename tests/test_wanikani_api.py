@@ -32,13 +32,15 @@ def test_client_can_get_subjects():
     assert subjects.data[0].resource in ["vocabulary", "kanji", "radical"]
 
 
-
 def test_client_can_get_assignments():
     v2_api_key = "2510f001-fe9e-414c-ba19-ccf79af40060"
     client = Client(v2_api_key)
 
     assignments = client.assignments()
     assert len(assignments.data) > 0
+    first_assignment = assignments.data[0]
+    single_assignment = client.assignments(first_assignment.id)
+    assert single_assignment.id == first_assignment.id
 
 
 def test_client_can_get_review_statistics():
