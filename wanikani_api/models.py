@@ -92,22 +92,6 @@ class Subject(Resource):
         self.document_url = resource_data["document_url"]
         self.hidden_at = resource_data["hidden_at"]
 
-    @staticmethod
-    def factory(json_data):
-        subject_type = json_data["object"]
-        if subject_type == Radical.resource:
-            return Radical(json_data)
-        elif subject_type == Kanji.resource:
-            return Kanji(json_data)
-        elif subject_type == Vocabulary.resource:
-            return Vocabulary(json_data)
-        else:
-            raise UnknownResourceException(
-                "We have no clue how to handle resource of type: {}".format(
-                    subject_type
-                )
-            )
-
 
 class Radical(Subject):
     resource = "radical"
@@ -181,18 +165,6 @@ class Assignment(Resource):
         self.resurrected = self._resource["resurrected"]
         self.hidden = self._resource["hidden"]
 
-    @staticmethod
-    def factory(json_data):
-        subject_type = json_data["object"]
-        if subject_type == "assignment":
-            return Assignment(json_data)
-        else:
-            raise UnknownResourceException(
-                "We have no clue how to handle resource of type: {}".format(
-                    subject_type
-                )
-            )
-
 
 class Reset(Resource):
     resource = "reset"
@@ -203,18 +175,6 @@ class Reset(Resource):
         self.original_level = self._resource["original_level"]
         self.target_level = self._resource["target_level"]
         self.confirmed_at = parse8601(self._resource["confirmed_at"])
-
-    @staticmethod
-    def factory(json_data):
-        subject_type = json_data["object"]
-        if subject_type == "reset":
-            return Assignment(json_data)
-        else:
-            raise UnknownResourceException(
-                "We have no clue how to handle resource of type: {}".format(
-                    subject_type
-                )
-            )
 
 
 class ReviewStatistic(Resource):
@@ -236,18 +196,6 @@ class ReviewStatistic(Resource):
         self.percentage_correct = self._resource["percentage_correct"]
         self.hidden = self._resource["hidden"]
 
-    @staticmethod
-    def factory(json_data):
-        subject_type = json_data["object"]
-        if subject_type == "review_statistic":
-            return ReviewStatistic(json_data)
-        else:
-            raise UnknownResourceException(
-                "We have no clue how to handle resource of type: {}".format(
-                    subject_type
-                )
-            )
-
 
 class StudyMaterial(Resource):
     resource = "study_material"
@@ -261,18 +209,6 @@ class StudyMaterial(Resource):
         self.reading_note = self._resource["reading_note"]
         self.meaning_synonyms = self._resource["meaning_synonyms"]
         self.hidden = self._resource["hidden"]
-
-    @staticmethod
-    def factory(json_data):
-        subject_type = json_data["object"]
-        if subject_type == "study_material":
-            return StudyMaterial(json_data)
-        else:
-            raise UnknownResourceException(
-                "We have no clue how to handle resource of type: {}".format(
-                    subject_type
-                )
-            )
 
 
 class Lessons(object):
@@ -299,18 +235,6 @@ class Summary(Resource):
             UpcomingReview(review_json) for review_json in self._resource["reviews"]
         ]
 
-    @staticmethod
-    def factory(json_data):
-        subject_type = json_data["object"]
-        if subject_type == Summary.resource:
-            return Summary(json_data)
-        else:
-            raise UnknownResourceException(
-                "We have no clue how to handle resource of type: {}".format(
-                    subject_type
-                )
-            )
-
 
 class Review(Resource):
     resource = "review"
@@ -327,18 +251,6 @@ class Review(Resource):
         self.incorrect_meaning_answers = self._resource["incorrect_meaning_answers"]
         self.incorrect_reading_answers = self._resource["incorrect_reading_answers"]
 
-    @staticmethod
-    def factory(json_data):
-        subject_type = json_data["object"]
-        if subject_type == "review":
-            return Review(json_data)
-        else:
-            raise UnknownResourceException(
-                "We have no clue how to handle resource of type: {}".format(
-                    subject_type
-                )
-            )
-
 
 class LevelProgression(Resource):
     resource = "level_progression"
@@ -351,18 +263,6 @@ class LevelProgression(Resource):
         self.started_at = parse8601(self._resource["started_at"])
         self.passed_at = parse8601(self._resource["passed_at"])
         self.completed_at = parse8601(self._resource["completed_at"])
-
-    @staticmethod
-    def factory(json_data):
-        subject_type = json_data["object"]
-        if subject_type == LevelProgression.resource:
-            return LevelProgression(json_data)
-        else:
-            raise UnknownResourceException(
-                "We have no clue how to handle resource of type: {}".format(
-                    subject_type
-                )
-            )
 
 
 def parse8601(time_field):
