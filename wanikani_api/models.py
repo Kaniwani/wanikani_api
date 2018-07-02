@@ -22,15 +22,45 @@ class Resource:
     def __str__(self):
         return pprint.pformat(self._resource)
 
+    @staticmethod
+    def factory(json_data):
+        subject_type = json_data["object"]
+        if subject_type == Radical.resource:
+            return Radical(json_data)
+        elif subject_type == Kanji.resource:
+            return Kanji(json_data)
+        elif subject_type == Vocabulary.resource:
+            return Vocabulary(json_data)
+        elif subject_type == Assignment.resource:
+            return Assignment(json_data)
+        elif subject_type == Reset.resource:
+            return Reset(json_data)
+        elif subject_type == ReviewStatistic.resource:
+            return ReviewStatistic(json_data)
+        elif subject_type == StudyMaterial.resource:
+            return StudyMaterial(json_data)
+        elif subject_type == Summary.resource:
+            return Summary(json_data)
+        elif subject_type == Review.resource:
+            return Review(json_data)
+        elif subject_type == LevelProgression.resource:
+            return LevelProgression(json_data)
+        else:
+            raise UnknownResourceException(
+                "We have no clue how to handle resource of type: {}".format(
+                    subject_type
+                )
+            )
+
 
 class Collection(Resource):
-    def __init__(self, json_data, collection_class):
+    def __init__(self, json_data):
         super().__init__(json_data)
         self.next_page_url = json_data["pages"]["next_url"]
         self.previous_page_url = json_data["pages"]["previous_url"]
         self.items_per_page = json_data["pages"]["per_page"]
         self.total_count = json_data["total_count"]
-        self.data = [collection_class.factory(item) for item in json_data["data"]]
+        self.data = [Resource.factory(item) for item in json_data["data"]]
 
 
 class UserInformation(Resource):
@@ -220,7 +250,7 @@ class ReviewStatistic(Resource):
 
 
 class StudyMaterial(Resource):
-    resource = "review_statistic"
+    resource = "study_material"
 
     def __init__(self, json_data):
         super().__init__(json_data)
@@ -283,6 +313,8 @@ class Summary(Resource):
 
 
 class Review(Resource):
+    resource = "review"
+
     def __init__(self, json_data):
         super().__init__(json_data)
         self.created_at = parse8601(self._resource["created_at"])

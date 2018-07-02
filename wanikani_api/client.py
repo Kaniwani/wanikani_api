@@ -15,7 +15,7 @@ from wanikani_api.models import (
     Review,
     LevelProgression,
     Reset,
-)
+    Resource)
 
 MISSING = object()
 
@@ -47,61 +47,61 @@ class Client:
         response = requests.get(
             self._build_wanikani_api_url("subjects", locals()), headers=self.headers
         )
-        return self._serialize_wanikani_response(Subject, response)
+        return self._serialize_wanikani_response(response)
 
     def assignments(self):
         response = requests.get(
             self._build_wanikani_api_url("assignments", locals()), headers=self.headers
         )
-        return self._serialize_wanikani_response(Assignment, response)
+        return self._serialize_wanikani_response(response)
 
     def review_statistics(self):
         response = requests.get(
             self._build_wanikani_api_url("review_statistics", locals()),
             headers=self.headers,
         )
-        return self._serialize_wanikani_response(ReviewStatistic, response)
+        return self._serialize_wanikani_response(response)
 
     def study_materials(self):
         response = requests.get(
             self._build_wanikani_api_url("study_materials", locals()),
             headers=self.headers,
         )
-        return self._serialize_wanikani_response(StudyMaterial, response)
+        return self._serialize_wanikani_response(response)
 
     def summary(self):
         response = requests.get(
             self._build_wanikani_api_url("summary", locals()), headers=self.headers
         )
-        return self._serialize_wanikani_response(Summary, response)
+        return self._serialize_wanikani_response(response)
 
     def reviews(self):
         response = requests.get(
             self._build_wanikani_api_url("reviews", locals()), headers=self.headers
         )
-        return self._serialize_wanikani_response(Review, response)
+        return self._serialize_wanikani_response(response)
 
     def level_progressions(self):
         response = requests.get(
             self._build_wanikani_api_url("level_progressions", locals()),
             headers=self.headers,
         )
-        return self._serialize_wanikani_response(LevelProgression, response)
+        return self._serialize_wanikani_response(response)
 
     def resets(self):
         response = requests.get(
             self._build_wanikani_api_url("resets", locals()), headers=self.headers
         )
-        return self._serialize_wanikani_response(Reset, response)
+        return self._serialize_wanikani_response(response)
 
-    def _serialize_wanikani_response(self, cls, response):
+    def _serialize_wanikani_response(self, response):
         if response.status_code == 200:
             json = response.json()
             type = json["object"]
             if type == "collection":
-                return Collection(json, cls)
+                return Collection(json)
             else:
-                return cls.factory(json)
+                return Resource.factory(json)
         elif response.status_code == 401:
             raise InvalidWanikaniApiKeyException(
                 "[{}] is not a valid API key!".format(self.v2_api_key)
