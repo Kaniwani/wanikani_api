@@ -1,3 +1,5 @@
+import datetime
+
 import requests
 
 from wanikani_api import constants
@@ -120,6 +122,8 @@ class Client:
             return "{}={}".format(key, ",".join(str(elem) for elem in value))
         elif isinstance(value, bool):
             return "{}={}".format(key, str(value).lower())
+        elif isinstance(value, datetime.datetime):
+            return "{}={}".format(key, value.isoformat())
         else:
             return "{}={}".format(key, str(value))
 
