@@ -4,25 +4,7 @@
 """Tests for `wanikani_api` package."""
 import datetime
 
-import pytest
-
 from wanikani_api.client import Client
-
-
-@pytest.fixture
-def response():
-    """Sample pytest fixture.
-
-    See more at: http://doc.pytest.org/en/latest/fixture.html
-    """
-    # import requests
-    # return requests.get('https://github.com/audreyr/cookiecutter-pypackage')
-
-
-def test_content(response):
-    """Sample pytest test function with the pytest fixture as an argument."""
-    # from bs4 import BeautifulSoup
-    # assert 'GitHub' in BeautifulSoup(response.content).title.string
 
 
 def test_client_can_get_user_information():
@@ -38,7 +20,7 @@ def test_client_can_get_user_information():
     assert isinstance(user.username, str)
     assert isinstance(user.subscribed, bool)
     assert isinstance(user.started_at, datetime.date)
-    assert isinstance(user.current_vacation_started_at, datetime.date or None)
+    assert isinstance(user.current_vacation_started_at, type(None))
 
 
 def test_client_can_get_subjects():
