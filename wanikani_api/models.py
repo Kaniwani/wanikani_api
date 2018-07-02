@@ -1,3 +1,5 @@
+import pprint
+
 import dateutil.parser
 
 from wanikani_api import constants
@@ -16,6 +18,9 @@ class Resource:
             else json_data["id"]
         )
         self._resource = json_data["data"]
+
+    def __str__(self):
+        return pprint.pformat(self._resource)
 
 
 class Collection(Resource):
