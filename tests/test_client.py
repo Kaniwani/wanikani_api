@@ -49,6 +49,7 @@ def test_subject_parameters_are_properly_converted(mocker):
     assert requests.get.call_count == 1
     requests.get.assert_called_once_with("https://api.wanikani.com/v2/subjects?hidden=false&slugs=abc,123&ids=1,2,3", headers=client.headers)
 
+
 def test_parameters_convert_datetime_to_string_correctly(mocker):
     mocker.patch("requests.get")
     v2_api_key = "2510f001-fe9e-414c-ba19-ccf79af40060"

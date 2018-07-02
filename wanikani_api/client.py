@@ -100,8 +100,6 @@ class Client:
             type = json["object"]
             if type == "collection":
                 return Collection(json, cls)
-            elif type == "report":
-                return cls(json)
             else:
                 return cls.factory(json)
         elif response.status_code == 401:

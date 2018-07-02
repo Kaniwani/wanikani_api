@@ -258,7 +258,7 @@ class UpcomingReview(object):
 
 
 class Summary(Resource):
-    resource = "summary"
+    resource = "report"
 
     def __init__(self, json_data):
         super().__init__(json_data)
@@ -272,7 +272,7 @@ class Summary(Resource):
     @staticmethod
     def factory(json_data):
         subject_type = json_data["object"]
-        if subject_type == "summary":
+        if subject_type == Summary.resource:
             return Summary(json_data)
         else:
             raise UnknownResourceException(
