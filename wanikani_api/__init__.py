@@ -6,4 +6,5 @@ __author__ = """Gary Grant Graham"""
 __email__ = "gary@kaniwani.com"
 __version__ = "0.1.0"
 
-
+from . import client
+from . import exceptions
