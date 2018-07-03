@@ -5,13 +5,29 @@ from wanikani_api.exceptions import InvalidWanikaniApiKeyException
 from wanikani_api.url_builder import UrlBuilder
 
 
+"""
+This is the primary point of entry for accessing the Wanikani API.
+"""
+
+
 class Client:
+    """
+    This is the only object you can instantiate. It provides access to each
+    relevant API endpoint on Wanikani.
+    """
+
     def __init__(self, v2_api_key):
         self.v2_api_key = v2_api_key
         self.headers = {"Authorization": "Bearer {}".format(v2_api_key)}
         self.url_builder = UrlBuilder(constants.ROOT_WK_API_URL)
 
     def user_information(self):
+        """
+        Gets all relevant information about the user.
+
+        :raises: :class:`.exceptions.InvalidWanikaniApiKeyException`
+        :rtype: :class:`.models.UserInformation`
+        """
         response = requests.get(
             self.url_builder.build_wk_url("user", locals()), headers=self.headers
         )
@@ -19,6 +35,7 @@ class Client:
 
     def subjects(
         self,
+        resource_id=None,
         ids=None,
         types=None,
         slugs=None,
@@ -26,8 +43,31 @@ class Client:
         hidden=None,
         updated_after=None,
     ):
+        """Retrieves Subjects
+
+        Wanikani refers to Radicals, Kanji, and Vocabulary as Subjects. This function allows you to fetch all of
+        the subjects, regardless of the current level of the account that the API key is associated to. All parameters
+        to this function are optional, and are for filtering the results.
+        are ignored, and the subject with that ID in question is fetched.
+
+        :param int resource_id: The ID of the remote resource. If this is passed, all other parameters are ignored, and we just fetch this one resource.
+        :param int[] ids: Similar to ``resource_id`` but instead filters based on a list of IDs. Does not cause other parameters to be ignored.
+        :param str[] types: The specific :class:`.models.Subject` types you wish to retrieve. Possible values are: ``["kanji", "vocabulary", "radicals"]``
+        :param str[] slugs: TODO figure out what this is.
+        :param int[] levels: Include only :class:`.models.Subject` from the specified levels.
+        :param bool hidden: Return :class:`.models.Subject` which are or are not hidden from the user-facing application
+        :param  updated_after: Return results which have been updated after the timestamp
+        :type updated_after: :class:`datetime.datetime`
+        :return: A :class:`models.Collection` , in which the ``data`` field contains a list anything that is a :class:`.models.Subject`, e.g.:
+
+            * :class:`.models.Radical`
+            * :class:`.models.Kanji`
+            * :class:`.models.Vocabulary`
+        """
         response = requests.get(
-            self.url_builder.build_wk_url("subjects", parameters=locals()),
+            self.url_builder.build_wk_url(
+                "subjects", resource_id=resource_id, parameters=locals()
+            ),
             headers=self.headers,
         )
         return self._serialize_wanikani_response(response)

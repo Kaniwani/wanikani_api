@@ -1,5 +1,5 @@
 Welcome to wanikani_api's documentation!
-======================================
+========================================
 
 .. toctree::
    :maxdepth: 2
@@ -12,6 +12,21 @@ Welcome to wanikani_api's documentation!
    contributing
    authors
    history
+
+Client Module
+=====================
+.. automodule:: wanikani_api.client
+    :members:
+
+Data Models
+=====================
+.. automodule:: wanikani_api.models
+    :members:
+
+Exceptions
+=====================
+.. automodule:: wanikani_api.exceptions
+    :members:
 
 Indices and tables
 ==================

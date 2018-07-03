@@ -37,21 +37,29 @@ class Collection(Resource):
 
 
 class UserInformation(Resource):
+    """
+    This is a simple container for information returned from the ``/user/`` endpoint.
+    """
+
     resource = "user"
 
     def __init__(self, json_data):
         super().__init__(json_data)
-        self.username = self._resource["username"]
-        self.level = self._resource["level"]
+        self.username = self._resource["username"]  #: username
+        self.level = self._resource["level"]  #: current wanikani level
         self.max_level_granted_by_subscription = self._resource[
             "max_level_granted_by_subscription"
-        ]
-        self.profile_url = self._resource["profile_url"]
-        self.started_at = parse8601(self._resource["started_at"])
-        self.subscribed = self._resource["subscribed"]
+        ]  #: maximum level granted by subscription.
+        self.profile_url = self._resource["profile_url"]  #: Link to user's profile.
+        self.started_at = parse8601(
+            self._resource["started_at"]
+        )  #: datetime at which the user signed up.
+        self.subscribed = self._resource[
+            "subscribed"
+        ]  #: Whether or not the user is currently subscribed to wanikani.
         self.current_vacation_started_at = parse8601(
             self._resource["current_vacation_started_at"]
-        )
+        )  #: datetime at which vacation was enabled on wanikani.
 
 
 class Subject(Resource):
