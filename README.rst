@@ -6,16 +6,16 @@ wanikani_api
 .. image:: https://img.shields.io/pypi/v/wanikani_api.svg
         :target: https://pypi.python.org/pypi/wanikani_api
 
-.. image:: https://img.shields.io/travis/tadgh/wanikani_api.svg
-        :target: https://travis-ci.org/tadgh/wanikani_api
+.. image:: https://img.shields.io/travis/Kaniwani/wanikani_api.svg
+        :target: https://travis-ci.org/Kaniwani/wanikani_api
 
 .. image:: https://readthedocs.org/projects/wanikani-api/badge/?version=latest
         :target: https://wanikani-api.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
 
-.. image:: https://pyup.io/repos/github/tadgh/wanikani_api/shield.svg
-     :target: https://pyup.io/repos/github/tadgh/wanikani_api/
+.. image:: https://pyup.io/repos/github/Kaniwani/wanikani_api/shield.svg
+     :target: https://pyup.io/repos/github/Kaniwani/wanikani_api/
      :alt: Updates
 
 
