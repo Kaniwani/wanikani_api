@@ -30,7 +30,7 @@ class Client:
         :rtype: :class:`.models.UserInformation`
         """
         response = requests.get(
-            self.url_builder.build_wk_url("user", locals()), headers=self.headers
+            self.url_builder.build_wk_url(constants.USER_ENDPOINT), headers=self.headers
         )
         return self._serialize_wanikani_response(response)
 
@@ -211,9 +211,7 @@ class Client:
             ),
             headers=self.headers,
         )
-        return self._wrap_collection_in_iterator(
-            self._serialize_wanikani_response(response)
-        )
+        return self._serialize_wanikani_response(response)
 
     def review(self, review_id):
         """
@@ -263,7 +261,9 @@ class Client:
             ),
             headers=self.headers,
         )
-        return self._serialize_wanikani_response(response)
+        return self._wrap_collection_in_iterator(
+            self._serialize_wanikani_response(response)
+        )
 
     def reset(self, reset_id):
         """
