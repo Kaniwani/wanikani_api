@@ -16,11 +16,31 @@ class Iterator:
     def _iter_page(self):
         while self.current_page is not None:
             yield self.current_page
-            self.current_page = self._get_next_page()
+            if self._has_next_page():
+                self.current_page = self._get_next_page()
+
+    def _keep_iterating(self):
+        return (
+            self.current_page is not None
+            and self.max_results
+            and self.yielded_count >= self.max_results
+        )
+
+    def _has_next_page(self):
+        if (
+            self.current_page is not None
+            and self.current_page.next_page_url is not None
+        ):
+            return True
+        return False
 
     def _iter_items(self):
         for page in self._iter_page():
             for item in page:
+                # early break from page if we have set a limit.
+                if self._limit_reached():
+                    raise StopIteration
+                self.yielded_count += 1
                 yield item
 
     def __iter__(self):
@@ -31,6 +51,9 @@ class Iterator:
             return self.api_request(self.current_page.next_page_url)
         else:
             return None
+
+    def _limit_reached(self):
+        return self.max_results and self.yielded_count >= self.max_results
 
 
 class Resource:
