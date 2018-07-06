@@ -5,6 +5,7 @@
 import datetime
 
 from wanikani_api.client import Client
+from wanikani_api.models import Subject
 
 
 def test_client_can_get_user_information():
@@ -90,3 +91,12 @@ def test_client_can_get_resets():
 
     resets = client.resets()
     assert len(resets.data) == 0
+
+def test_subject_endpoint():
+    v2_api_key = "2510f001-fe9e-414c-ba19-ccf79af40060"
+    client = Client(v2_api_key)
+
+    subject = client.subject(1)
+    assert isinstance(subject, Subject)
+
+

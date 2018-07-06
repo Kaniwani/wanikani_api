@@ -6,6 +6,33 @@ from wanikani_api import constants
 from wanikani_api.exceptions import UnknownResourceException
 
 
+class Iterator:
+    def __init__(self, current_page, api_request, max_results=None):
+        self.current_page = current_page
+        self.api_request = api_request
+        self.max_results = max_results
+        self.yielded_count = 0
+
+    def _iter_page(self):
+        while self.current_page is not None:
+            yield self.current_page
+            self.current_page = self._get_next_page()
+
+    def _iter_items(self):
+        for page in self._iter_page():
+            for item in page:
+                yield item
+
+    def __iter__(self):
+        return self._iter_items()
+
+    def _get_next_page(self):
+        if self.current_page.next_page_url:
+            return self.api_request(self.current_page.next_page_url)
+        else:
+            return None
+
+
 class Resource:
     def __init__(self, json_data):
         self.resource = json_data["object"]
@@ -18,22 +45,29 @@ class Resource:
             else json_data["id"]
         )
         self._resource = json_data["data"]
-        self._raw = json_data
 
     def __str__(self):
         return pprint.pformat(self._raw)
 
 
-class Collection(Resource):
+class Page(Resource):
     resource = "collection"
 
     def __init__(self, json_data):
         super().__init__(json_data)
         self.next_page_url = json_data["pages"]["next_url"]
         self.previous_page_url = json_data["pages"]["previous_url"]
-        self.items_per_page = json_data["pages"]["per_page"]
         self.total_count = json_data["total_count"]
         self.data = [factory(item) for item in json_data["data"]]
+        self._data_iterator = iter(json_data["data"])
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        item = next(self._data_iterator)
+        resource = factory(item)
+        return resource
 
 
 class UserInformation(Resource):
@@ -267,7 +301,7 @@ resources = {
     Vocabulary.resource: Vocabulary,
     Radical.resource: Radical,
     Summary.resource: Summary,
-    Collection.resource: Collection,
+    Page.resource: Page,
 }
 
 
