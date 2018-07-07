@@ -13,15 +13,14 @@ from tests.utils.utils import mock_user_info, mock_subjects, mock_assignments, m
 def test_client_can_get_user_information(requests_mock):
     mock_user_info(requests_mock)
 
-    v2_api_key = "2510f001-fe9e-414c-ba19-ccf79af40060"
-    client = Client(v2_api_key)
+    client = Client("v2_api_key")
 
     user = client.user_information()
 
     assert isinstance(user.level, int)
     assert isinstance(user.profile_url, str)
     assert isinstance(user.id, type(None))
-    assert isinstance(user.max_level_granted_by_subscription, int)
+    assert isinstance(user.max_level_granted_by_subscription, int) #TODO START HEER REPLACINBG v2_api_key with string
     assert isinstance(user.username, str)
     assert isinstance(user.subscribed, bool)
     assert isinstance(user.started_at, datetime.date)
@@ -31,8 +30,7 @@ def test_client_can_get_user_information(requests_mock):
 def test_client_can_get_subjects(requests_mock):
     mock_subjects(requests_mock)
 
-    v2_api_key = "2510f001-fe9e-414c-ba19-ccf79af40060"
-    client = Client(v2_api_key)
+    client = Client("v2_api_key")
 
     subjects = client.subjects()
     assert len(subjects.current_page.data) > 0
@@ -42,8 +40,7 @@ def test_client_can_get_subjects(requests_mock):
 def test_client_can_get_assignments(requests_mock):
     mock_assignments(requests_mock)
 
-    v2_api_key = "2510f001-fe9e-414c-ba19-ccf79af40060"
-    client = Client(v2_api_key)
+    client = Client("v2_api_key")
 
     assignments = client.assignments()
 
@@ -51,8 +48,8 @@ def test_client_can_get_assignments(requests_mock):
 
 def test_client_can_get_review_statistics(requests_mock):
     mock_review_statistics(requests_mock)
-    v2_api_key = "2510f001-fe9e-414c-ba19-ccf79af40060"
-    client = Client(v2_api_key)
+    "v2_api_key" = "2510f001-fe9e-414c-ba19-ccf79af40060"
+    client = Client("v2_api_key")
 
     review_statistics = client.review_statistics()
     assert len(review_statistics.current_page.data) > 0
@@ -60,7 +57,6 @@ def test_client_can_get_review_statistics(requests_mock):
 
 def test_client_can_get_study_materials(requests_mock):
     mock_study_materials(requests_mock)
-    v2_api_key = "2510f001-fe9e-414c-ba19-ccf79af40060"
     client = Client(v2_api_key)
 
     study_materials = client.study_materials()
@@ -69,8 +65,7 @@ def test_client_can_get_study_materials(requests_mock):
 
 def test_client_can_get_summary(requests_mock):
     mock_summary(requests_mock)
-    v2_api_key = "2510f001-fe9e-414c-ba19-ccf79af40060"
-    client = Client(v2_api_key)
+    client = Client("v2_api_key")
 
     summary = client.summary()
     assert summary.lessons is not None
@@ -79,7 +74,6 @@ def test_client_can_get_summary(requests_mock):
 
 def test_client_can_get_reviews(requests_mock):
     mock_reviews(requests_mock)
-    v2_api_key = "2510f001-fe9e-414c-ba19-ccf79af40060"
     client = Client(v2_api_key)
 
     reviews = client.reviews()
@@ -88,7 +82,6 @@ def test_client_can_get_reviews(requests_mock):
 
 def test_client_can_get_level_progression(requests_mock):
     mock_level_progressions(requests_mock)
-    v2_api_key = "2510f001-fe9e-414c-ba19-ccf79af40060"
     client = Client(v2_api_key)
 
     progressions = client.level_progressions()
@@ -96,10 +89,8 @@ def test_client_can_get_level_progression(requests_mock):
 
 
 def test_client_can_get_resets(requests_mock):
-    # Currently we do not mock this as we lack sample data.
-    #mock_resets(requests_mock)
-    v2_api_key = "2510f001-fe9e-414c-ba19-ccf79af40060"
-    client = Client(v2_api_key)
+    mock_resets(requests_mock)
+    client = Client("v2_api_key")
 
     resets = client.resets()
     assert len(resets.current_page.data) == 0
@@ -114,7 +105,6 @@ def test_singular_endpoint():
 
 def test_limits_are_respected(requests_mock):
     mock_subjects(requests_mock)
-    v2_api_key = "2510f001-fe9e-414c-ba19-ccf79af40060"
     client = Client(v2_api_key)
 
     subjects = client.subjects(max_results=1)

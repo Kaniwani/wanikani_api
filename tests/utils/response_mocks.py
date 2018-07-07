@@ -863,11 +863,19 @@ RESETS_PAGE = {
         "previous_url": None
     },
     "total_count": 1,
-    "data_updated_at": None,
-    "data": [{
-        "created_at": "2018-07-05T18:03:21.957917Z",
-        "original_level": 55,
-        "target_level": 1,
-        "confirmed_at": "2018-07-05T18:04:21.957917Z"
-    }]
+    "data_updated_at": "2018-03-21T22:07:39.261116Z",
+    "data": [
+        {
+            "id": 6529,
+            "object": "reset",
+            "url": "https://api.wanikani.com/v2/resets/6529",
+            "data_updated_at": "2018-03-21T22:07:39.261116Z",
+            "data": {
+                "created_at": "2018-03-21T22:04:13.313903Z",
+                "original_level": 13,
+                "target_level": 1,
+                "confirmed_at": "2018-03-21T22:05:44.454026Z"
+            }
+        }
+    ]
 }
