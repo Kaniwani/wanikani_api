@@ -126,6 +126,27 @@ class Client:
         hidden=None,
         updated_after=None,
     ):
+        """
+        Assignments are the association between a user, and a subject. This means that every time something is added to
+        your lessons, a new :class:`.models.Assignment` is created.
+
+        :param int[] ids: Return only results with the given IDs
+        :param created_at: Timestamp when resource was created
+        :param int[] subject_ids: Return only :class:`.models.Assignment`s which are tied to the given subject_ids
+        :param str[] subject_types: The specific :class:`.models.Subject` types you wish to retrieve. Possible values are: ``["kanji", "vocabulary", "radicals"]``
+        :param int[] levels: Include only :class:`.models.Assignment` where the subjects are from the specified levels.
+        :param datetime available_before: Return assignment reviews available before timestamp
+        :param datetime available_after: Return assignment reviews available after timestamp
+        :param int srs_stages: Return assignments of specified srs stages. Note, 0 is lessons, 9 is the burned state
+        :param bool unlocked: Return assignments which have unlocked (made available to lessons)
+        :param bool started: Return assignments which move from lessons to reviews
+        :param bool passed: Return assignments which have reach Guru (aka srs_stage 5) at some point (true) or which have never been Guru’d (false)
+        :param bool burned: Return assignments which have been burned at some point (true) or never have been burned (false)
+        :param bool resurrected: Return assignments which either have been resurrect (true) or not (false)
+        :param bool hidden: Return assignments which are or are not hidden from the user-facing application
+        :param datetime updated_after: Return results which have been updated after the timestamp
+        :return: An iterator over a set of :class:`.models.Page` where the data contained is all :class:`.models.Assignment`
+        """
         response = requests.get(
             self.url_builder.build_wk_url(
                 constants.ASSIGNMENT_ENDPOINT, parameters=locals()
@@ -161,6 +182,18 @@ class Client:
         percentages_less_than=None,
         hidden=None,
     ):
+        """
+        Retrieve all Review Statistics from Wanikani. A Review Statistic is related to a single subject which the user has studied.
+
+        :param int[] ids: Return only results with the given IDs
+        :param int[] subject_ids: Return only :class:`.models.Assignment`s which are tied to the given subject_ids
+        :param str[] subject_types: The specific :class:`.models.Subject` types you wish to retrieve. Possible values are: ``["kanji", "vocabulary", "radicals"]``
+        :param datetime updated_after: Return results which have been updated after the timestamp
+        :param int percentages_greater_than: Return results where the percentage_correct is greater than the value. [0-100]
+        :param int percentages_less_than: Return results where the percentage_correct is less than the value. [0-100]
+        :param bool hidden: Return only results where the related subject has been hidden.
+        :return: An iterator which contains all Review Statistics
+        """
         response = requests.get(
             self.url_builder.build_wk_url(
                 constants.REVIEW_STATS_ENDPOINT, parameters=locals()
@@ -194,6 +227,16 @@ class Client:
         hidden=None,
         updated_after=None,
     ):
+        """
+        Retrieve all Study Materials. These are primarily meaning notes, reading notes, and meaning synonyms.
+
+        :param int[] ids: Return only results with the given IDs
+        :param int[] subject_ids: Return only :class:`.models.Assignment`s which are tied to the given subject_ids
+        :param str[] subject_types: The specific :class:`.models.Subject` types you wish to retrieve. Possible values are: ``["kanji", "vocabulary", "radicals"]``
+        :param bool hidden: Return only results where the related subject has been hidden.
+        :param datetime updated_after: Return results which have been updated after the timestamp
+        :return: An iterator over all Study Materials
+        """
         response = requests.get(
             self.url_builder.build_wk_url(
                 constants.STUDY_MATERIALS_ENDPOINT, parameters=locals()
@@ -205,6 +248,10 @@ class Client:
         )
 
     def summary(self):
+        """
+
+        :return:
+        """
         response = requests.get(
             self.url_builder.build_wk_url(
                 constants.SUMMARY_ENDPOINT, parameters=locals()
@@ -229,6 +276,15 @@ class Client:
         return self._serialize_wanikani_response(response)
 
     def reviews(self, ids=None, subject_ids=None, updated_after=None):
+        """
+        Retrieve all reviews for a given user. A :class:`.models.Review` is a single instance of this user getting a
+        single review correctly submitted.
+
+        :param int[] ids: Return only results with the given IDs
+        :param int[] subject_ids: Return only :class:`.models.Assignment`s which are tied to the given subject_ids
+        :param datetime updated_after: Return results which have been updated after the timestamp
+        :return: An iterator over all :class:`.models.Review` for a given user.
+        """
         response = requests.get(
             self.url_builder.build_wk_url(
                 constants.REVIEWS_ENDPOINT, parameters=locals()
@@ -255,6 +311,13 @@ class Client:
         return self._serialize_wanikani_response(response)
 
     def level_progressions(self, ids=None, updated_after=None):
+        """
+        Retrieve all :class:`.models.LevelProgression` for a given user.
+
+        :param int[] ids: Return only results with the given IDs
+        :param datetime updated_after: Return results which have been updated after the timestamp
+        :return: An iterator over all :class:`.models.LevelProgression` for a given user.
+        """
         response = requests.get(
             self.url_builder.build_wk_url(
                 constants.LEVEL_PROGRESSIONS_ENDPOINT, parameters=locals()
@@ -281,6 +344,13 @@ class Client:
         return self._serialize_wanikani_response(response)
 
     def resets(self, ids=None, updated_after=None):
+        """
+        Retrieve information for all resets the user has performed on Wanikani.
+
+        :param int[] ids: Return only results with the given IDs
+        :param datetime updated_after: Return results which have been updated after the timestamp
+        :return: An iterator over all :class:`.models.Reset` for a given user.
+        """
         response = requests.get(
             self.url_builder.build_wk_url(
                 constants.RESETS_ENDPOINT, parameters=locals()
@@ -300,11 +370,13 @@ class Client:
                 "[{}] is not a valid API key!".format(self.v2_api_key)
             )
 
-    def api_request(self, url):
+    def _api_request(self, url):
         response = requests.get(url, headers=self.headers)
         return self._serialize_wanikani_response(response)
 
     def _wrap_collection_in_iterator(self, resource, max_results=None):
         return Iterator(
-            current_page=resource, api_request=self.api_request, max_results=max_results
+            current_page=resource,
+            api_request=self._api_request,
+            max_results=max_results,
         )
