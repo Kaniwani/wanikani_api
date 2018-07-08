@@ -23,7 +23,6 @@
      :alt: Updates
 
 
-
 An API wrapper for Wanikani (V2)
 
 

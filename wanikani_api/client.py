@@ -364,7 +364,7 @@ class Client:
     def _serialize_wanikani_response(self, response):
         if response.status_code == 200:
             json = response.json()
-            return models.factory(json)
+            return models.factory(json, client=self)
         elif response.status_code == 401:
             raise InvalidWanikaniApiKeyException(
                 "[{}] is not a valid API key!".format(self.v2_api_key)

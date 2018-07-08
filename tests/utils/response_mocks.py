@@ -13,6 +13,41 @@ USER_INFORMATION = {
     }
 }
 
+SUBJECT = {
+    "id": 2467,
+    "object": "vocabulary",
+    "url": "https://api.wanikani.com/v2/subjects/2467",
+    "data_updated_at": "2018-05-21T21:52:43.041390Z",
+    "data": {
+        "created_at": "2012-02-28T08:04:47.000000Z",
+        "level": 1,
+        "slug": "一",
+        "hidden_at": None,
+        "document_url": "https://www.wanikani.com/vocabulary/%E4%B8%80",
+        "characters": "一",
+        "meanings": [
+            {
+                "meaning": "One",
+                "primary": True,
+                "accepted_answer": True
+            }
+        ],
+        "readings": [
+            {
+                "primary": True,
+                "reading": "いち",
+                "accepted_answer": True
+            }
+        ],
+        "parts_of_speech": [
+            "numeral"
+        ],
+        "component_subject_ids": [
+            440
+        ]
+    }
+}
+
 SUBJECTS_PAGE = {
     "object": "collection",
     "url": "https://api.wanikani.com/v2/subjects",
@@ -557,11 +592,11 @@ SUMMARY = {
         "reviews": [
             {
                 "available_at": "2018-07-02T07:00:00.000000Z",
-                "subject_ids": []
+                "subject_ids": [1, 2, 3]
             },
             {
                 "available_at": "2018-07-02T08:00:00.000000Z",
-                "subject_ids": []
+                "subject_ids": [4, 5, 6]
             },
             {
                 "available_at": "2018-07-02T09:00:00.000000Z",

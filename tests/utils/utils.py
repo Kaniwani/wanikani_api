@@ -5,8 +5,10 @@ from .response_mocks import *
 
 
 def mock_subjects(requests_mock):
-    requests_mock.get(constants.ROOT_WK_API_URL + constants.SUBJECT_ENDPOINT, json=SUBJECTS_PAGE)
+    requests_mock.get(re.compile(constants.SUBJECT_ENDPOINT), json=SUBJECTS_PAGE)
 
+def mock_single_subject(requests_mock):
+    requests_mock.get(re.compile(constants.SUBJECT_ENDPOINT + "/\d+"), json=SUBJECT)
 
 def mock_user_info(requests_mock):
     requests_mock.get(re.compile(constants.USER_ENDPOINT), json=USER_INFORMATION)

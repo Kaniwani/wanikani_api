@@ -12,6 +12,7 @@ class Iterator:
         self.api_request = api_request
         self.max_results = max_results
         self.yielded_count = 0
+        self._should_prefetch_subjects = False
 
     def _iter_page(self):
         while self.current_page is not None:
@@ -46,6 +47,9 @@ class Iterator:
     def __iter__(self):
         return self._iter_items()
 
+    def __next__(self):
+        return next(self._iter_items())
+
     def _get_next_page(self):
         if self.current_page.next_page_url:
             return self.api_request(self.current_page.next_page_url)
@@ -55,9 +59,63 @@ class Iterator:
     def _limit_reached(self):
         return self.max_results and self.yielded_count >= self.max_results
 
+    def should_prefetch_subjects(self, prefetch):
+        self._should_prefetch_subjects = True
+
+
+class Subjectable:
+    """
+    A Mixin allowing a model to quickly fetch related subjects.
+    """
+
+    def __init__(self, *args, **kwargs):
+        if "client" not in kwargs:
+            raise ValueError("Subjectable models expect an instance of Client!")
+
+        self.client = kwargs.get("client")
+        self._subjects = None
+        self._subject = None
+
+    @property
+    def subject(self):
+        if self._subject:
+            return self._subject
+        elif hasattr(self, "subject_id"):
+            self._subject = self.client.subject(self.subject_id)
+            return self._subject
+        else:
+            raise AttributeError("no attribute named subject!")
+
+    @property
+    def subjects(self):
+        if self._subjects:
+            return self._subjects
+        elif hasattr(self, "subject_ids"):
+            self._subjects = self.client.subjects(ids=self.subject_ids)
+            return self._subjects
+        else:
+            raise AttributeError("no attribute named subjects!")
+
+    def get_subjects(self):
+        if self.subjects:
+            return self.subjects
+        elif self.subject:
+            return self.subject
+        else:
+            if hasattr(self, "subject_id"):
+                self.subject = self.client.subject(self.subject_id)
+                return self.subject
+            elif hasattr(self, "subject_ids"):
+                self.subjects = self.client.subjects(ids=[self.subject_ids])
+                return self.subjects
+
+    @subject.setter
+    def subject(self, value):
+        self._subject = value
+
 
 class Resource:
-    def __init__(self, json_data):
+    def __init__(self, json_data, *args, **kwargs):
         self.resource = json_data["object"]
         self._raw = json_data
         self.url = json_data["url"]
@@ -77,21 +135,21 @@ class Resource:
 class Page(Resource):
     resource = "collection"
 
-    def __init__(self, json_data):
-        super().__init__(json_data)
+    def __init__(self, json_data, *args, **kwargs):
+        super().__init__(json_data, *args, **kwargs)
+        self.client = kwargs.get("client")
         self.next_page_url = json_data["pages"]["next_url"]
         self.previous_page_url = json_data["pages"]["previous_url"]
         self.total_count = json_data["total_count"]
-        self.data = [factory(item) for item in json_data["data"]]
-        self._data_iterator = iter(json_data["data"])
+        self.data = [factory(datum, client=self.client) for datum in json_data["data"]]
+        self._data_iterator = iter(self.data)
 
     def __iter__(self):
         return self
 
     def __next__(self):
         item = next(self._data_iterator)
-        resource = factory(item)
-        return resource
+        return item
 
 
 class UserInformation(Resource):
@@ -101,8 +159,8 @@ class UserInformation(Resource):
 
     resource = "user"
 
-    def __init__(self, json_data):
-        super().__init__(json_data)
+    def __init__(self, json_data, *args, **kwargs):
+        super().__init__(json_data, *args, **kwargs)
         self.username = self._resource["username"]  #: username
         self.level = self._resource["level"]  #: current wanikani level
         self.max_level_granted_by_subscription = self._resource[
@@ -132,8 +190,8 @@ class UserInformation(Resource):
 
 
 class Subject(Resource):
-    def __init__(self, json_data):
-        super().__init__(json_data)
+    def __init__(self, json_data, *args, **kwargs):
+        super().__init__(json_data, *args, **kwargs)
         resource_data = json_data["data"]
         self.level = resource_data["level"]
         self.created_at = parse8601(resource_data["created_at"])
@@ -148,8 +206,8 @@ class Subject(Resource):
 class Radical(Subject):
     resource = "radical"
 
-    def __init__(self, json_data):
-        super().__init__(json_data)
+    def __init__(self, json_data, *args, **kwargs):
+        super().__init__(json_data, *args, **kwargs)
         self.character_images = (
             self._resource["character_images"]
             if "character_images" in self._resource.keys()
@@ -161,8 +219,8 @@ class Radical(Subject):
 class Vocabulary(Subject):
     resource = "vocabulary"
 
-    def __init__(self, json_data):
-        super().__init__(json_data)
+    def __init__(self, json_data, *args, **kwargs):
+        super().__init__(json_data, *args, **kwargs)
         self.parts_of_speech = self._resource["parts_of_speech"]
         self.component_subject_ids = self._resource["component_subject_ids"]
         self.readings = [
@@ -173,8 +231,8 @@ class Vocabulary(Subject):
 class Kanji(Subject):
     resource = "kanji"
 
-    def __init__(self, json_data):
-        super().__init__(json_data)
+    def __init__(self, json_data, *args, **kwargs):
+        super().__init__(json_data, *args, **kwargs)
         self.amalgamation_subject_ids = self._resource["amalgamation_subject_ids"]
         self.component_subject_ids = self._resource["component_subject_ids"]
         self.readings = [
@@ -196,11 +254,12 @@ class Reading:
         self.accepted_answer = meaning_json["accepted_answer"]
 
 
-class Assignment(Resource):
+class Assignment(Resource, Subjectable):
     resource = "assignment"
 
-    def __init__(self, json_data):
-        super().__init__(json_data)
+    def __init__(self, json_data, *args, **kwargs):
+        super().__init__(json_data, *args, **kwargs)
+        Subjectable.__init__(self, *args, **kwargs)
         self.created_at = parse8601(self._resource["created_at"])
         self.subject_id = self._resource["subject_id"]
         self.subject_type = self._resource["subject_type"]
@@ -221,8 +280,8 @@ class Assignment(Resource):
 class Reset(Resource):
     resource = "reset"
 
-    def __init__(self, json_data):
-        super().__init__(json_data)
+    def __init__(self, json_data, *args, **kwargs):
+        super().__init__(json_data, *args, **kwargs)
         self.created_at = parse8601(self._resource["created_at"])
         self.original_level = self._resource["original_level"]
         self.target_level = self._resource["target_level"]
@@ -232,8 +291,8 @@ class Reset(Resource):
 class ReviewStatistic(Resource):
     resource = "review_statistic"
 
-    def __init__(self, json_data):
-        super().__init__(json_data)
+    def __init__(self, json_data, *args, **kwargs):
+        super().__init__(json_data, *args, **kwargs)
         self.created_at = parse8601(self._resource["created_at"])
         self.subject_id = self._resource["subject_id"]
         self.subject_type = self._resource["subject_type"]
@@ -249,11 +308,12 @@ class ReviewStatistic(Resource):
         self.hidden = self._resource["hidden"]
 
 
-class StudyMaterial(Resource):
+class StudyMaterial(Resource, Subjectable):
     resource = "study_material"
 
-    def __init__(self, json_data):
-        super().__init__(json_data)
+    def __init__(self, json_data, *args, **kwargs):
+        super().__init__(json_data, *args, **kwargs)
+        Subjectable.__init__(self, *args, **kwargs)
         self.created_at = parse8601(self._resource["created_at"])
         self.subject_id = self._resource["subject_id"]
         self.subject_type = self._resource["subject_type"]
@@ -264,13 +324,15 @@ class StudyMaterial(Resource):
 
 
 class Lessons(object):
-    def __init__(self, json_data):
+    def __init__(self, json_data, *args, **kwargs):
         self.subject_ids = json_data["subject_ids"]
         self.available_at = parse8601(json_data["available_at"])
 
 
-class UpcomingReview(object):
-    def __init__(self, json_data):
+class UpcomingReview(Subjectable):
+    def __init__(self, json_data, *args, **kwargs):
+        super().__init__(json_data, *args, **kwargs)
+        Subjectable.__init__(self, *args, **kwargs)
         self.subject_ids = json_data["subject_ids"]
         self.available_at = parse8601(json_data["available_at"])
 
@@ -278,21 +340,24 @@ class UpcomingReview(object):
 class Summary(Resource):
     resource = "report"
 
-    def __init__(self, json_data):
-        super().__init__(json_data)
+    def __init__(self, json_data, *args, **kwargs):
+        super().__init__(json_data, *args, **kwargs)
+        self.client = kwargs.get("client")
         # Note that there is only ever one lesson object, as per this forum thread https://community.wanikani.com/t/api-v2-alpha-documentation/18987
         self.lessons = Lessons(self._resource["lessons"][0])
         self.next_reviews_at = self._resource["next_reviews_at"]
         self.reviews = [
-            UpcomingReview(review_json) for review_json in self._resource["reviews"]
+            UpcomingReview(review_json, client=self.client)
+            for review_json in self._resource["reviews"]
         ]
 
 
-class Review(Resource):
+class Review(Resource, Subjectable):
     resource = "review"
 
-    def __init__(self, json_data):
-        super().__init__(json_data)
+    def __init__(self, json_data, *args, **kwargs):
+        super().__init__(json_data, *args, **kwargs)
+        Subjectable.__init__(self, *args, **kwargs)
         self.created_at = parse8601(self._resource["created_at"])
         self.assignment_id = self._resource["assignment_id"]
         self.subject_id = self._resource["subject_id"]
@@ -307,8 +372,8 @@ class Review(Resource):
 class LevelProgression(Resource):
     resource = "level_progression"
 
-    def __init__(self, json_data):
-        super().__init__(json_data)
+    def __init__(self, json_data, *args, **kwargs):
+        super().__init__(json_data, *args, **kwargs)
         self.created_at = parse8601(self._resource["created_at"])
         self.level = self._resource["level"]
         self.unlocked_at = parse8601(self._resource["unlocked_at"])
@@ -340,9 +405,9 @@ resources = {
 }
 
 
-def factory(resource_json):
+def factory(resource_json, *args, **kwargs):
     try:
-        return resources[resource_json["object"]](resource_json)
+        return resources[resource_json["object"]](resource_json, *args, **kwargs)
     except KeyError:
         raise UnknownResourceException(
             "We have no clue how to handle resource of type: {}".format(
