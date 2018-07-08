@@ -59,6 +59,7 @@ class Iterator:
 class Resource:
     def __init__(self, json_data):
         self.resource = json_data["object"]
+        self._raw = json_data
         self.url = json_data["url"]
         self.data_updated_at = parse8601(json_data["data_updated_at"])
         # Some Resources do not have IDs.
@@ -69,7 +70,7 @@ class Resource:
         )
         self._resource = json_data["data"]
 
-    def __str__(self):
+    def raw_json(self):
         return pprint.pformat(self._raw)
 
 
@@ -117,6 +118,17 @@ class UserInformation(Resource):
         self.current_vacation_started_at = parse8601(
             self._resource["current_vacation_started_at"]
         )  #: datetime at which vacation was enabled on wanikani.
+
+    def __str__(self):
+        return "UserInformation{{ username:{}, level:{}, max_level_granted_by_subscription:{}, profile_url:{} started_at:{}, subscribed:{}, current_vacation_started_at:{} }}".format(
+            self.username,
+            self.level,
+            self.max_level_granted_by_subscription,
+            self.profile_url,
+            self.started_at,
+            self.subscribed,
+            self.current_vacation_started_at,
+        )
 
 
 class Subject(Resource):

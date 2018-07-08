@@ -40,6 +40,7 @@ Assignments
 ___________
 .. code-block:: python
 
-    >>> vocabulary = client.assignments(types="vocabulary")
-    >>> for vocab in vocabulary.data:
-    >>>    print(vocab.readings[0].reading)
+    >>> assignments = client.assignments(types="vocabulary")
+    >>> for assignment in assignments:
+    >>>    print(assignment.subject_id)
+
