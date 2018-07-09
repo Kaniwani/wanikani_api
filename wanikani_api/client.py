@@ -60,7 +60,7 @@ class Client:
         levels=None,
         hidden=None,
         updated_after=None,
-        max_results=None,
+        fetch_all=False
     ):
         """Retrieves Subjects
 
@@ -75,7 +75,6 @@ class Client:
         :param int[] levels: Include only :class:`.models.Subject` from the specified levels.
         :param bool hidden: Return :class:`.models.Subject` which are or are not hidden from the user-facing application
         :param  updated_after: Return results which have been updated after the timestamp
-        :param max_results: The maximum number of results you wish to have returned.
         :type updated_after: :class:`datetime.datetime`
         :return: An iterator over multiple :class:`models.Page` , in which the ``data`` field contains a list anything that is a :class:`.models.Subject`, e.g.:
 
@@ -90,7 +89,7 @@ class Client:
             headers=self.headers,
         )
         return self._wrap_collection_in_iterator(
-            self._serialize_wanikani_response(response), max_results
+            self._serialize_wanikani_response(response), fetch_all
         )
 
     def assignment(self, assignment_id):
@@ -125,11 +124,13 @@ class Client:
         resurrected=None,
         hidden=None,
         updated_after=None,
+        fetch_all=False
     ):
         """
         Assignments are the association between a user, and a subject. This means that every time something is added to
         your lessons, a new :class:`.models.Assignment` is created.
 
+        :param bool fetch_all: if set to True, instead of fetching only first page of results, will fetch them all.
         :param int[] ids: Return only results with the given IDs
         :param created_at: Timestamp when resource was created
         :param int[] subject_ids: Return only :class:`.models.Assignment`s which are tied to the given subject_ids
@@ -154,7 +155,7 @@ class Client:
             headers=self.headers,
         )
         return self._wrap_collection_in_iterator(
-            self._serialize_wanikani_response(response)
+            self._serialize_wanikani_response(response), fetch_all
         )
 
     def review_statistic(self, review_statistic_id):
@@ -181,10 +182,12 @@ class Client:
         percentages_greater_than=None,
         percentages_less_than=None,
         hidden=None,
+        fetch_all=False
     ):
         """
         Retrieve all Review Statistics from Wanikani. A Review Statistic is related to a single subject which the user has studied.
 
+        :param bool fetch_all: if set to True, instead of fetching only first page of results, will fetch them all.
         :param int[] ids: Return only results with the given IDs
         :param int[] subject_ids: Return only :class:`.models.Assignment`s which are tied to the given subject_ids
         :param str[] subject_types: The specific :class:`.models.Subject` types you wish to retrieve. Possible values are: ``["kanji", "vocabulary", "radicals"]``
@@ -201,7 +204,7 @@ class Client:
             headers=self.headers,
         )
         return self._wrap_collection_in_iterator(
-            self._serialize_wanikani_response(response)
+            self._serialize_wanikani_response(response), fetch_all
         )
 
     def study_material(self, study_material_id):
@@ -226,10 +229,12 @@ class Client:
         subject_types=None,
         hidden=None,
         updated_after=None,
+        fetch_all=False
     ):
         """
         Retrieve all Study Materials. These are primarily meaning notes, reading notes, and meaning synonyms.
 
+        :param bool fetch_all: if set to True, instead of fetching only first page of results, will fetch them all.
         :param int[] ids: Return only results with the given IDs
         :param int[] subject_ids: Return only :class:`.models.Assignment`s which are tied to the given subject_ids
         :param str[] subject_types: The specific :class:`.models.Subject` types you wish to retrieve. Possible values are: ``["kanji", "vocabulary", "radicals"]``
@@ -244,7 +249,7 @@ class Client:
             headers=self.headers,
         )
         return self._wrap_collection_in_iterator(
-            self._serialize_wanikani_response(response)
+            self._serialize_wanikani_response(response), fetch_all
         )
 
     def summary(self):
@@ -275,11 +280,12 @@ class Client:
         )
         return self._serialize_wanikani_response(response)
 
-    def reviews(self, ids=None, subject_ids=None, updated_after=None):
+    def reviews(self, ids=None, subject_ids=None, updated_after=None, fetch_all=False):
         """
         Retrieve all reviews for a given user. A :class:`.models.Review` is a single instance of this user getting a
         single review correctly submitted.
 
+        :param bool fetch_all: if set to True, instead of fetching only first page of results, will fetch them all.
         :param int[] ids: Return only results with the given IDs
         :param int[] subject_ids: Return only :class:`.models.Assignment`s which are tied to the given subject_ids
         :param datetime updated_after: Return results which have been updated after the timestamp
@@ -292,7 +298,7 @@ class Client:
             headers=self.headers,
         )
         return self._wrap_collection_in_iterator(
-            self._serialize_wanikani_response(response)
+            self._serialize_wanikani_response(response), fetch_all
         )
 
     def level_progression(self, level_progression_id):
@@ -310,10 +316,11 @@ class Client:
         )
         return self._serialize_wanikani_response(response)
 
-    def level_progressions(self, ids=None, updated_after=None):
+    def level_progressions(self, ids=None, updated_after=None, fetch_all=False):
         """
         Retrieve all :class:`.models.LevelProgression` for a given user.
 
+        :param bool fetch_all: if set to True, instead of fetching only first page of results, will fetch them all.
         :param int[] ids: Return only results with the given IDs
         :param datetime updated_after: Return results which have been updated after the timestamp
         :return: An iterator over all :class:`.models.LevelProgression` for a given user.
@@ -325,7 +332,7 @@ class Client:
             headers=self.headers,
         )
         return self._wrap_collection_in_iterator(
-            self._serialize_wanikani_response(response)
+            self._serialize_wanikani_response(response), fetch_all
         )
 
     def reset(self, reset_id):
@@ -343,10 +350,11 @@ class Client:
         )
         return self._serialize_wanikani_response(response)
 
-    def resets(self, ids=None, updated_after=None):
+    def resets(self, ids=None, updated_after=None, fetch_all=False):
         """
         Retrieve information for all resets the user has performed on Wanikani.
 
+        :param bool fetch_all: if set to True, instead of fetching only first page of results, will fetch them all.
         :param int[] ids: Return only results with the given IDs
         :param datetime updated_after: Return results which have been updated after the timestamp
         :return: An iterator over all :class:`.models.Reset` for a given user.
@@ -358,7 +366,7 @@ class Client:
             headers=self.headers,
         )
         return self._wrap_collection_in_iterator(
-            self._serialize_wanikani_response(response)
+            self._serialize_wanikani_response(response), fetch_all
         )
 
     def _serialize_wanikani_response(self, response):
@@ -374,9 +382,9 @@ class Client:
         response = requests.get(url, headers=self.headers)
         return self._serialize_wanikani_response(response)
 
-    def _wrap_collection_in_iterator(self, resource, max_results=None):
+    def _wrap_collection_in_iterator(self, resource, fetch_all):
         return Iterator(
             current_page=resource,
             api_request=self._api_request,
-            max_results=max_results,
+            fetch_all=fetch_all
         )

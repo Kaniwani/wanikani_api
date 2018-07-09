@@ -1,3 +1,4 @@
+import itertools
 import pprint
 
 import dateutil.parser
@@ -7,18 +8,14 @@ from wanikani_api.exceptions import UnknownResourceException
 
 
 class Iterator:
-    def __init__(self, current_page, api_request, max_results=None):
+    def __init__(self, current_page, api_request, max_results=None, fetch_all=False):
         self.current_page = current_page
         self.api_request = api_request
         self.max_results = max_results
         self.yielded_count = 0
-        self._should_prefetch_subjects = False
-
-    def _iter_page(self):
-        while self.current_page is not None:
-            yield self.current_page
-            if self._has_next_page():
-                self.current_page = self._get_next_page()
+        self.pages = [current_page]
+        if fetch_all:
+            self.fetch_all_pages()
 
     def _keep_iterating(self):
         return (
@@ -27,51 +24,29 @@ class Iterator:
             and self.yielded_count >= self.max_results
         )
 
-    def _has_next_page(self):
-        if (
-            self.current_page is not None
-            and self.current_page.next_page_url is not None
-        ):
-            return True
-        return False
+    def fetch_next_page(self):
+        if self.current_page.next_page_url is not None:
+            self.pages.append(self.api_request(self.current_page.next_page_url))
+            self.current_page = self.pages[-1]
 
-    def _iter_items(self):
-        for page in self._iter_page():
-            for item in page:
-                # early break from page if we have set a limit.
-                if self._limit_reached():
-                    raise StopIteration
-                self.yielded_count += 1
-                yield item
+    def fetch_all_pages(self):
+        while self.current_page.next_page_url is not None:
+            self.fetch_next_page()
 
     def __iter__(self):
-        return self._iter_items()
-
-    def __next__(self):
-        return next(self._iter_items())
-
-    def _get_next_page(self):
-        if self.current_page.next_page_url:
-            return self.api_request(self.current_page.next_page_url)
-        else:
-            return None
-
-    def _limit_reached(self):
-        return self.max_results and self.yielded_count >= self.max_results
-
-    def should_prefetch_subjects(self, prefetch):
-        self._should_prefetch_subjects = True
+        return iter([item for page in self.pages for item in page])
 
 
 class Subjectable:
     """
     A Mixin allowing a model to quickly fetch related subjects.
+
+    Any resource which inherits Subjectable must have either `subject_id` or `subject_ids` as an attribute.
     """
 
     def __init__(self, *args, **kwargs):
         if "client" not in kwargs:
             raise ValueError("Subjectable models expect an instance of Client!")
-
         self.client = kwargs.get("client")
         self._subjects = None
         self._subject = None
@@ -95,23 +70,6 @@ class Subjectable:
             return self._subjects
         else:
             raise AttributeError("no attribute named subjects!")
-
-    def get_subjects(self):
-        if self.subjects:
-            return self.subjects
-        elif self.subject:
-            return self.subject
-        else:
-            if hasattr(self, "subject_id"):
-                self.subject = self.client.subject(self.subject_id)
-                return self.subject
-            elif hasattr(self, "subject_ids"):
-                self.subjects = self.client.subjects(ids=[self.subject_ids])
-                return self.subjects
-
-    @subject.setter
-    def subject(self, value):
-        self._subject = value
 
 
 class Resource:
@@ -142,14 +100,12 @@ class Page(Resource):
         self.previous_page_url = json_data["pages"]["previous_url"]
         self.total_count = json_data["total_count"]
         self.data = [factory(datum, client=self.client) for datum in json_data["data"]]
-        self._data_iterator = iter(self.data)
 
     def __iter__(self):
-        return self
+        return iter(self.data)
 
-    def __next__(self):
-        item = next(self._data_iterator)
-        return item
+    def __len__(self):
+        return len(self.data)
 
 
 class UserInformation(Resource):
@@ -204,6 +160,9 @@ class Subject(Resource):
 
 
 class Radical(Subject):
+    """
+    A model for the Radical object.
+    """
     resource = "radical"
 
     def __init__(self, json_data, *args, **kwargs):
@@ -217,6 +176,9 @@ class Radical(Subject):
 
 
 class Vocabulary(Subject):
+    """
+    A model for the Vocabulary Resource
+    """
     resource = "vocabulary"
 
     def __init__(self, json_data, *args, **kwargs):
@@ -229,6 +191,9 @@ class Vocabulary(Subject):
 
 
 class Kanji(Subject):
+    """
+    A model for the Kanji Resource
+    """
     resource = "kanji"
 
     def __init__(self, json_data, *args, **kwargs):
@@ -241,6 +206,9 @@ class Kanji(Subject):
 
 
 class Meaning:
+    """
+    Simple class holding information about a given meaning of a vocabulary/Kanji
+    """
     def __init__(self, meaning_json):
         self.meaning = meaning_json["meaning"]
         self.primary = meaning_json["primary"]
@@ -248,6 +216,9 @@ class Meaning:
 
 
 class Reading:
+    """
+    Simple class holding information about a given reading of a vocabulary/kanji
+    """
     def __init__(self, meaning_json):
         self.reading = meaning_json["reading"]
         self.primary = meaning_json["primary"]
@@ -255,6 +226,9 @@ class Reading:
 
 
 class Assignment(Resource, Subjectable):
+    """
+    Simple class holding information about Assignmetns.
+    """
     resource = "assignment"
 
     def __init__(self, json_data, *args, **kwargs):
@@ -278,6 +252,9 @@ class Assignment(Resource, Subjectable):
 
 
 class Reset(Resource):
+    """
+    Simple model holding resource information
+    """
     resource = "reset"
 
     def __init__(self, json_data, *args, **kwargs):
@@ -289,6 +266,9 @@ class Reset(Resource):
 
 
 class ReviewStatistic(Resource):
+    """
+    Simple model holding ReviewStatistic Information
+    """
     resource = "review_statistic"
 
     def __init__(self, json_data, *args, **kwargs):
@@ -309,6 +289,9 @@ class ReviewStatistic(Resource):
 
 
 class StudyMaterial(Resource, Subjectable):
+    """
+    Simple model holding information about Study Materials
+    """
     resource = "study_material"
 
     def __init__(self, json_data, *args, **kwargs):
@@ -324,6 +307,9 @@ class StudyMaterial(Resource, Subjectable):
 
 
 class Lessons(object):
+    """
+    # TODO start here filling out docs for models.
+    """
     def __init__(self, json_data, *args, **kwargs):
         self.subject_ids = json_data["subject_ids"]
         self.available_at = parse8601(json_data["available_at"])

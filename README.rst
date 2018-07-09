@@ -35,6 +35,7 @@ Features
 
 * Easy access to Wanikani resources associated to your account.
 * Automatic handling of pagination.
+* Automatic fetching of related Subjects
 
 
 Quickstart
@@ -65,6 +66,7 @@ TODO
 ----
 * Make use of ETags for caching
 * simplify API
+* Improve automatic prefetching of subjects when relevant.
 
 Credits
 -------

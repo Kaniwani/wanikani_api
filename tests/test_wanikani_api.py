@@ -100,3 +100,16 @@ def test_limits_are_respected(requests_mock):
 
     subjects = client.subjects(max_results=1)
     assert len(list(subjects)) == 1
+
+def test_broken():
+
+    v2_api_key = "2510f001-fe9e-414c-ba19-ccf79af40060"
+    client = Client(v2_api_key)
+    subjects = client.subjects()
+    subjects.fetch_all_pages()
+    count = 0
+    for _ in subjects:
+        count += 1
+    print("count is:" + str(count))
+    assert count == subjects.current_page.total_count
+

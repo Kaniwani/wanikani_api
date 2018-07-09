@@ -47,3 +47,5 @@ def test_requests_mock(requests_mock):
     client = Client('whatever')
     subjects = client.subjects()
     assert isinstance(subjects, Iterator)
+
+
