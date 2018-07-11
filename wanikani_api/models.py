@@ -110,7 +110,8 @@ class Page(Resource):
 
 class UserInformation(Resource):
     """
-    This is a simple container for information returned from the ``/user/`` endpoint.
+    This is a simple container for information returned from the ``/user/`` endpoint. This is all information related to
+    the user.
     """
 
     resource = "user"
@@ -146,17 +147,20 @@ class UserInformation(Resource):
 
 
 class Subject(Resource):
+    """
+    This is the base Subject for Wanikani. This contains information common to Kanji, Vocabulary, and Radicals.
+    """
     def __init__(self, json_data, *args, **kwargs):
         super().__init__(json_data, *args, **kwargs)
         resource_data = json_data["data"]
-        self.level = resource_data["level"]
-        self.created_at = parse8601(resource_data["created_at"])
-        self.characters = resource_data["characters"]
+        self.level = resource_data["level"] #: The level of the subject.
+        self.created_at = parse8601(resource_data["created_at"]) #: The date at which the Subject was created originally on Wanikani.
+        self.characters = resource_data["characters"] #: The actual japanese kanji/radical symbol such as 女
         self.meanings = [
             Meaning(meaning_json) for meaning_json in resource_data["meanings"]
-        ]
-        self.document_url = resource_data["document_url"]
-        self.hidden_at = resource_data["hidden_at"]
+        ] #: A list of :class:`.models.Meaning` for this subject.
+        self.document_url = resource_data["document_url"] #: The direct URL where the subject can be found on Wanikani
+        self.hidden_at = resource_data["hidden_at"] #: When Wanikani removes a subject, they seem to instead set it to hidden, for backwards compatibilty with clients.
 
 
 class Radical(Subject):
@@ -171,8 +175,8 @@ class Radical(Subject):
             self._resource["character_images"]
             if "character_images" in self._resource.keys()
             else None
-        )
-        self.amalgamation_subject_ids = self._resource["amalgamation_subject_ids"]
+        ) #: A list of dictionaries, each containing a bunch of information related to a single character image.
+        self.amalgamation_subject_ids = self._resource["amalgamation_subject_ids"] #: IDs for various other :class:`.models.Subject` for which this radical is a component.
 
 
 class Vocabulary(Subject):
@@ -183,11 +187,11 @@ class Vocabulary(Subject):
 
     def __init__(self, json_data, *args, **kwargs):
         super().__init__(json_data, *args, **kwargs)
-        self.parts_of_speech = self._resource["parts_of_speech"]
-        self.component_subject_ids = self._resource["component_subject_ids"]
+        self.parts_of_speech = self._resource["parts_of_speech"] #: A list of strings, each of which is a part of speech.
+        self.component_subject_ids = self._resource["component_subject_ids"] #: List of IDs for :class"`.models.Kanji` which make up this vocabulary.
         self.readings = [
             Reading(reading_json) for reading_json in self._resource["readings"]
-        ]
+        ] #: A list of :class:`.models.Reading` related to this Vocabulary.
 
 
 class Kanji(Subject):
@@ -198,11 +202,11 @@ class Kanji(Subject):
 
     def __init__(self, json_data, *args, **kwargs):
         super().__init__(json_data, *args, **kwargs)
-        self.amalgamation_subject_ids = self._resource["amalgamation_subject_ids"]
-        self.component_subject_ids = self._resource["component_subject_ids"]
+        self.amalgamation_subject_ids = self._resource["amalgamation_subject_ids"] #: A list of IDs for the related :class:`.models.Vocabulary` which this Kanji is a component in.
+        self.component_subject_ids = self._resource["component_subject_ids"] #: A list of IDs for the related :class:`.models.Radical` which combine to make this kanji
         self.readings = [
             Reading(reading_json) for reading_json in self._resource["readings"]
-        ]
+        ] #: A list of :class:`.models.Reading` related to this Vocabulary.
 
 
 class Meaning:
@@ -210,9 +214,9 @@ class Meaning:
     Simple class holding information about a given meaning of a vocabulary/Kanji
     """
     def __init__(self, meaning_json):
-        self.meaning = meaning_json["meaning"]
-        self.primary = meaning_json["primary"]
-        self.accepted_answer = meaning_json["accepted_answer"]
+        self.meaning = meaning_json["meaning"] #: The english meaning of a Subject.
+        self.primary = meaning_json["primary"] #: Wether or not the meaning is considered to be the main one.
+        self.accepted_answer = meaning_json["accepted_answer"] #: Whether or not this answer is accepted during reviews in Wanikani.
 
 
 class Reading:
@@ -220,9 +224,10 @@ class Reading:
     Simple class holding information about a given reading of a vocabulary/kanji
     """
     def __init__(self, meaning_json):
+        #: the actual かな for the reading.
         self.reading = meaning_json["reading"]
-        self.primary = meaning_json["primary"]
-        self.accepted_answer = meaning_json["accepted_answer"]
+        self.primary = meaning_json["primary"] #: Whether this is the primary reading.
+        self.accepted_answer = meaning_json["accepted_answer"] #: Whether this answer is accepted as correct by Wanikani during review.
 
 
 class Assignment(Resource, Subjectable):

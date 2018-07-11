@@ -3,6 +3,7 @@ import requests
 from wanikani_api import constants, models
 from wanikani_api.exceptions import InvalidWanikaniApiKeyException
 from wanikani_api.models import Iterator, Page
+from wanikani_api.subjectcache import SubjectCache
 from wanikani_api.url_builder import UrlBuilder
 
 
@@ -17,10 +18,17 @@ class Client:
     relevant API endpoint on Wanikani.
     """
 
-    def __init__(self, v2_api_key):
+    def __init__(self, v2_api_key, cache_enabled=False):
         self.v2_api_key = v2_api_key
         self.headers = {"Authorization": "Bearer {}".format(v2_api_key)}
         self.url_builder = UrlBuilder(constants.ROOT_WK_API_URL)
+        self.subject_cache = None
+
+        if cache_enabled:
+            self.use_local_subject_cache()
+
+    def use_local_subject_cache(self):
+        self.subject_cache = SubjectCache(self.subjects())
 
     def user_information(self):
         """

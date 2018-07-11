@@ -104,7 +104,7 @@ def test_limits_are_respected(requests_mock):
 def test_broken():
 
     v2_api_key = "2510f001-fe9e-414c-ba19-ccf79af40060"
-    client = Client(v2_api_key)
+    client = Client(v2_api_key, cache_enabled=True)
     subjects = client.subjects()
     subjects.fetch_all_pages()
     count = 0
