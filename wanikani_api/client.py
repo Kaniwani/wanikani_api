@@ -3,6 +3,7 @@ import requests
 from wanikani_api import constants, models
 from wanikani_api.exceptions import InvalidWanikaniApiKeyException
 from wanikani_api.models import Iterator, Page
+from wanikani_api.subjectcache import SubjectCache
 from wanikani_api.url_builder import UrlBuilder
 
 
@@ -17,10 +18,17 @@ class Client:
     relevant API endpoint on Wanikani.
     """
 
-    def __init__(self, v2_api_key):
+    def __init__(self, v2_api_key, cache_enabled=False):
         self.v2_api_key = v2_api_key
         self.headers = {"Authorization": "Bearer {}".format(v2_api_key)}
         self.url_builder = UrlBuilder(constants.ROOT_WK_API_URL)
+        self.subject_cache = None
+
+        if cache_enabled:
+            self.use_local_subject_cache()
+
+    def use_local_subject_cache(self):
+        self.subject_cache = SubjectCache(self.subjects(fetch_all=True))
 
     def user_information(self):
         """
@@ -44,6 +52,8 @@ class Client:
             * :class:`.models.Kanji`
             * :class:`.models.Vocabulary`
         """
+        if self.subject_cache:
+            return self.subject_cache.get(subject_id)
         response = requests.get(
             self.url_builder.build_wk_url(
                 constants.SUBJECT_ENDPOINT, resource_id=subject_id
@@ -60,7 +70,7 @@ class Client:
         levels=None,
         hidden=None,
         updated_after=None,
-        fetch_all=False
+        fetch_all=False,
     ):
         """Retrieves Subjects
 
@@ -124,7 +134,7 @@ class Client:
         resurrected=None,
         hidden=None,
         updated_after=None,
-        fetch_all=False
+        fetch_all=False,
     ):
         """
         Assignments are the association between a user, and a subject. This means that every time something is added to
@@ -182,7 +192,7 @@ class Client:
         percentages_greater_than=None,
         percentages_less_than=None,
         hidden=None,
-        fetch_all=False
+        fetch_all=False,
     ):
         """
         Retrieve all Review Statistics from Wanikani. A Review Statistic is related to a single subject which the user has studied.
@@ -229,7 +239,7 @@ class Client:
         subject_types=None,
         hidden=None,
         updated_after=None,
-        fetch_all=False
+        fetch_all=False,
     ):
         """
         Retrieve all Study Materials. These are primarily meaning notes, reading notes, and meaning synonyms.
@@ -384,7 +394,5 @@ class Client:
 
     def _wrap_collection_in_iterator(self, resource, fetch_all):
         return Iterator(
-            current_page=resource,
-            api_request=self._api_request,
-            fetch_all=fetch_all
+            current_page=resource, api_request=self._api_request, fetch_all=fetch_all
         )

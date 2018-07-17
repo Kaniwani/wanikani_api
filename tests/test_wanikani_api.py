@@ -2,11 +2,21 @@
 # -*- coding: utf-8 -*-
 
 """Tests for `wanikani_api` package."""
+import requests
 
 from wanikani_api.client import Client
 from wanikani_api.models import Subject, UserInformation
-from tests.utils.utils import mock_user_info, mock_subjects, mock_assignments, mock_review_statistics, \
-    mock_study_materials, mock_summary, mock_reviews, mock_level_progressions, mock_resets
+from tests.utils.utils import (
+    mock_user_info,
+    mock_subjects,
+    mock_assignments,
+    mock_review_statistics,
+    mock_study_materials,
+    mock_summary,
+    mock_reviews,
+    mock_level_progressions,
+    mock_resets,
+)
 
 
 def test_client_can_get_user_information(requests_mock):
@@ -36,6 +46,7 @@ def test_client_can_get_assignments(requests_mock):
     assignments = client.assignments()
 
     assert len(assignments.current_page.data) > 0
+
 
 def test_client_can_get_review_statistics(requests_mock):
     mock_review_statistics(requests_mock)
@@ -94,22 +105,13 @@ def test_singular_endpoint():
     assert isinstance(subject, Subject)
 
 
-def test_limits_are_respected(requests_mock):
-    mock_subjects(requests_mock)
-    client = Client("v2_api_key")
-
-    subjects = client.subjects(max_results=1)
-    assert len(list(subjects)) == 1
-
-def test_broken():
-
+def test_client_uses_cache(mocker):
     v2_api_key = "2510f001-fe9e-414c-ba19-ccf79af40060"
-    client = Client(v2_api_key)
-    subjects = client.subjects()
-    subjects.fetch_all_pages()
-    count = 0
-    for _ in subjects:
-        count += 1
-    print("count is:" + str(count))
-    assert count == subjects.current_page.total_count
+    client = Client(v2_api_key, cache_enabled=True)
+    assignments = client.assignments()
 
+    mocker.patch("requests.get")
+    for assignment in assignments[0:100]:
+        print(assignment.subject.level)
+
+    assert requests.get.call_count == 0
