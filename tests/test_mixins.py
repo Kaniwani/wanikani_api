@@ -6,15 +6,25 @@ import requests
 
 from wanikani_api.client import Client
 from wanikani_api.models import Subject, UserInformation
-from tests.utils.utils import mock_user_info, mock_subjects, mock_assignments, mock_review_statistics, \
-    mock_study_materials, mock_summary, mock_reviews, mock_level_progressions, mock_resets, mock_single_subject
+from tests.utils.utils import (
+    mock_user_info,
+    mock_subjects,
+    mock_assignments,
+    mock_review_statistics,
+    mock_study_materials,
+    mock_summary,
+    mock_reviews,
+    mock_level_progressions,
+    mock_resets,
+    mock_single_subject,
+)
 
 
 def test_subjectable_mixin_works():
     client = Client("2510f001-fe9e-414c-ba19-ccf79af40060")
 
     assignments = client.assignments()
-    assignment = next(assignments)
+    assignment = assignments[0]
     subj = assignment.subject
     assert subj.id == assignment.subject_id
 
@@ -32,6 +42,7 @@ def test_subjectable_doesnt_make_multiple_requests(mocker):
     subj = assignment.subject
 
     assert spied_get.call_count == 2
+
 
 def test_expected_subjectable_resources_work(requests_mock):
     mock_assignments(requests_mock)
@@ -58,4 +69,3 @@ def test_expected_subjectable_resources_work(requests_mock):
 
     reviews = client.reviews()
     assert next(reviews).subject is not None
-

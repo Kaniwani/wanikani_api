@@ -27,7 +27,7 @@ class UrlBuilder:
             return "{}={}".format(key, str(value))
 
     def _parameter_should_be_ignored(self, key, value):
-        return value is None or key in ["self", "resource_id"]
+        return value is None or key in ["self", "resource_id", "fetch_all"]
 
     def _build_query_parameters(self, parameters):
         if parameters:

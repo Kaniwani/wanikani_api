@@ -1,10 +1,30 @@
+import functools
 import itertools
+import operator
 import pprint
 
 import dateutil.parser
 
 from wanikani_api import constants
 from wanikani_api.exceptions import UnknownResourceException
+
+
+class Resource:
+    def __init__(self, json_data, *args, **kwargs):
+        self.resource = json_data["object"]
+        self._raw = json_data
+        self.url = json_data["url"]
+        self.data_updated_at = parse8601(json_data["data_updated_at"])
+        # Some Resources do not have IDs.
+        self.id = (
+            None
+            if self.resource in constants.RESOURCES_WITHOUT_IDS
+            else json_data["id"]
+        )
+        self._resource = json_data["data"]
+
+    def raw_json(self):
+        return pprint.pformat(self._raw)
 
 
 class Iterator:
@@ -14,6 +34,7 @@ class Iterator:
         self.max_results = max_results
         self.yielded_count = 0
         self.pages = [current_page]
+        self.per_page = current_page.per_page
         if fetch_all:
             self.fetch_all_pages()
 
@@ -35,6 +56,40 @@ class Iterator:
 
     def __iter__(self):
         return iter([item for page in self.pages for item in page])
+
+    def __getitem__(self, item):
+        if isinstance(item, int):
+            return self.pages[item // self.per_page][item % self.per_page]
+        if isinstance(item, slice):
+            return [self[i] for i in range(*item.indices(len(self)))]
+
+    def __len__(self):
+        return functools.reduce(operator.add, [len(page) for page in self.pages])
+
+
+class Page(Resource):
+    resource = "collection"
+
+    def __init__(self, json_data, *args, **kwargs):
+        super().__init__(json_data, *args, **kwargs)
+        self.client = kwargs.get("client")
+        self.next_page_url = json_data["pages"]["next_url"]
+        self.previous_page_url = json_data["pages"]["previous_url"]
+        self.total_count = json_data["total_count"]
+        self.per_page = json_data["pages"]["per_page"]
+        self.data = [factory(datum, client=self.client) for datum in json_data["data"]]
+
+    def __iter__(self):
+        return iter(self.data)
+
+    def __getitem__(self, item):
+        if isinstance(item, int):
+            return self.data[item]
+        elif isinstance(item, slice):
+            return [self.data[i] for i in range(*item.indices(len(self)))]
+
+    def __len__(self):
+        return len(self.data)
 
 
 class Subjectable:
@@ -70,42 +125,6 @@ class Subjectable:
             return self._subjects
         else:
             raise AttributeError("no attribute named subjects!")
-
-
-class Resource:
-    def __init__(self, json_data, *args, **kwargs):
-        self.resource = json_data["object"]
-        self._raw = json_data
-        self.url = json_data["url"]
-        self.data_updated_at = parse8601(json_data["data_updated_at"])
-        # Some Resources do not have IDs.
-        self.id = (
-            None
-            if self.resource in constants.RESOURCES_WITHOUT_IDS
-            else json_data["id"]
-        )
-        self._resource = json_data["data"]
-
-    def raw_json(self):
-        return pprint.pformat(self._raw)
-
-
-class Page(Resource):
-    resource = "collection"
-
-    def __init__(self, json_data, *args, **kwargs):
-        super().__init__(json_data, *args, **kwargs)
-        self.client = kwargs.get("client")
-        self.next_page_url = json_data["pages"]["next_url"]
-        self.previous_page_url = json_data["pages"]["previous_url"]
-        self.total_count = json_data["total_count"]
-        self.data = [factory(datum, client=self.client) for datum in json_data["data"]]
-
-    def __iter__(self):
-        return iter(self.data)
-
-    def __len__(self):
-        return len(self.data)
 
 
 class UserInformation(Resource):
@@ -150,23 +169,33 @@ class Subject(Resource):
     """
     This is the base Subject for Wanikani. This contains information common to Kanji, Vocabulary, and Radicals.
     """
+
     def __init__(self, json_data, *args, **kwargs):
         super().__init__(json_data, *args, **kwargs)
         resource_data = json_data["data"]
-        self.level = resource_data["level"] #: The level of the subject.
-        self.created_at = parse8601(resource_data["created_at"]) #: The date at which the Subject was created originally on Wanikani.
-        self.characters = resource_data["characters"] #: The actual japanese kanji/radical symbol such as 女
+        self.level = resource_data["level"]  #: The level of the subject.
+        self.created_at = parse8601(
+            resource_data["created_at"]
+        )  #: The date at which the Subject was created originally on Wanikani.
+        self.characters = resource_data[
+            "characters"
+        ]  #: The actual japanese kanji/radical symbol such as 女
         self.meanings = [
             Meaning(meaning_json) for meaning_json in resource_data["meanings"]
-        ] #: A list of :class:`.models.Meaning` for this subject.
-        self.document_url = resource_data["document_url"] #: The direct URL where the subject can be found on Wanikani
-        self.hidden_at = resource_data["hidden_at"] #: When Wanikani removes a subject, they seem to instead set it to hidden, for backwards compatibilty with clients.
+        ]  #: A list of :class:`.models.Meaning` for this subject.
+        self.document_url = resource_data[
+            "document_url"
+        ]  #: The direct URL where the subject can be found on Wanikani
+        self.hidden_at = resource_data[
+            "hidden_at"
+        ]  #: When Wanikani removes a subject, they seem to instead set it to hidden, for backwards compatibilty with clients.
 
 
 class Radical(Subject):
     """
     A model for the Radical object.
     """
+
     resource = "radical"
 
     def __init__(self, json_data, *args, **kwargs):
@@ -175,65 +204,86 @@ class Radical(Subject):
             self._resource["character_images"]
             if "character_images" in self._resource.keys()
             else None
-        ) #: A list of dictionaries, each containing a bunch of information related to a single character image.
-        self.amalgamation_subject_ids = self._resource["amalgamation_subject_ids"] #: IDs for various other :class:`.models.Subject` for which this radical is a component.
+        )  #: A list of dictionaries, each containing a bunch of information related to a single character image.
+        self.amalgamation_subject_ids = self._resource[
+            "amalgamation_subject_ids"
+        ]  #: IDs for various other :class:`.models.Subject` for which this radical is a component.
 
 
 class Vocabulary(Subject):
     """
     A model for the Vocabulary Resource
     """
+
     resource = "vocabulary"
 
     def __init__(self, json_data, *args, **kwargs):
         super().__init__(json_data, *args, **kwargs)
-        self.parts_of_speech = self._resource["parts_of_speech"] #: A list of strings, each of which is a part of speech.
-        self.component_subject_ids = self._resource["component_subject_ids"] #: List of IDs for :class"`.models.Kanji` which make up this vocabulary.
+        self.parts_of_speech = self._resource[
+            "parts_of_speech"
+        ]  #: A list of strings, each of which is a part of speech.
+        self.component_subject_ids = self._resource[
+            "component_subject_ids"
+        ]  #: List of IDs for :class"`.models.Kanji` which make up this vocabulary.
         self.readings = [
             Reading(reading_json) for reading_json in self._resource["readings"]
-        ] #: A list of :class:`.models.Reading` related to this Vocabulary.
+        ]  #: A list of :class:`.models.Reading` related to this Vocabulary.
 
 
 class Kanji(Subject):
     """
     A model for the Kanji Resource
     """
+
     resource = "kanji"
 
     def __init__(self, json_data, *args, **kwargs):
         super().__init__(json_data, *args, **kwargs)
-        self.amalgamation_subject_ids = self._resource["amalgamation_subject_ids"] #: A list of IDs for the related :class:`.models.Vocabulary` which this Kanji is a component in.
-        self.component_subject_ids = self._resource["component_subject_ids"] #: A list of IDs for the related :class:`.models.Radical` which combine to make this kanji
+        self.amalgamation_subject_ids = self._resource[
+            "amalgamation_subject_ids"
+        ]  #: A list of IDs for the related :class:`.models.Vocabulary` which this Kanji is a component in.
+        self.component_subject_ids = self._resource[
+            "component_subject_ids"
+        ]  #: A list of IDs for the related :class:`.models.Radical` which combine to make this kanji
         self.readings = [
             Reading(reading_json) for reading_json in self._resource["readings"]
-        ] #: A list of :class:`.models.Reading` related to this Vocabulary.
+        ]  #: A list of :class:`.models.Reading` related to this Vocabulary.
 
 
 class Meaning:
     """
     Simple class holding information about a given meaning of a vocabulary/Kanji
     """
+
     def __init__(self, meaning_json):
-        self.meaning = meaning_json["meaning"] #: The english meaning of a Subject.
-        self.primary = meaning_json["primary"] #: Wether or not the meaning is considered to be the main one.
-        self.accepted_answer = meaning_json["accepted_answer"] #: Whether or not this answer is accepted during reviews in Wanikani.
+        self.meaning = meaning_json["meaning"]  #: The english meaning of a Subject.
+        self.primary = meaning_json[
+            "primary"
+        ]  #: Wether or not the meaning is considered to be the main one.
+        self.accepted_answer = meaning_json[
+            "accepted_answer"
+        ]  #: Whether or not this answer is accepted during reviews in Wanikani.
 
 
 class Reading:
     """
     Simple class holding information about a given reading of a vocabulary/kanji
     """
+
     def __init__(self, meaning_json):
         #: the actual かな for the reading.
         self.reading = meaning_json["reading"]
-        self.primary = meaning_json["primary"] #: Whether this is the primary reading.
-        self.accepted_answer = meaning_json["accepted_answer"] #: Whether this answer is accepted as correct by Wanikani during review.
+        self.primary = meaning_json["primary"]  #: Whether this is the primary reading.
+        self.accepted_answer = meaning_json[
+            "accepted_answer"
+        ]  #: Whether this answer is accepted as correct by Wanikani during review.
 
 
 class Assignment(Resource, Subjectable):
     """
     Simple class holding information about Assignmetns.
     """
+
     resource = "assignment"
 
     def __init__(self, json_data, *args, **kwargs):
@@ -260,6 +310,7 @@ class Reset(Resource):
     """
     Simple model holding resource information
     """
+
     resource = "reset"
 
     def __init__(self, json_data, *args, **kwargs):
@@ -274,6 +325,7 @@ class ReviewStatistic(Resource):
     """
     Simple model holding ReviewStatistic Information
     """
+
     resource = "review_statistic"
 
     def __init__(self, json_data, *args, **kwargs):
@@ -297,6 +349,7 @@ class StudyMaterial(Resource, Subjectable):
     """
     Simple model holding information about Study Materials
     """
+
     resource = "study_material"
 
     def __init__(self, json_data, *args, **kwargs):
@@ -315,6 +368,7 @@ class Lessons(object):
     """
     # TODO start here filling out docs for models.
     """
+
     def __init__(self, json_data, *args, **kwargs):
         self.subject_ids = json_data["subject_ids"]
         self.available_at = parse8601(json_data["available_at"])
