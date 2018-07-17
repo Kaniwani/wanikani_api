@@ -105,14 +105,6 @@ def test_singular_endpoint():
     assert isinstance(subject, Subject)
 
 
-def test_limits_are_respected(requests_mock):
-    mock_subjects(requests_mock)
-    client = Client("v2_api_key")
-
-    subjects = client.subjects(max_results=1)
-    assert len(list(subjects)) == 1
-
-
 def test_client_uses_cache(mocker):
     v2_api_key = "2510f001-fe9e-414c-ba19-ccf79af40060"
     client = Client(v2_api_key, cache_enabled=True)
