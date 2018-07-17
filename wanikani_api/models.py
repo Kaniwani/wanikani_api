@@ -34,7 +34,8 @@ class Iterator:
         self.max_results = max_results
         self.yielded_count = 0
         self.pages = [current_page]
-        self.per_page = current_page.per_page
+        if current_page:
+            self.per_page = current_page.per_page
         if fetch_all:
             self.fetch_all_pages()
 

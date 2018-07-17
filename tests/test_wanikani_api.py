@@ -119,7 +119,7 @@ def test_client_uses_cache(mocker):
     assignments = client.assignments()
 
     mocker.patch("requests.get")
-    for assignment in assignments[0:1]:
+    for assignment in assignments[0:100]:
         print(assignment.subject.level)
 
     assert requests.get.call_count == 0
