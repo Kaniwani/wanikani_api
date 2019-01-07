@@ -293,7 +293,6 @@ class Assignment(Resource, Subjectable):
         self.created_at = parse8601(self._resource["created_at"])
         self.subject_id = self._resource["subject_id"]
         self.subject_type = self._resource["subject_type"]
-        self.level = self._resource["level"]
         self.srs_stage = self._resource["srs_stage"]
         self.srs_stage_name = self._resource["srs_stage_name"]
         self.unlocked_at = parse8601(self._resource["unlocked_at"])
