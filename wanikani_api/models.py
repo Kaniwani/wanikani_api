@@ -365,10 +365,6 @@ class StudyMaterial(Resource, Subjectable):
 
 
 class Lessons(object):
-    """
-    # TODO start here filling out docs for models.
-    """
-
     def __init__(self, json_data, *args, **kwargs):
         self.subject_ids = json_data["subject_ids"]
         self.available_at = parse8601(json_data["available_at"])
