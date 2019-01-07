@@ -25,8 +25,35 @@ class Client:
         self.url_builder = UrlBuilder(constants.ROOT_WK_API_URL)
         self.subject_cache = None
         self.etag_cache = {}
+        self.authorized_request_maker = self.build_authorized_requester(self.headers)
         if subject_cache_enabled:
             self.use_local_subject_cache()
+
+    def build_authorized_requester(self, headers):
+        def _make_wanikani_api_request(url):
+            request_key = (url, headers["Authorization"])
+            request_headers = deepcopy(headers)
+            try:
+                etag = self.etag_cache[request_key]["etag"]
+                request_headers["If-None-Match"] = etag
+            except KeyError:
+                self.etag_cache[request_key] = {}
+            finally:
+                response = requests.get(url, headers=request_headers)
+                if response.status_code >= 400:
+                    raise Exception(f"Failed to contact Wanikani: {response.content}")
+                if response.status_code == 304:
+                    return self.etag_cache[request_key]["result"]
+                else:
+                    print(response.status_code)
+                    etag = response.headers["Etag"]
+                    self.etag_cache[request_key]["etag"] = etag
+                    self.etag_cache[request_key][
+                        "result"
+                    ] = self._serialize_wanikani_response(response)
+            return self.etag_cache[request_key]["result"]
+
+        return _make_wanikani_api_request
 
     def use_local_subject_cache(self):
         self.subject_cache = SubjectCache(self.subjects(fetch_all=True))
@@ -85,6 +112,7 @@ class Client:
         :param str[] slugs: The wanikani slug
         :param int[] levels: Include only :class:`.models.Subject` from the specified levels.
         :param bool hidden: Return :class:`.models.Subject` which are or are not hidden from the user-facing application
+        :param bool fetch_all: if set to True, instead of fetching only first page of results, will fetch them all.
         :param  updated_after: Return results which have been updated after the timestamp
         :type updated_after: :class:`datetime.datetime`
         :return: An iterator over multiple :class:`models.Page` , in which the ``data`` field contains a list anything that is a :class:`.models.Subject`, e.g.:
@@ -98,7 +126,7 @@ class Client:
             constants.SUBJECT_ENDPOINT, parameters=locals()
         )
         return self._wrap_collection_in_iterator(
-            self._make_wanikani_api_request(url, self.headers), fetch_all
+            self.authorized_request_maker(url), fetch_all
         )
 
     def assignment(self, assignment_id):
@@ -320,27 +348,7 @@ class Client:
         url = self.url_builder.build_wk_url(
             constants.LEVEL_PROGRESSIONS_ENDPOINT, resource_id=level_progression_id
         )
-        return self._make_wanikani_api_request(url, self.headers)
-
-    def _make_wanikani_api_request(self, url, headers):
-        request_key = (url, headers["Authorization"])
-        request_headers = deepcopy(headers)
-        try:
-            etag = self.etag_cache[request_key]["etag"]
-            request_headers["If-None-Match"] = etag
-        except KeyError:
-            self.etag_cache[request_key] = {}
-        finally:
-            response = requests.get(url, headers=request_headers)
-            if response.status_code == 304:
-                return self.etag_cache[request_key]["result"]
-            else:
-                etag = response.headers["Etag"]
-                self.etag_cache[request_key]["etag"] = etag
-                self.etag_cache[request_key][
-                    "result"
-                ] = self._serialize_wanikani_response(response)
-        return self.etag_cache[request_key]["result"]
+        return self.authorized_request_maker(url)
 
     def level_progressions(self, ids=None, updated_after=None, fetch_all=False):
         """
@@ -357,7 +365,7 @@ class Client:
             ),
         )
         return self._wrap_collection_in_iterator(
-            self._make_wanikani_api_request(url, self.headers), fetch_all
+            self.authorized_request_maker(url), fetch_all
         )
 
     def reset(self, reset_id):
@@ -406,6 +414,6 @@ class Client:
     def _wrap_collection_in_iterator(self, resource, fetch_all):
         return Iterator(
             current_page=resource,
-            api_request=self._make_wanikani_api_request,
+            api_request=self.authorized_request_maker,
             fetch_all=fetch_all,
         )
