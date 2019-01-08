@@ -40,14 +40,6 @@ def mock_subjects_with_cache(requests_mock):
     )
 
 
-def mock_single_subject(requests_mock):
-    requests_mock.get(
-        re.compile(constants.SUBJECT_ENDPOINT + "/\d+"),
-        json=SUBJECT,
-        headers={"Etag": "abc123"},
-    )
-
-
 def mock_user_info(requests_mock):
     requests_mock.get(
         re.compile(constants.USER_ENDPOINT),
