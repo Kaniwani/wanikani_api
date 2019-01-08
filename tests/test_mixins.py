@@ -20,8 +20,10 @@ from tests.utils.utils import (
 )
 
 
-def test_subjectable_mixin_works():
-    client = Client("2510f001-fe9e-414c-ba19-ccf79af40060")
+def test_subjectable_mixin_works(requests_mock):
+    mock_subjects(requests_mock)
+    mock_assignments(requests_mock)
+    client = Client("arbitrary_api_key", subject_cache_enabled=True)
 
     assignments = client.assignments()
     assignment = assignments[0]
@@ -38,7 +40,7 @@ def test_expected_subjectable_resources_work(requests_mock):
     mock_study_materials(requests_mock)
     mock_summary(requests_mock)
 
-    client = Client("2510f001-fe9e-414c-ba19-ccf79af40060")
+    client = Client("arbitrary_api_key")
 
     assignments = client.assignments()
     assert assignments[0].subject is not None

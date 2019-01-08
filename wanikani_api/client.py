@@ -29,6 +29,19 @@ class Client:
         if subject_cache_enabled:
             self.use_local_subject_cache()
 
+    def _fetch_result_from_cache(self, request_key):
+        return self.etag_cache[request_key]["result"]
+
+    def _fetch_etag_from_cache(self, request_key):
+        return self.etag_cache[request_key]["etag"]
+
+    def _store_in_cache(self, request_key, response):
+        etag = response.headers["Etag"]
+        self.etag_cache[request_key]["etag"] = etag
+        self.etag_cache[request_key]["result"] = self._serialize_wanikani_response(
+            response
+        )
+
     def build_authorized_requester(self, headers):
         def _make_wanikani_api_request(url):
             request_key = (url, headers["Authorization"])
@@ -40,18 +53,13 @@ class Client:
                 self.etag_cache[request_key] = {}
             finally:
                 response = requests.get(url, headers=request_headers)
-                if response.status_code >= 400:
-                    raise Exception(f"Failed to contact Wanikani: {response.content}")
                 if response.status_code == 304:
+                    return self._fetch_result_from_cache(request_key)
+                elif response.status_code == 200:
+                    self._store_in_cache(request_key, response)
                     return self.etag_cache[request_key]["result"]
                 else:
-                    print(response.status_code)
-                    etag = response.headers["Etag"]
-                    self.etag_cache[request_key]["etag"] = etag
-                    self.etag_cache[request_key][
-                        "result"
-                    ] = self._serialize_wanikani_response(response)
-            return self.etag_cache[request_key]["result"]
+                    raise Exception(f"Failed to contact Wanikani: {response.content}")
 
         return _make_wanikani_api_request
 

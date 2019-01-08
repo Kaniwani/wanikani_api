@@ -2,6 +2,7 @@
 ROOT_WK_API_URL = "https://api.wanikani.com/v2/"
 RESOURCES_WITHOUT_IDS = ["user", "collection", "report"]
 SUBJECT_ENDPOINT = "subjects"
+SINGLE_SUBJECT_ENPOINT = "subjects/\d+"
 ASSIGNMENT_ENDPOINT = "assignments"
 REVIEW_STATS_ENDPOINT = "review_statistics"
 STUDY_MATERIALS_ENDPOINT = "study_materials"

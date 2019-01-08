@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 """Tests for `wanikani_api` package."""
-import requests
 
 from wanikani_api.client import Client
 from wanikani_api.models import Subject, UserInformation
@@ -16,6 +15,8 @@ from tests.utils.utils import (
     mock_reviews,
     mock_level_progressions,
     mock_resets,
+    mock_subjects_with_cache,
+    mock_single_subject,
 )
 
 
@@ -97,35 +98,36 @@ def test_client_can_get_resets(requests_mock):
     assert len(resets.current_page.data) == 1
 
 
-def test_singular_endpoint():
-    v2_api_key = "2510f001-fe9e-414c-ba19-ccf79af40060"
+def test_singular_subject_retrieval(requests_mock):
+    mock_single_subject(requests_mock)
+    v2_api_key = "arbitrary_api_key"
     client = Client(v2_api_key)
 
     subject = client.subject(1)
     assert isinstance(subject, Subject)
 
 
-def test_client_uses_cache(mocker):
-    v2_api_key = "2510f001-fe9e-414c-ba19-ccf79af40060"
+def test_client_uses_cache(requests_mock):
+    mock_subjects(requests_mock)
+    mock_assignments(requests_mock)
+    v2_api_key = "arbitrary_api_key"
     client = Client(v2_api_key, subject_cache_enabled=True)
     assignments = client.assignments()
+    for ass in assignments:
+        print(ass.subject.level)  # in theory here, if we have _not_ cached
 
-    mocker.patch("requests.get")
-    for assignment in assignments[0:100]:
-        print(assignment.subject.level)
+    assert requests_mock.call_count == 2
+    history = requests_mock.request_history
+    assert "subjects" in history[0].url
+    assert "assignments" in history[1].url
 
-    assert requests.get.call_count == 0
 
-
-def test_etag_cache_decorator_works():
-    v2_api_key = "2510f001-fe9e-414c-ba19-ccf79af40060"
+def test_etag_cache_decorator_works(mocker, requests_mock):
+    mock_subjects_with_cache(requests_mock)
+    v2_api_key = "arbitrary_api_key"
     client = Client(v2_api_key)
+
+    mocker.spy(client, "_fetch_result_from_cache")
     subjects = client.subjects()
-    subjects = client.subjects()
-    subjects = client.subjects()
-    subjects = client.subjects()
-    subjects = client.subjects()
-    subjects = client.subjects()
-    subjects = client.subjects()
-    subjects = client.subjects()
-    subjects = client.subjects()
+    cached_subjects = client.subjects()
+    assert client._fetch_result_from_cache.call_count == 1

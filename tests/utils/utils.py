@@ -14,6 +14,34 @@ def mock_subjects(requests_mock):
 
 def mock_single_subject(requests_mock):
     requests_mock.get(
+        re.compile(constants.SINGLE_SUBJECT_ENPOINT),
+        json=SINGLE_SUBJECT,
+        headers={"Etag": "abc123"},
+    )
+
+
+def mock_empty_subjects(requests_mock):
+    requests_mock.get(
+        re.compile(constants.SUBJECT_ENDPOINT),
+        json=EMPTY_SUBJECTS_PAGE,
+        headers={"Etag": "abc123"},
+    )
+
+
+# When making multiple calls to the subject endpoint, only answer with real data once, then just return a 304.
+def mock_subjects_with_cache(requests_mock):
+    requests_mock.register_uri(
+        "GET",
+        re.compile(constants.SUBJECT_ENDPOINT),
+        [
+            {"json": SUBJECTS_PAGE, "status_code": 200, "headers": {"Etag": "abc123"}},
+            {"json": None, "status_code": 304},
+        ],
+    )
+
+
+def mock_single_subject(requests_mock):
+    requests_mock.get(
         re.compile(constants.SUBJECT_ENDPOINT + "/\d+"),
         json=SUBJECT,
         headers={"Etag": "abc123"},
