@@ -1,5 +1,4 @@
 import functools
-import itertools
 import operator
 import pprint
 
@@ -191,6 +190,9 @@ class Subject(Resource):
             "hidden_at"
         ]  #: When Wanikani removes a subject, they seem to instead set it to hidden, for backwards compatibilty with clients.
 
+    def __str__(self) -> str:
+        return f"{['['+meaning.meaning+']' if meaning.primary else meaning.meaning for meaning in self.meanings]}:{[character for character in self.characters] if self.characters else 'UNAVAILABLE'}"
+
 
 class Radical(Subject):
     """
@@ -209,6 +211,9 @@ class Radical(Subject):
         self.amalgamation_subject_ids = self._resource[
             "amalgamation_subject_ids"
         ]  #: IDs for various other :class:`.models.Subject` for which this radical is a component.
+
+    def __str__(self) -> str:
+        return f"Radical: {[meaning.meaning for meaning in self.meanings]}:{[character for character in self.characters] if self.characters else 'UNAVAILABLE'}"
 
 
 class Vocabulary(Subject):
@@ -230,6 +235,9 @@ class Vocabulary(Subject):
             Reading(reading_json) for reading_json in self._resource["readings"]
         ]  #: A list of :class:`.models.Reading` related to this Vocabulary.
 
+    def __str__(self):
+        return f"Vocabulary: {super(Vocabulary, self).__str__()}"
+
 
 class Kanji(Subject):
     """
@@ -250,6 +258,9 @@ class Kanji(Subject):
             Reading(reading_json) for reading_json in self._resource["readings"]
         ]  #: A list of :class:`.models.Reading` related to this Vocabulary.
 
+    def __str__(self):
+        return f"Kanji: {super(Kanji, self).__str__()}"
+
 
 class Meaning:
     """
@@ -264,6 +275,9 @@ class Meaning:
         self.accepted_answer = meaning_json[
             "accepted_answer"
         ]  #: Whether or not this answer is accepted during reviews in Wanikani.
+
+    def __str__(self) -> str:
+        return self.meaning
 
 
 class Reading:
@@ -293,7 +307,6 @@ class Assignment(Resource, Subjectable):
         self.created_at = parse8601(self._resource["created_at"])
         self.subject_id = self._resource["subject_id"]
         self.subject_type = self._resource["subject_type"]
-        self.level = self._resource["level"]
         self.srs_stage = self._resource["srs_stage"]
         self.srs_stage_name = self._resource["srs_stage_name"]
         self.unlocked_at = parse8601(self._resource["unlocked_at"])
@@ -366,10 +379,6 @@ class StudyMaterial(Resource, Subjectable):
 
 
 class Lessons(object):
-    """
-    # TODO start here filling out docs for models.
-    """
-
     def __init__(self, json_data, *args, **kwargs):
         self.subject_ids = json_data["subject_ids"]
         self.available_at = parse8601(json_data["available_at"])

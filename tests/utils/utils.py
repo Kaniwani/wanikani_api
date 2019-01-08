@@ -5,34 +5,78 @@ from .response_mocks import *
 
 
 def mock_subjects(requests_mock):
-    requests_mock.get(re.compile(constants.SUBJECT_ENDPOINT), json=SUBJECTS_PAGE)
+    requests_mock.get(
+        re.compile(constants.SUBJECT_ENDPOINT),
+        json=SUBJECTS_PAGE,
+        headers={"Etag": "abc123"},
+    )
+
 
 def mock_single_subject(requests_mock):
-    requests_mock.get(re.compile(constants.SUBJECT_ENDPOINT + "/\d+"), json=SUBJECT)
+    requests_mock.get(
+        re.compile(constants.SUBJECT_ENDPOINT + "/\d+"),
+        json=SUBJECT,
+        headers={"Etag": "abc123"},
+    )
+
 
 def mock_user_info(requests_mock):
-    requests_mock.get(re.compile(constants.USER_ENDPOINT), json=USER_INFORMATION)
+    requests_mock.get(
+        re.compile(constants.USER_ENDPOINT),
+        json=USER_INFORMATION,
+        headers={"Etag": "abc123"},
+    )
 
 
 def mock_assignments(requests_mock):
-    requests_mock.get(re.compile(constants.ASSIGNMENT_ENDPOINT), json=ASSIGNMENTS_PAGE)
+    requests_mock.get(
+        re.compile(constants.ASSIGNMENT_ENDPOINT),
+        json=ASSIGNMENTS_PAGE,
+        headers={"Etag": "abc123"},
+    )
 
 
 def mock_review_statistics(requests_mock):
-    requests_mock.get(re.compile(constants.REVIEW_STATS_ENDPOINT), json=REVIEW_STATISTICS_PAGE)
+    requests_mock.get(
+        re.compile(constants.REVIEW_STATS_ENDPOINT),
+        json=REVIEW_STATISTICS_PAGE,
+        headers={"Etag": "abc123"},
+    )
 
 
 def mock_level_progressions(requests_mock):
-    requests_mock.get(re.compile(constants.LEVEL_PROGRESSIONS_ENDPOINT), json=LEVEL_PROGRESSIONS_PAGE)
+    requests_mock.get(
+        re.compile(constants.LEVEL_PROGRESSIONS_ENDPOINT),
+        json=LEVEL_PROGRESSIONS_PAGE,
+        headers={"Etag": "abc123"},
+    )
+
 
 def mock_summary(requests_mock):
-    requests_mock.get(re.compile(constants.SUMMARY_ENDPOINT), json=SUMMARY)
+    requests_mock.get(
+        re.compile(constants.SUMMARY_ENDPOINT), json=SUMMARY, headers={"Etag": "abc123"}
+    )
+
 
 def mock_resets(requests_mock):
-    requests_mock.get(re.compile(constants.RESETS_ENDPOINT), json=RESETS_PAGE)
+    requests_mock.get(
+        re.compile(constants.RESETS_ENDPOINT),
+        json=RESETS_PAGE,
+        headers={"Etag": "abc123"},
+    )
+
 
 def mock_reviews(requests_mock):
-    requests_mock.get(re.compile(constants.REVIEWS_ENDPOINT), json=REVIEWS_PAGE)
+    requests_mock.get(
+        re.compile(constants.REVIEWS_ENDPOINT),
+        json=REVIEWS_PAGE,
+        headers={"Etag": "abc123"},
+    )
+
 
 def mock_study_materials(requests_mock):
-    requests_mock.get(re.compile(constants.STUDY_MATERIALS_ENDPOINT), json=STUDY_MATERIALS_PAGE)
+    requests_mock.get(
+        re.compile(constants.STUDY_MATERIALS_ENDPOINT),
+        json=STUDY_MATERIALS_PAGE,
+        headers={"Etag": "abc123"},
+    )
