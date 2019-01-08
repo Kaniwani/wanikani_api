@@ -2,7 +2,7 @@ import requests
 
 from wanikani_api import constants, models
 from wanikani_api.exceptions import InvalidWanikaniApiKeyException
-from wanikani_api.models import Iterator, Page
+from wanikani_api.models import Iterator
 from wanikani_api.subjectcache import SubjectCache
 from wanikani_api.url_builder import UrlBuilder
 from copy import deepcopy
