@@ -107,7 +107,7 @@ def test_singular_endpoint():
 
 def test_client_uses_cache(mocker):
     v2_api_key = "2510f001-fe9e-414c-ba19-ccf79af40060"
-    client = Client(v2_api_key, cache_enabled=True)
+    client = Client(v2_api_key, subject_cache_enabled=True)
     assignments = client.assignments()
 
     mocker.patch("requests.get")
@@ -115,3 +115,17 @@ def test_client_uses_cache(mocker):
         print(assignment.subject.level)
 
     assert requests.get.call_count == 0
+
+
+def test_etag_cache_decorator_works():
+    v2_api_key = "2510f001-fe9e-414c-ba19-ccf79af40060"
+    client = Client(v2_api_key)
+    subjects = client.subjects()
+    subjects = client.subjects()
+    subjects = client.subjects()
+    subjects = client.subjects()
+    subjects = client.subjects()
+    subjects = client.subjects()
+    subjects = client.subjects()
+    subjects = client.subjects()
+    subjects = client.subjects()
