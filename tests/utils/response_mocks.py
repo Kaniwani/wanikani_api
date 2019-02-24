@@ -274,7 +274,7 @@ SUBJECTS_PAGE = {
             "id": 2,
             "object": "vocabulary",
             "url": "https://api.wanikani.com/v2/subjects/2467",
-            "data_updated_at": "2018-05-21T21:52:43.041390Z",
+            "data_updated_at": "2019-02-21T00:13:06.456212Z",
             "data": {
                 "created_at": "2012-02-28T08:04:47.000000Z",
                 "level": 1,
@@ -285,11 +285,46 @@ SUBJECTS_PAGE = {
                 "meanings": [
                     {"meaning": "One", "primary": True, "accepted_answer": True}
                 ],
+                "auxiliary_meanings": [{"type": "whitelist", "meaning": "1"}],
                 "readings": [
                     {"primary": True, "reading": "いち", "accepted_answer": True}
                 ],
                 "parts_of_speech": ["numeral"],
                 "component_subject_ids": [440],
+                "meaning_mnemonic": "As is the case with most vocab words that consist of a single kanji, this vocab word has the same meaning as the kanji it parallels, which is <vocabulary>one</vocabulary>.",
+                "reading_mnemonic": "When a vocab word is all alone and has no okurigana (hiragana attached to kanji) connected to it, it usually uses the kun'yomi reading. Numbers are an exception, however. When a number is all alone, with no kanji or okurigana, it is going to be the on'yomi reading, which you learned with the kanji.  Just remember this exception for alone numbers and you'll be able to read future number-related vocab to come.",
+                "context_sentences": [
+                    {"en": "Let’s meet up once.", "ja": "一ど、あいましょう。"},
+                    {"en": "First place was an American.", "ja": "一いはアメリカ人でした。"},
+                    {"en": "I’m the weakest man in the world.", "ja": "ぼくはせかいで一ばんよわい。"},
+                ],
+                "pronunciation_audios": [
+                    {
+                        "url": "https://cdn.wanikani.com/audios/3020-subject-2467.mp3?1547862356",
+                        "metadata": {
+                            "gender": "male",
+                            "source_id": 2711,
+                            "pronunciation": "いち",
+                            "voice_actor_id": 2,
+                            "voice_actor_name": "Kenichi",
+                            "voice_description": "Tokyo accent",
+                        },
+                        "content_type": "audio/mpeg",
+                    },
+                    {
+                        "url": "https://cdn.wanikani.com/audios/3018-subject-2467.ogg?1547862356",
+                        "metadata": {
+                            "gender": "male",
+                            "source_id": 2711,
+                            "pronunciation": "いち",
+                            "voice_actor_id": 2,
+                            "voice_actor_name": "Kenichi",
+                            "voice_description": "Tokyo accent",
+                        },
+                        "content_type": "audio/ogg",
+                    },
+                ],
+                "lesson_position": 44,
             },
         },
     ],

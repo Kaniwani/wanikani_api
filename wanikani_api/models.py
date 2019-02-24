@@ -216,6 +216,41 @@ class Radical(Subject):
         return f"Radical: {[meaning.meaning for meaning in self.meanings]}:{[character for character in self.characters] if self.characters else 'UNAVAILABLE'}"
 
 
+class ContextSentence:
+    """
+    A model for a Context Sentence
+    """
+
+    def __init__(self, json_data):
+        self.english = json_data["en"]
+        self.japanese = json_data["ja"]
+
+
+class PronunciationMetaData:
+    """
+    A model for containing metadata related to a pronunciation
+    """
+
+    def __init__(self, json_data):
+        self.gender = json_data["gender"]
+        self.source_id = json_data["source_id"]
+        self.pronunciation = json_data["pronunciation"]
+        self.voice_actor_id = json_data["voice_actor_id"]
+        self.voice_actor_name = json_data["voice_actor_name"]
+        self.voice_description = json_data["voice_description"]
+
+
+class PronunciationAudio:
+    """
+    A model for a Wanikani Pronunciation
+    """
+
+    def __init__(self, json_data):
+        self.url = json_data["url"]
+        self.content_type = json_data["content_type"]
+        self.metadata = PronunciationMetaData(json_data["metadata"])
+
+
 class Vocabulary(Subject):
     """
     A model for the Vocabulary Resource
@@ -234,6 +269,17 @@ class Vocabulary(Subject):
         self.readings = [
             Reading(reading_json) for reading_json in self._resource["readings"]
         ]  #: A list of :class:`.models.Reading` related to this Vocabulary.
+        self.meaning_mnemonic = self._resource["meaning_mnemonic"]
+        self.reading_mnemonic = self._resource["reading_mnemonic"]
+        self.context_sentences = [
+            ContextSentence(context_sentence)
+            for context_sentence in self._resource["context_sentences"]
+        ]
+        self.pronunciation_audios = [
+            PronunciationAudio(audio_json)
+            for audio_json in self._resource["pronunciation_audios"]
+        ]
+        self.lesson_position = self._resource["lesson_position"]
 
     def __str__(self):
         return f"Vocabulary: {super(Vocabulary, self).__str__()}"
@@ -463,9 +509,9 @@ resources = {
 def factory(resource_json, *args, **kwargs):
     try:
         return resources[resource_json["object"]](resource_json, *args, **kwargs)
-    except KeyError:
+    except KeyError as e:
         raise UnknownResourceException(
-            "We have no clue how to handle resource of type: {}".format(
-                resource_json["object"]
+            "We have no clue how to handle resource of type: {}. Couldn't find this key: {}".format(
+                resource_json["object"], e
             )
         )

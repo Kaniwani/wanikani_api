@@ -8,7 +8,7 @@ import requests
 from tests.utils.utils import mock_subjects, mock_empty_subjects
 
 from wanikani_api.client import Client
-from wanikani_api.models import Iterator
+from wanikani_api.models import Iterator, Vocabulary
 
 
 class Empty200:
@@ -65,3 +65,16 @@ def test_requests_mock(requests_mock):
     client = Client("whatever")
     subjects = client.subjects()
     assert isinstance(subjects, Iterator)
+
+
+def test_all_vocabulary_parameters_are_imported(requests_mock):
+    mock_subjects(requests_mock)
+
+    client = Client("whatever")
+    subjects = client.subjects()
+    vocabulary = [subject for subject in subjects if isinstance(subject, Vocabulary)][0]
+    assert vocabulary.meaning_mnemonic is not None
+    assert vocabulary.reading_mnemonic is not None
+    assert vocabulary.context_sentences is not None
+    assert vocabulary.pronunciation_audios is not None
+    assert vocabulary.lesson_position is not None
