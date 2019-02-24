@@ -189,6 +189,7 @@ class Subject(Resource):
         self.hidden_at = resource_data[
             "hidden_at"
         ]  #: When Wanikani removes a subject, they seem to instead set it to hidden, for backwards compatibilty with clients.
+        self.slug = resource_data["slug"]  #: Slug for this particular subject.
 
     def __str__(self) -> str:
         return f"{['['+meaning.meaning+']' if meaning.primary else meaning.meaning for meaning in self.meanings]}:{[character for character in self.characters] if self.characters else 'UNAVAILABLE'}"

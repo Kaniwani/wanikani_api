@@ -8,7 +8,7 @@ import requests
 from tests.utils.utils import mock_subjects, mock_empty_subjects
 
 from wanikani_api.client import Client
-from wanikani_api.models import Iterator, Vocabulary
+from wanikani_api.models import Iterator, Vocabulary, Kanji, Radical
 
 
 class Empty200:
@@ -75,6 +75,49 @@ def test_all_vocabulary_parameters_are_imported(requests_mock):
     vocabulary = [subject for subject in subjects if isinstance(subject, Vocabulary)][0]
     assert vocabulary.meaning_mnemonic is not None
     assert vocabulary.reading_mnemonic is not None
+    assert vocabulary.slug is not None
     assert vocabulary.context_sentences is not None
     assert vocabulary.pronunciation_audios is not None
     assert vocabulary.lesson_position is not None
+
+def test_all_kanji_parameters_are_imported(requests_mock):
+    mock_subjects(requests_mock)
+
+    client = Client("whatever")
+    subjects = client.subjects()
+    kanji = [subject for subject in subjects if isinstance(subject, Kanji)][0]
+    assert kanji.created_at is not None
+    assert kanji.level is not None
+    assert kanji.slug is not None
+    assert kanji.hidden_at is not None
+    assert kanji.document_url is not None
+    assert kanji.characters is not None
+    assert kanji.meanings is not None
+    assert  isinstance(kanji.auxiliary_meanings[0] AuxiliaryMeaning)
+    assert isinstance(kanji.readings[0], KanjiReading)
+    assert kanji.component_subject_ids is not None
+    assert kanji.amalgamation_subject_ids is not None
+    assert kanji.visually_similar_subject_ids is not None
+    assert kanji.meaning_mnemonic is not None
+    assert kanji.meaning_hint is not None
+    assert kanji.reading_mnemonic is not None
+    assert kanji.reading_hint is not None
+    assert kanji.lesson_position is not None
+
+def test_all_radical_parameters_are_imported(requests_mock):
+    mock_subjects(requests_mock)
+
+    client = Client("whatever")
+    subjects = client.subjects()
+    radical = [subject for subject in subjects if isinstance(subject, Radical)][0]
+    assert radical.created_at is not None
+    assert radical.level is not None
+    assert radical.slug is not None
+    assert radical.hidden_at is not None
+    assert radical.document_url is not None
+    assert radical.characters is not None
+    assert isinstance(radical.character_images[0], CharacterImage)
+    assert radical.auxiliary_meanings is not None
+    assert radical.meaning_mnemonic is not None
+    assert radical.lesson_position is not None
+
