@@ -1,7 +1,19 @@
 import re
 
+from tests.utils.response_mocks import (
+    SUBJECTS_PAGE,
+    SINGLE_SUBJECT,
+    EMPTY_SUBJECTS_PAGE,
+    USER_INFORMATION,
+    ASSIGNMENTS_PAGE,
+    REVIEW_STATISTICS_PAGE,
+    LEVEL_PROGRESSIONS_PAGE,
+    RESETS_PAGE,
+    REVIEWS_PAGE,
+    STUDY_MATERIALS_PAGE,
+    SUMMARY,
+)
 from wanikani_api import constants
-from .response_mocks import *
 
 
 def mock_subjects(requests_mock):

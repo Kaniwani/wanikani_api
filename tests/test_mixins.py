@@ -2,20 +2,14 @@
 # -*- coding: utf-8 -*-
 
 """Tests for `wanikani_api` package."""
-import requests
 
 from wanikani_api.client import Client
-from wanikani_api.models import Subject, UserInformation
 from tests.utils.utils import (
-    mock_user_info,
     mock_subjects,
     mock_assignments,
-    mock_review_statistics,
     mock_study_materials,
     mock_summary,
     mock_reviews,
-    mock_level_progressions,
-    mock_resets,
     mock_single_subject,
 )
 

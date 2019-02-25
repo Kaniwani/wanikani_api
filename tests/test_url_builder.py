@@ -5,7 +5,6 @@
 import datetime
 
 import pytest
-import requests
 
 from tests.utils.utils import mock_subjects, mock_assignments
 from wanikani_api.client import Client

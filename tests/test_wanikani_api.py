@@ -128,6 +128,6 @@ def test_etag_cache_decorator_works(mocker, requests_mock):
     client = Client(v2_api_key)
 
     mocker.spy(client, "_fetch_result_from_cache")
-    subjects = client.subjects()
-    cached_subjects = client.subjects()
+    client.subjects()
+    client.subjects()
     assert client._fetch_result_from_cache.call_count == 1

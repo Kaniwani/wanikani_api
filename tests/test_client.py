@@ -4,7 +4,6 @@
 """Tests for `wanikani_api` package."""
 import datetime
 
-import requests
 from tests.utils.utils import mock_subjects, mock_empty_subjects
 
 from wanikani_api.client import Client
