@@ -363,6 +363,28 @@ ASSIGNMENTS_PAGE = {
     "data_updated_at": "2018-06-30T16:40:52.513654Z",
     "data": [
         {
+            "id": 68742345,
+            "object": "assignment",
+            "url": "https://api.wanikani.com/v2/assignments/68742345",
+            "data_updated_at": "2018-08-26T00:30:54.041662Z",
+            "data": {
+                "created_at": "2017-06-01T19:00:38.052247Z",
+                "subject_id": 761,
+                "subject_type": "kanji",
+                "srs_stage": 7,
+                "srs_stage_name": "Master",
+                "unlocked_at": "2018-07-27T17:21:59.193066Z",
+                "started_at": "2018-07-30T02:00:42.877565Z",
+                "passed_at": "2018-08-03T16:18:50.310840Z",
+                "burned_at": None,
+                "available_at": "2018-09-24T23:00:00.000000Z",
+                "resurrected_at": None,
+                "passed": True,
+                "resurrected": False,
+                "hidden": False,
+            },
+        },
+        {
             "id": 85899,
             "object": "assignment",
             "url": "https://api.wanikani.com/v2/assignments/85899",
