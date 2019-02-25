@@ -36,7 +36,7 @@ SINGLE_SUBJECT = {
     "id": 1,
     "object": "radical",
     "url": "https://api.wanikani.com/v2/subjects/1",
-    "data_updated_at": "2018-12-05T20:47:15.603277Z",
+    "data_updated_at": "2019-02-07T00:28:35.020617Z",
     "data": {
         "created_at": "2012-02-27T18:08:16.000000Z",
         "level": 1,
@@ -53,11 +53,77 @@ SINGLE_SUBJECT = {
                     "style_name": "original",
                 },
                 "content_type": "image/png",
-            }
+            },
+            {
+                "url": "https://cdn.wanikani.com/images/legacy/1054-subject-1-normal-weight-black-1024px.png?1520987606",
+                "metadata": {
+                    "color": "#000000",
+                    "dimensions": "1024x1024",
+                    "style_name": "1024px",
+                },
+                "content_type": "image/png",
+            },
+            {
+                "url": "https://cdn.wanikani.com/images/legacy/1054-subject-1-normal-weight-black-512px.png?1520987606",
+                "metadata": {
+                    "color": "#000000",
+                    "dimensions": "512x512",
+                    "style_name": "512px",
+                },
+                "content_type": "image/png",
+            },
+            {
+                "url": "https://cdn.wanikani.com/images/legacy/1054-subject-1-normal-weight-black-256px.png?1520987606",
+                "metadata": {
+                    "color": "#000000",
+                    "dimensions": "256x256",
+                    "style_name": "256px",
+                },
+                "content_type": "image/png",
+            },
+            {
+                "url": "https://cdn.wanikani.com/images/legacy/1054-subject-1-normal-weight-black-128px.png?1520987606",
+                "metadata": {
+                    "color": "#000000",
+                    "dimensions": "128x128",
+                    "style_name": "128px",
+                },
+                "content_type": "image/png",
+            },
+            {
+                "url": "https://cdn.wanikani.com/images/legacy/1054-subject-1-normal-weight-black-64px.png?1520987606",
+                "metadata": {
+                    "color": "#000000",
+                    "dimensions": "64x64",
+                    "style_name": "64px",
+                },
+                "content_type": "image/png",
+            },
+            {
+                "url": "https://cdn.wanikani.com/images/legacy/1054-subject-1-normal-weight-black-32px.png?1520987606",
+                "metadata": {
+                    "color": "#000000",
+                    "dimensions": "32x32",
+                    "style_name": "32px",
+                },
+                "content_type": "image/png",
+            },
+            {
+                "url": "https://cdn.wanikani.com/images/legacy/576-subject-1-without-css-original.svg?1520987227",
+                "metadata": {"inline_styles": False},
+                "content_type": "image/svg+xml",
+            },
+            {
+                "url": "https://cdn.wanikani.com/images/legacy/98-subject-1-with-css-original.svg?1520987072",
+                "metadata": {"inline_styles": True},
+                "content_type": "image/svg+xml",
+            },
         ],
         "meanings": [{"meaning": "Ground", "primary": True, "accepted_answer": True}],
         "auxiliary_meanings": [],
-        "amalgamation_subject_ids": [2],
+        "amalgamation_subject_ids": [440],
+        "meaning_mnemonic": "This radical consists of a single, horizontal stroke. What's the biggest, single, horizontal stroke? That's the <radical>ground</radical>. Look at the ground, look at this radical, now look at the ground again. Kind of the same, right?",
+        "lesson_position": 0,
     },
 }
 
