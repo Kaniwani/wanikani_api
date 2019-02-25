@@ -4,7 +4,12 @@
 """Tests for `wanikani_api` package."""
 import datetime
 
-from tests.utils.utils import mock_subjects, mock_empty_subjects, mock_assignments
+from tests.utils.utils import (
+    mock_subjects,
+    mock_empty_subjects,
+    mock_assignments,
+    mock_study_materials,
+)
 
 from wanikani_api.client import Client
 from wanikani_api.models import (
@@ -164,3 +169,21 @@ def test_all_assignment_parameters_are_imported(requests_mock):
     assert assignment.passed is not None
     assert assignment.resurrected is not None
     assert assignment.hidden is not None
+
+
+def test_all_study_material_parameters_are_imported(requests_mock):
+    mock_study_materials(requests_mock)
+
+    client = Client("whatever")
+    study_materials = client.study_materials()
+    study_material = study_materials[0]
+
+    assert study_material.created_at is not None
+    assert study_material.url is not None
+    assert study_material.data_updated_at is not None
+    assert study_material.subject_id is not None
+    assert study_material.subject_type is not None
+    assert study_material.meaning_note is not None
+    assert study_material.reading_note is not None
+    assert study_material.meaning_synonyms is not None
+    assert study_material.hidden is not None
