@@ -190,9 +190,38 @@ class Subject(Resource):
             "hidden_at"
         ]  #: When Wanikani removes a subject, they seem to instead set it to hidden, for backwards compatibilty with clients.
         self.slug = resource_data["slug"]  #: Slug for this particular subject.
+        self.auxiliary_meanings = [
+            AuxiliaryMeaning(aux_meaning)
+            for aux_meaning in resource_data["auxiliary_meanings"]
+        ]
+        self.meaning_mnemonic = self._resource[
+            "meaning_mnemonic"
+        ]  #: A mnemonic for the meaning of the subject.
+        self.lesson_position = self._resource["lesson_position"]
 
     def __str__(self) -> str:
         return f"{['['+meaning.meaning+']' if meaning.primary else meaning.meaning for meaning in self.meanings]}:{[character for character in self.characters] if self.characters else 'UNAVAILABLE'}"
+
+
+class CharacterImageMetadata:
+    def __init__(self, json_data):
+        self.inline_styles = (
+            json_data["inline_styles"] if "inline_styles" in json_data else None
+        )
+        self.color = json_data["color"] if "color" in json_data else None
+        self.dimensions = json_data["dimensions"] if "dimensions" in json_data else None
+        self.style_name = json_data["style_name"] if "style_name" in json_data else None
+
+
+class CharacterImage:
+    """
+    Model for a definition of an image related to a radical.
+    """
+
+    def __init__(self, json_data):
+        self.content_type = json_data["content_type"]
+        self.url = json_data["url"]
+        self.metadata = CharacterImageMetadata(json_data["metadata"])
 
 
 class Radical(Subject):
@@ -205,9 +234,12 @@ class Radical(Subject):
     def __init__(self, json_data, *args, **kwargs):
         super().__init__(json_data, *args, **kwargs)
         self.character_images = (
-            self._resource["character_images"]
+            [
+                CharacterImage(image_json)
+                for image_json in self._resource["character_images"]
+            ]
             if "character_images" in self._resource.keys()
-            else None
+            else []
         )  #: A list of dictionaries, each containing a bunch of information related to a single character image.
         self.amalgamation_subject_ids = self._resource[
             "amalgamation_subject_ids"
@@ -270,7 +302,6 @@ class Vocabulary(Subject):
         self.readings = [
             Reading(reading_json) for reading_json in self._resource["readings"]
         ]  #: A list of :class:`.models.Reading` related to this Vocabulary.
-        self.meaning_mnemonic = self._resource["meaning_mnemonic"]
         self.reading_mnemonic = self._resource["reading_mnemonic"]
         self.context_sentences = [
             ContextSentence(context_sentence)
@@ -280,7 +311,6 @@ class Vocabulary(Subject):
             PronunciationAudio(audio_json)
             for audio_json in self._resource["pronunciation_audios"]
         ]
-        self.lesson_position = self._resource["lesson_position"]
 
     def __str__(self):
         return f"Vocabulary: {super(Vocabulary, self).__str__()}"
@@ -302,11 +332,27 @@ class Kanji(Subject):
             "component_subject_ids"
         ]  #: A list of IDs for the related :class:`.models.Radical` which combine to make this kanji
         self.readings = [
-            Reading(reading_json) for reading_json in self._resource["readings"]
-        ]  #: A list of :class:`.models.Reading` related to this Vocabulary.
+            KanjiReading(reading_json) for reading_json in self._resource["readings"]
+        ]  #: A list of :class:`.models.KanjiReading` related to this Vocabulary.
+        self.visually_similar_subject_ids = self._resource[
+            "visually_similar_subject_ids"
+        ]  #: List of subjects which are visually similar to this subject.
+        self.meaning_hint = self._resource["meaning_hint"]
+        self.reading_mnemonic = self._resource["reading_mnemonic"]
+        self.reading_hint = self._resource["reading_hint"]
 
     def __str__(self):
         return f"Kanji: {super(Kanji, self).__str__()}"
+
+
+class AuxiliaryMeaning:
+    """
+    Simple data class for holding information about an auxiliary meaning.
+    """
+
+    def __init__(self, json_data):
+        self.type = json_data["type"]
+        self.meaning = json_data["meaning"]
 
 
 class Meaning:
@@ -332,13 +378,20 @@ class Reading:
     Simple class holding information about a given reading of a vocabulary/kanji
     """
 
-    def __init__(self, meaning_json):
-        #: the actual かな for the reading.
-        self.reading = meaning_json["reading"]
-        self.primary = meaning_json["primary"]  #: Whether this is the primary reading.
-        self.accepted_answer = meaning_json[
+    def __init__(self, json_data):
+        self.reading = json_data["reading"]  #: the actual かな for the reading.
+        self.primary = json_data["primary"]  #: Whether this is the primary reading.
+        self.accepted_answer = json_data[
             "accepted_answer"
         ]  #: Whether this answer is accepted as correct by Wanikani during review.
+
+
+class KanjiReading(Reading):
+    def __init__(self, json_data):
+        super().__init__(json_data)
+        self.type = json_data[
+            "type"
+        ]  #: The type of reading, e.g. Onyomi, Kunyomi, Nanori
 
 
 class Assignment(Resource, Subjectable):
