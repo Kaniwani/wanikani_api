@@ -9,6 +9,7 @@ from tests.utils.utils import (
     mock_empty_subjects,
     mock_assignments,
     mock_study_materials,
+    mock_reviews,
 )
 
 from wanikani_api.client import Client
@@ -187,3 +188,21 @@ def test_all_study_material_parameters_are_imported(requests_mock):
     assert study_material.reading_note is not None
     assert study_material.meaning_synonyms is not None
     assert study_material.hidden is not None
+
+
+def test_all_reviews_parameters_are_imported(requests_mock):
+    mock_reviews(requests_mock)
+    client = Client("whatever")
+    reviews = client.reviews()
+    review = reviews[0]
+    assert review.id is not None
+    assert review.url is not None
+    assert review.created_at is not None
+    assert review.assignment_id is not None
+    assert review.subject_id is not None
+    assert review.starting_srs_stage is not None
+    assert review.ending_srs_stage is not None
+    assert review.starting_srs_stage_name is not None
+    assert review.ending_srs_stage_name is not None
+    assert review.incorrect_meaning_answers is not None
+    assert review.incorrect_reading_answers is not None

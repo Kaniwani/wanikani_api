@@ -757,7 +757,7 @@ REVIEWS_PAGE = {
         "previous_url": None,
     },
     "total_count": 3,
-    "data_updated_at": "2018-07-06T19:30:19.657822Z",
+    "data_updated_at": "2019-02-18T02:51:17.307173Z",
     "data": [
         {
             "id": 6418820,
@@ -793,25 +793,9 @@ REVIEWS_PAGE = {
                 "incorrect_reading_answers": 0,
             },
         },
-        {
-            "id": 6418872,
-            "object": "review",
-            "url": "https://api.wanikani.com/v2/reviews/6418872",
-            "data_updated_at": "2017-08-13T14:32:56.587244Z",
-            "data": {
-                "created_at": "2017-08-13T14:32:56.587244Z",
-                "assignment_id": 30950168,
-                "subject_id": 60,
-                "starting_srs_stage": 8,
-                "starting_srs_stage_name": "Enlightened",
-                "ending_srs_stage": 9,
-                "ending_srs_stage_name": "Burned",
-                "incorrect_meaning_answers": 0,
-                "incorrect_reading_answers": 0,
-            },
-        },
     ],
 }
+
 
 LEVEL_PROGRESSIONS_PAGE = {
     "object": "collection",
