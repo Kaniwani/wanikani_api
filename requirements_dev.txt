@@ -12,5 +12,5 @@ pytest==4.1.1
 pytest-runner==4.2
 pytest-mock==1.10.0
 
-black==18.9b0
+black==19.3b0
 sphinx_rtd_theme==0.4.2
