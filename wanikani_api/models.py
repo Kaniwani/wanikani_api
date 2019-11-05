@@ -316,7 +316,6 @@ class Assignment(Resource, Subjectable):
         self.available_at = parse8601(self._resource["available_at"])
         self.resurrected_at_at = parse8601(self._resource["resurrected_at"])
         self.passed = self._resource["passed"]
-        self.resurrected = self._resource["resurrected"]
         self.hidden = self._resource["hidden"]
 
 
