@@ -1,6 +1,11 @@
 =======
 History
 =======
+
+0.2.1 (2019-11-05)
+------------------
+* Fix crash caused by WK removing a field from their API.
+
 0.1.1 (2018-06-26)
 ------------------
 
