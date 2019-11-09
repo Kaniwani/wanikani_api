@@ -261,6 +261,16 @@ class Kanji(Subject):
     def __str__(self):
         return f"Kanji: {super(Kanji, self).__str__()}"
 
+class AuxiliaryMeaning:
+    """
+    Simple data class for handling auxiliary meanings
+    """
+    def __init__(self, auxiliary_meaning_json):
+        self.meaning = auxiliary_meaning_json["meaning"]
+        self.type = auxiliary_meaning_json["type"]
+
+    def __str__(self) -> str:
+        return f"{self.meaning}({type})"
 
 class Meaning:
     """
