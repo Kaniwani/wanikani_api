@@ -29,6 +29,7 @@ SUBJECT = {
         "readings": [{"primary": True, "reading": "いち", "accepted_answer": True}],
         "parts_of_speech": ["numeral"],
         "component_subject_ids": [440],
+        "auxiliary_meanings": [],
     },
 }
 
@@ -89,6 +90,7 @@ SUBJECTS_PAGE = {
                 "hidden_at": None,
                 "document_url": "https://www.wanikani.com/radicals/ground",
                 "characters": "一",
+                "auxiliary_meanings": [],
                 "character_images": [
                     {
                         "url": "https://cdn.wanikani.com/images/legacy/1054-subject-1-normal-weight-black-original.png?1520987606",
@@ -266,6 +268,7 @@ SUBJECTS_PAGE = {
                         "accepted_answer": True,
                     }
                 ],
+                "auxiliary_meanings": [],
                 "component_subject_ids": [29, 18],
                 "amalgamation_subject_ids": [2726],
             },
@@ -289,6 +292,7 @@ SUBJECTS_PAGE = {
                     {"primary": True, "reading": "いち", "accepted_answer": True}
                 ],
                 "parts_of_speech": ["numeral"],
+                "auxiliary_meanings": [],
                 "component_subject_ids": [440],
             },
         },

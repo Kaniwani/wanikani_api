@@ -189,6 +189,9 @@ class Subject(Resource):
         self.hidden_at = resource_data[
             "hidden_at"
         ]  #: When Wanikani removes a subject, they seem to instead set it to hidden, for backwards compatibilty with clients.
+        self.auxiliary_meanings = [
+            AuxiliaryMeaning(auxiliary_meaning_json) for auxiliary_meaning_json in resource_data["auxiliary_meanings"]
+        ]
 
     def __str__(self) -> str:
         return f"{['['+meaning.meaning+']' if meaning.primary else meaning.meaning for meaning in self.meanings]}:{[character for character in self.characters] if self.characters else 'UNAVAILABLE'}"
@@ -261,6 +264,16 @@ class Kanji(Subject):
     def __str__(self):
         return f"Kanji: {super(Kanji, self).__str__()}"
 
+class AuxiliaryMeaning:
+    """
+    Simple data class for handling auxiliary meanings
+    """
+    def __init__(self, auxiliary_meaning_json):
+        self.meaning = auxiliary_meaning_json["meaning"]
+        self.type = auxiliary_meaning_json["type"]
+
+    def __str__(self) -> str:
+        return f"{self.meaning}({type})"
 
 class Meaning:
     """

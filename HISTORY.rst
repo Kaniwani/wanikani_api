@@ -2,6 +2,10 @@
 History
 =======
 
+0.3.0 (2019-11-09)
+------------------
+* Add `auxiliary_meanings` to Subject
+
 0.2.1 (2019-11-05)
 ------------------
 * Fix crash caused by WK removing a field from their API.
