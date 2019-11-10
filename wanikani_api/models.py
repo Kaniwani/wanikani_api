@@ -189,6 +189,9 @@ class Subject(Resource):
         self.hidden_at = resource_data[
             "hidden_at"
         ]  #: When Wanikani removes a subject, they seem to instead set it to hidden, for backwards compatibilty with clients.
+        self.auxiliary_meanings = [
+            AuxiliaryMeaning(auxiliary_meaning_json) for auxiliary_meaning_json in resource_data["auxiliary_meanings"]
+        ]
 
     def __str__(self) -> str:
         return f"{['['+meaning.meaning+']' if meaning.primary else meaning.meaning for meaning in self.meanings]}:{[character for character in self.characters] if self.characters else 'UNAVAILABLE'}"
