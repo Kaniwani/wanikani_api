@@ -55,7 +55,10 @@ class Iterator:
             self.fetch_next_page()
 
     def __iter__(self):
-        return iter([item for page in self.pages for item in page])
+        yield from self.current_page
+        while self.current_page.next_page_url is not None:
+            self.fetch_next_page()
+            yield from self.current_page
 
     def __getitem__(self, item):
         if isinstance(item, int):
@@ -80,7 +83,7 @@ class Page(Resource):
         self.data = [factory(datum, client=self.client) for datum in json_data["data"]]
 
     def __iter__(self):
-        return iter(self.data)
+        yield from self.data
 
     def __getitem__(self, item):
         if isinstance(item, int):
@@ -139,15 +142,15 @@ class UserInformation(Resource):
         super().__init__(json_data, *args, **kwargs)
         self.username = self._resource["username"]  #: username
         self.level = self._resource["level"]  #: current wanikani level
-        self.max_level_granted_by_subscription = self._resource[
-            "max_level_granted_by_subscription"
+        self.subscription = self._resource[
+            "subscription"
         ]  #: maximum level granted by subscription.
         self.profile_url = self._resource["profile_url"]  #: Link to user's profile.
         self.started_at = parse8601(
             self._resource["started_at"]
         )  #: datetime at which the user signed up.
-        self.subscribed = self._resource[
-            "subscribed"
+        self.subscribed = self.subscription[
+            "active"
         ]  #: Whether or not the user is currently subscribed to wanikani.
         self.current_vacation_started_at = parse8601(
             self._resource["current_vacation_started_at"]
@@ -157,7 +160,7 @@ class UserInformation(Resource):
         return "UserInformation{{ username:{}, level:{}, max_level_granted_by_subscription:{}, profile_url:{} started_at:{}, subscribed:{}, current_vacation_started_at:{} }}".format(
             self.username,
             self.level,
-            self.max_level_granted_by_subscription,
+            self.subscription['max_level_granted'],
             self.profile_url,
             self.started_at,
             self.subscribed,
