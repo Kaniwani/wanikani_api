@@ -9,6 +9,8 @@ from tests.utils.utils import (
     mock_user_info,
     mock_subjects,
     mock_assignments,
+    mock_assignments_paged1,
+    mock_assignments_paged2,
     mock_review_statistics,
     mock_study_materials,
     mock_summary,
@@ -18,6 +20,7 @@ from tests.utils.utils import (
     mock_subjects_with_cache,
     mock_single_subject,
 )
+import pytest
 
 
 def test_client_can_get_user_information(requests_mock):
@@ -122,12 +125,48 @@ def test_client_uses_cache(requests_mock):
     assert "assignments" in history[1].url
 
 
+def test_client_paged_iter(requests_mock):
+    mock_subjects(requests_mock)
+    mock_assignments_paged1(requests_mock)
+    mock_assignments_paged2(requests_mock)
+
+    v2_api_key = "arbitrary_api_key"
+    client = Client(v2_api_key, subject_cache_enabled=True)
+    assignments = client.assignments()
+
+    assert(len(assignments) == 10)
+    assert requests_mock.call_count == 2
+
+    ass_list = list(assignments)
+    assert(len(ass_list) == 10)
+    assert requests_mock.call_count == 3
+    
+
+def test_client_paged_slicing(requests_mock):
+    mock_subjects(requests_mock)
+    mock_assignments_paged1(requests_mock)
+    mock_assignments_paged2(requests_mock)
+
+    v2_api_key = "arbitrary_api_key"
+    client = Client(v2_api_key, subject_cache_enabled=True)
+    assignments = client.assignments()
+
+    with pytest.raises(IndexError):
+        assert(assignments[10])
+
+    ass_slice = assignments[4:6]
+    assert(len(ass_slice) == 2)
+    
+    assert ([a.id for a in ass_slice] == [125824495, 125824713])
+
 def test_etag_cache_decorator_works(mocker, requests_mock):
     mock_subjects_with_cache(requests_mock)
     v2_api_key = "arbitrary_api_key"
     client = Client(v2_api_key)
 
     mocker.spy(client, "_fetch_result_from_cache")
+
+    # pylint: disable=unused-variable, no-member
     subjects = client.subjects()
     cached_subjects = client.subjects()
     assert client._fetch_result_from_cache.call_count == 1

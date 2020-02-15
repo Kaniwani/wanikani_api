@@ -1,6 +1,8 @@
 import re
 
 from wanikani_api import constants
+
+# pylint: disable=unused-wildcard-import
 from .response_mocks import *
 
 
@@ -55,6 +57,20 @@ def mock_assignments(requests_mock):
         headers={"Etag": "abc123"},
     )
 
+
+def mock_assignments_paged1(requests_mock):
+    requests_mock.get(
+        re.compile(constants.ASSIGNMENT_ENDPOINT + '$'),
+        json=ASSIGNMENTS_PAGED_1,
+        headers={"Etag": "abc123"},
+    )
+
+def mock_assignments_paged2(requests_mock):
+    requests_mock.get(
+        re.compile(r'assignments\?page_after_id=125824673'),
+        json=ASSIGNMENTS_PAGED_2,
+        headers={"Etag": "abc123"},
+    )
 
 def mock_review_statistics(requests_mock):
     requests_mock.get(
