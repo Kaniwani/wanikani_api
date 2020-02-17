@@ -159,6 +159,23 @@ def test_client_paged_slicing(requests_mock):
     
     assert ([a.id for a in ass_slice] == [125824495, 125824713])
 
+
+def test_client_restart_iter(requests_mock):
+    mock_subjects(requests_mock)
+    mock_assignments_paged1(requests_mock)
+    mock_assignments_paged2(requests_mock)
+
+    v2_api_key = "arbitrary_api_key"
+    client = Client(v2_api_key, subject_cache_enabled=True)
+    assignments = client.assignments()
+
+    for a in assignments[:8]:
+        pass
+
+    b = iter(assignments)
+    assert(next(b).id == 125466282)
+
+
 def test_etag_cache_decorator_works(mocker, requests_mock):
     mock_subjects_with_cache(requests_mock)
     v2_api_key = "arbitrary_api_key"

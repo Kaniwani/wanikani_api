@@ -55,6 +55,7 @@ class Iterator:
             self.fetch_next_page()
 
     def __iter__(self):
+        self.current_page = self.pages[0]
         yield from self.current_page
         while self.current_page.next_page_url is not None:
             self.fetch_next_page()
