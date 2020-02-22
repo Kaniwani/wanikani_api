@@ -1,6 +1,6 @@
 pip==19.1.1
 bumpversion==0.5.3
-Sphinx==1.8.3
+Sphinx==2.4.3
 wheel==0.33.4
 coverage==4.5.2
 tox==3.10.0
