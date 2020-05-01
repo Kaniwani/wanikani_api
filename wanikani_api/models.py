@@ -129,6 +129,7 @@ class Subjectable:
 
 class Preferences():
     def __init__(self, preferences_json):
+        self.default_voice_actor_id = preferences_json.get("default_voice_actor_id")
         self.lessons_batch_size= preferences_json["lessons_batch_size"]
         self.lessons_autoplay_audio = preferences_json["lessons_autoplay_audio"]
         self.reviews_autoplay_audio = preferences_json["reviews_autoplay_audio"]

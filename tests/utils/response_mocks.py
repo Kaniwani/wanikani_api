@@ -1,16 +1,28 @@
-USER_INFORMATION = {
-    "object": "user",
-    "url": "https://api.wanikani.com/v2/user",
-    "data_updated_at": "2018-06-26T21:40:12.011379Z",
-    "data": {
-        "username": "FRANK",
-        "level": 7,
-        "max_level_granted_by_subscription": 60,
-        "profile_url": "https://www.wanikani.com/users/Tadgh11",
-        "started_at": "2013-07-09T12:02:54.952786Z",
-        "subscribed": True,
-        "current_vacation_started_at": None,
+USER_INFORMATION ={
+  "object": "user",
+  "url": "https://api.wanikani.com/v2/user",
+  "data_updated_at": "2020-05-01T05:20:41.769053Z",
+  "data": {
+    "id": "7a18daeb-4067-4e77-b0ea-230c7c347ea8",
+    "username": "Tadgh11",
+    "level": 12,
+    "profile_url": "https://www.wanikani.com/users/Tadgh11",
+    "started_at": "2013-07-09T12:02:54.952786Z",
+    "subscription": {
+      "active": True,
+      "type": "lifetime",
+      "max_level_granted": 60,
+      "period_ends_at": None
     },
+    "current_vacation_started_at": None,
+    "preferences": {
+      "lessons_batch_size": 5,
+      "lessons_autoplay_audio": True,
+      "reviews_autoplay_audio": False,
+      "lessons_presentation_order": "ascending_level_then_subject",
+      "reviews_display_srs_indicator": True
+    }
+  }
 }
 
 SUBJECT = {
