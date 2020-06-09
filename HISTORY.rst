@@ -2,6 +2,11 @@
 History
 =======
 
+0.4.0 (2020-04-30)
+------------------
+* Add Preferences to User Information
+* Add Subscription to User Information
+
 0.3.0 (2019-11-09)
 ------------------
 * Add `auxiliary_meanings` to Subject

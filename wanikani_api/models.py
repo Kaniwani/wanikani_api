@@ -140,6 +140,15 @@ class Subjectable:
             raise AttributeError("no attribute named subjects!")
 
 
+class Preferences():
+    def __init__(self, preferences_json):
+        self.default_voice_actor_id = preferences_json.get("default_voice_actor_id")
+        self.lessons_batch_size= preferences_json["lessons_batch_size"]
+        self.lessons_autoplay_audio = preferences_json["lessons_autoplay_audio"]
+        self.reviews_autoplay_audio = preferences_json["reviews_autoplay_audio"]
+        self.lessons_presentation_order = preferences_json["lessons_presentation_order"]
+        self.reviews_display_srs_indicator = preferences_json["reviews_display_srs_indicator"]
+
 class UserInformation(Resource):
     """
     This is a simple container for information returned from the ``/user/`` endpoint. This is all information related to
@@ -152,33 +161,28 @@ class UserInformation(Resource):
         super().__init__(json_data, *args, **kwargs)
         self.username = self._resource["username"]  #: username
         self.level = self._resource["level"]  #: current wanikani level
-        self.subscription = self._resource[
-            "subscription"
-        ]  #: maximum level granted by subscription.
+        self.subscription = Subscription(self._resource['subscription']) #: maximum level granted by subscription.
         self.profile_url = self._resource["profile_url"]  #: Link to user's profile.
         self.started_at = parse8601(
             self._resource["started_at"]
         )  #: datetime at which the user signed up.
-        self.subscribed = self.subscription[
-            "active"
-        ]  #: Whether or not the user is currently subscribed to wanikani.
+        self.subscribed = self.subscription.active  #: Whether or not the user is currently subscribed to wanikani.
         self.current_vacation_started_at = parse8601(
             self._resource["current_vacation_started_at"]
         )  #: datetime at which vacation was enabled on wanikani.
+        self.preferences = Preferences(self._resource["preferences"])
 
     @property
     def max_level_granted_by_subscription(self):
         """This is deprecated due to upstream changes in API."""
-        return self.subscription['max_level_granted']
+        return self.subscription.max_level_granted
 
     def __str__(self):
-        return "UserInformation{{ username:{}, level:{}, max_level_granted_by_subscription:{}, profile_url:{} started_at:{}, subscribed:{}, current_vacation_started_at:{} }}".format(
+        return "UserInformation{{ username:{}, level:{}, profile_url:{} started_at:{}, current_vacation_started_at:{} }}".format(
             self.username,
             self.level,
-            self.subscription['max_level_granted'],
             self.profile_url,
             self.started_at,
-            self.subscribed,
             self.current_vacation_started_at,
         )
 
@@ -292,6 +296,16 @@ class AuxiliaryMeaning:
 
     def __str__(self) -> str:
         return f"{self.meaning}({type})"
+
+class Subscription:
+    def __init__(self, subscription_json):
+        self.active = subscription_json["active"]
+        self.type = subscription_json["type"]
+        self.max_level_granted = subscription_json["max_level_granted"]
+        self.period_ends_at = parse8601(subscription_json["period_ends_at"])
+
+    def __str__(self) -> str:
+        return f"{'active' if self.active else 'inactive'}:{self.type}:{self.max_level_granted}:{self.period_ends_at}"
 
 class Meaning:
     """
