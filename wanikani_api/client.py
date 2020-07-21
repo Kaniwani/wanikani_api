@@ -367,11 +367,10 @@ class Client:
         :param datetime updated_after: Return results which have been updated after the timestamp
         :return: An iterator over all :class:`.models.LevelProgression` for a given user.
         """
-        url = (
-            self.url_builder.build_wk_url(
+        url =  self.url_builder.build_wk_url(
                 constants.LEVEL_PROGRESSIONS_ENDPOINT, parameters=locals()
-            ),
-        )
+            )
+
         return self._wrap_collection_in_iterator(
             self.authorized_request_maker(url), fetch_all
         )
