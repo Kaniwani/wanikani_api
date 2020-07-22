@@ -38,41 +38,24 @@ This is how to retrieve all Subjects in Wanikani. Subjects are either :class:`.m
     "ここのつ"
     ...
     >>> print(len(vocabulary))
-    1000
+    6355
 
 
-Note that by default the client will only retrieve the first Page of results. This can be changed by passing ``fetch_all=True`` to any client function
-which returns multiple results. Like so:
+Note that by default the client only retrieve the first Page of results. More pages are loaded dynamically when needed. This can be 
+changed by passing ``fetch_all=True`` to any client function which returns multiple results. Like so:
 
     >>> vocabulary = wk_api.subjects(types="vocabulary", fetch_all=True)
-    >>> print(len(vocabulary))
-    6301
+    >>> print(len(vocabulary.pages))
+    6
 
 Alternatively, if you decide afterwards you'd like to fill in the missing data, you can do this:
 
     >>> vocabulary = wk_api.subjects(types="vocabulary")
-    >>> print(len(vocabulary))
-    1000
-    >>> vocabulary.fetch_all_pages()
-    >>> print(len(vocabulary))
-    6301
-
-You are also free to fetch one page at a time. Note also that you can access indiviual :class:`.models.Page` objects if you like.
-
-    >>> vocabulary = wk_api.subjects(types="vocabulary")
-    >>> print(len(vocabulary))
-    1000
-    >>> vocabulary.fetch_next_page()
-    >>> print(len(vocabulary))
-    2000
     >>> print(len(vocabulary.pages))
-    2
-    # Iterate only over elements in the second page:
-    >>> for vocab in vocabulary.pages[1]:
-    >>>     print(vocab.parts_of_speech)
-    ['noun', 'suru_verb']
-    ['noun']
-    ['intransitive_verb', 'godan_verb']
+    1
+    >>> vocabulary.fetch_all_pages()
+    >>> print(len(vocabulary.pages))
+    6
 
 This works for any client function that is *plural*, e.g. assignments(), subjects(), reviews(), etc.
 
@@ -86,7 +69,7 @@ ___________
     >>> assignments = wk_api.assignments(subject_types="vocabulary")
     >>> for assignment in assignments:
     >>>    print(assignment.srs_stage_name)
-    >>>    print(assignment.subject.meaning) # The client will automatically go and fetch this subject for you.
+    >>>    print(assignment.subject.meanings[0]) # The client will automatically go and fetch this subject for you.
     "Burned"
     "One"
     "Burned"

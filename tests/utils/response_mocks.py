@@ -1,25 +1,26 @@
-USER_INFORMATION ={
+USER_INFORMATION = {
   "object": "user",
   "url": "https://api.wanikani.com/v2/user",
-  "data_updated_at": "2020-05-01T05:20:41.769053Z",
+  "data_updated_at": "2018-04-06T14:26:53.022245Z",
   "data": {
-    "id": "7a18daeb-4067-4e77-b0ea-230c7c347ea8",
-    "username": "Tadgh11",
-    "level": 12,
-    "profile_url": "https://www.wanikani.com/users/Tadgh11",
-    "started_at": "2013-07-09T12:02:54.952786Z",
+    "id": "5a6a5234-a392-4a87-8f3f-33342afe8a42",
+    "username": "example_user",
+    "level": 5,
+    "profile_url": "https://www.wanikani.com/users/example_user",
+    "started_at": "2012-05-11T00:52:18.958466Z",
+    "current_vacation_started_at": None,
     "subscription": {
       "active": True,
-      "type": "lifetime",
+      "type": "recurring",
       "max_level_granted": 60,
-      "period_ends_at": None
+      "period_ends_at": "2018-12-11T13:32:19.485748Z"
     },
-    "current_vacation_started_at": None,
     "preferences": {
-      "lessons_batch_size": 5,
-      "lessons_autoplay_audio": True,
-      "reviews_autoplay_audio": False,
+      "default_voice_actor_id": 1,
+      "lessons_autoplay_audio": False,
+      "lessons_batch_size": 10,
       "lessons_presentation_order": "ascending_level_then_subject",
+      "reviews_autoplay_audio": False,
       "reviews_display_srs_indicator": True
     }
   }
@@ -311,12 +312,250 @@ SUBJECTS_PAGE = {
     ],
 }
 
+ASSIGNMENTS_PAGED_1 = {
+    "object": "collection",
+    "url": "https://api.wanikani.com/v2/assignments",
+    "pages": {
+        "per_page": 5,
+        "next_url": "https://api.wanikani.com/v2/assignments?page_after_id=125824673",
+        "previous_url": None
+    },
+    "total_count": 10,
+    "data_updated_at": "2020-02-15T07:27:12.943314Z",
+    "data": [
+        {
+            "id": 125466282,
+            "object": "assignment",
+            "url": "https://api.wanikani.com/v2/assignments/125466282",
+            "data_updated_at": "2020-02-08T21:00:49.183043Z",
+            "data": {
+                "created_at": "2019-01-28T10:07:36.124659Z",
+                "subject_id": 3803,
+                "subject_type": "vocabulary",
+                "srs_stage": 5,
+                "srs_stage_name": "Guru I",
+                "unlocked_at": "2020-02-03T05:46:49.767237Z",
+                "started_at": "2020-02-05T05:48:25.524051Z",
+                "passed_at": "2020-02-08T18:21:59.740000Z",
+                "burned_at": None,
+                "available_at": "2020-02-15T17:00:00.000000Z",
+                "resurrected_at": None,
+                "passed": True,
+                "hidden": False
+            }
+        },
+        {
+            "id": 125466283,
+            "object": "assignment",
+            "url": "https://api.wanikani.com/v2/assignments/125466283",
+            "data_updated_at": "2020-02-12T20:39:17.113617Z",
+            "data": {
+                "created_at": "2019-01-28T10:07:36.144368Z",
+                "subject_id": 3130,
+                "subject_type": "vocabulary",
+                "srs_stage": 6,
+                "srs_stage_name": "Guru II",
+                "unlocked_at": "2020-02-01T06:31:30.405412Z",
+                "started_at": "2020-02-01T09:20:44.609799Z",
+                "passed_at": "2020-02-05T19:28:00.483000Z",
+                "burned_at": None,
+                "available_at": "2020-02-26T19:00:00.000000Z",
+                "resurrected_at": None,
+                "passed": True,
+                "hidden": False
+            }
+        },
+        {
+            "id": 125566807,
+            "object": "assignment",
+            "url": "https://api.wanikani.com/v2/assignments/125566807",
+            "data_updated_at": "2020-02-15T06:49:36.125658Z",
+            "data": {
+                "created_at": "2019-01-29T11:09:27.815552Z",
+                "subject_id": 3133,
+                "subject_type": "vocabulary",
+                "srs_stage": 3,
+                "srs_stage_name": "Apprentice III",
+                "unlocked_at": "2020-02-03T05:47:15.249838Z",
+                "started_at": "2020-02-04T05:54:46.127364Z",
+                "passed_at": "2020-02-07T22:00:55.475000Z",
+                "burned_at": None,
+                "available_at": "2020-02-16T05:00:00.000000Z",
+                "resurrected_at": None,
+                "passed": True,
+                "hidden": False
+            }
+        },
+        {
+            "id": 125824467,
+            "object": "assignment",
+            "url": "https://api.wanikani.com/v2/assignments/125824467",
+            "data_updated_at": "2020-02-11T06:54:50.031937Z",
+            "data": {
+                "created_at": "2019-01-31T22:03:42.845262Z",
+                "subject_id": 765,
+                "subject_type": "kanji",
+                "srs_stage": 5,
+                "srs_stage_name": "Guru I",
+                "unlocked_at": "2020-02-07T05:31:22.603701Z",
+                "started_at": "2020-02-07T05:57:20.542207Z",
+                "passed_at": "2020-02-11T06:31:29.811000Z",
+                "burned_at": None,
+                "available_at": "2020-02-18T05:00:00.000000Z",
+                "resurrected_at": None,
+                "passed": True,
+                "hidden": False
+            }
+        },
+        {
+            "id": 125824495,
+            "object": "assignment",
+            "url": "https://api.wanikani.com/v2/assignments/125824495",
+            "data_updated_at": "2020-02-11T06:55:19.771078Z",
+            "data": {
+                "created_at": "2019-01-31T22:04:00.354646Z",
+                "subject_id": 772,
+                "subject_type": "kanji",
+                "srs_stage": 5,
+                "srs_stage_name": "Guru I",
+                "unlocked_at": "2020-02-07T05:20:46.552900Z",
+                "started_at": "2020-02-07T06:26:08.062538Z",
+                "passed_at": "2020-02-11T06:49:42.651000Z",
+                "burned_at": None,
+                "available_at": "2020-02-18T05:00:00.000000Z",
+                "resurrected_at": None,
+                "passed": True,
+                "hidden": False
+            }
+        }
+    ]
+}
+
+ASSIGNMENTS_PAGED_2 = {
+    "object": "collection",
+    "url": "https://api.wanikani.com/v2/assignments?page_after_id=125824673",
+    "pages": {
+        "per_page": 5,
+        "next_url": None,
+        "previous_url": "https://api.wanikani.com/v2/assignments?page_before_id=125824713"
+    },
+    "total_count": 10,
+    "data_updated_at": "2020-02-15T07:27:12.943314Z",
+    "data": [
+        {
+            "id": 125824713,
+            "object": "assignment",
+            "url": "https://api.wanikani.com/v2/assignments/125824713",
+            "data_updated_at": "2020-02-10T20:02:46.884930Z",
+            "data": {
+                "created_at": "2019-01-31T22:06:36.175658Z",
+                "subject_id": 749,
+                "subject_type": "kanji",
+                "srs_stage": 5,
+                "srs_stage_name": "Guru I",
+                "unlocked_at": "2020-02-07T05:26:57.790202Z",
+                "started_at": "2020-02-07T05:44:14.348148Z",
+                "passed_at": "2020-02-10T20:02:46.871027Z",
+                "burned_at": None,
+                "available_at": "2020-02-17T19:00:00.000000Z",
+                "resurrected_at": None,
+                "passed": True,
+                "hidden": False
+            }
+        },
+        {
+            "id": 125824714,
+            "object": "assignment",
+            "url": "https://api.wanikani.com/v2/assignments/125824714",
+            "data_updated_at": "2020-02-10T20:04:50.453407Z",
+            "data": {
+                "created_at": "2019-01-31T22:06:36.188514Z",
+                "subject_id": 758,
+                "subject_type": "kanji",
+                "srs_stage": 5,
+                "srs_stage_name": "Guru I",
+                "unlocked_at": "2020-02-07T05:26:57.804318Z",
+                "started_at": "2020-02-07T05:52:43.605616Z",
+                "passed_at": "2020-02-10T20:04:50.438578Z",
+                "burned_at": None,
+                "available_at": "2020-02-17T19:00:00.000000Z",
+                "resurrected_at": None,
+                "passed": True,
+                "hidden": False
+            }
+        },
+        {
+            "id": 125824778,
+            "object": "assignment",
+            "url": "https://api.wanikani.com/v2/assignments/125824778",
+            "data_updated_at": "2020-02-11T06:51:53.947740Z",
+            "data": {
+                "created_at": "2019-01-31T22:07:55.932418Z",
+                "subject_id": 754,
+                "subject_type": "kanji",
+                "srs_stage": 5,
+                "srs_stage_name": "Guru I",
+                "unlocked_at": "2020-02-07T05:38:24.021139Z",
+                "started_at": "2020-02-07T05:48:08.176787Z",
+                "passed_at": "2020-02-11T06:28:27.825000Z",
+                "burned_at": None,
+                "available_at": "2020-02-18T05:00:00.000000Z",
+                "resurrected_at": None,
+                "passed": True,
+                "hidden": False
+            }
+        },
+        {
+            "id": 125824779,
+            "object": "assignment",
+            "url": "https://api.wanikani.com/v2/assignments/125824779",
+            "data_updated_at": "2020-02-10T20:04:56.279041Z",
+            "data": {
+                "created_at": "2019-01-31T22:07:55.942359Z",
+                "subject_id": 748,
+                "subject_type": "kanji",
+                "srs_stage": 5,
+                "srs_stage_name": "Guru I",
+                "unlocked_at": "2020-02-07T05:38:24.008752Z",
+                "started_at": "2020-02-07T05:43:23.283127Z",
+                "passed_at": "2020-02-10T20:04:56.264187Z",
+                "burned_at": None,
+                "available_at": "2020-02-17T19:00:00.000000Z",
+                "resurrected_at": None,
+                "passed": True,
+                "hidden": False
+            }
+        },
+        {
+            "id": 125824820,
+            "object": "assignment",
+            "url": "https://api.wanikani.com/v2/assignments/125824820",
+            "data_updated_at": "2020-02-10T19:56:20.144571Z",
+            "data": {
+                "created_at": "2019-01-31T22:08:20.207526Z",
+                "subject_id": 741,
+                "subject_type": "kanji",
+                "srs_stage": 5,
+                "srs_stage_name": "Guru I",
+                "unlocked_at": "2020-02-07T05:39:13.131435Z",
+                "started_at": "2020-02-07T05:44:19.274724Z",
+                "passed_at": "2020-02-10T19:56:20.127276Z",
+                "burned_at": None,
+                "available_at": "2020-02-17T18:00:00.000000Z",
+                "resurrected_at": None,
+                "passed": True,
+                "hidden": False
+            }
+        }
+    ]
+}
+
 ASSIGNMENTS_PAGE = {
     "object": "collection",
     "url": "https://api.wanikani.com/v2/assignments",
     "pages": {
         "per_page": 500,
-        "next_url": "https://api.wanikani.com/v2/assignments?page_after_id=62308815",
+        "next_url": None,
         "previous_url": None,
     },
     "total_count": 3,

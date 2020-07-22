@@ -55,16 +55,27 @@ class Iterator:
             self.fetch_next_page()
 
     def __iter__(self):
-        return iter([item for page in self.pages for item in page])
+        self.current_page = self.pages[0]
+        yield from self.current_page
+        while self.current_page.next_page_url is not None:
+            self.fetch_next_page()
+            yield from self.current_page
 
     def __getitem__(self, item):
         if isinstance(item, int):
+            if item >= len(self):
+                raise IndexError("list index out of range")
+            while self.current_page.next_page_url is not None and len(self.pages) - 1 < item // self.per_page:
+                self.fetch_next_page()
             return self.pages[item // self.per_page][item % self.per_page]
         if isinstance(item, slice):
+            if item.stop and item.stop > len(self):
+                raise IndexError("list index out of range")
             return [self[i] for i in range(*item.indices(len(self)))]
 
     def __len__(self):
-        return functools.reduce(operator.add, [len(page) for page in self.pages])
+        return self.current_page.total_count
+        #return functools.reduce(operator.add, [len(page) for page in self.pages])
 
 
 class Page(Resource):
@@ -80,7 +91,7 @@ class Page(Resource):
         self.data = [factory(datum, client=self.client) for datum in json_data["data"]]
 
     def __iter__(self):
-        return iter(self.data)
+        yield from self.data
 
     def __getitem__(self, item):
         if isinstance(item, int):
@@ -108,6 +119,7 @@ class Subjectable:
 
     @property
     def subject(self):
+        # pylint: disable=no-member
         if self._subject:
             return self._subject
         elif hasattr(self, "subject_id"):
@@ -118,6 +130,7 @@ class Subjectable:
 
     @property
     def subjects(self):
+        # pylint: disable=no-member
         if self._subjects:
             return self._subjects
         elif hasattr(self, "subject_ids"):
@@ -153,10 +166,16 @@ class UserInformation(Resource):
         self.started_at = parse8601(
             self._resource["started_at"]
         )  #: datetime at which the user signed up.
+        self.subscribed = self.subscription.active  #: Whether or not the user is currently subscribed to wanikani.
         self.current_vacation_started_at = parse8601(
             self._resource["current_vacation_started_at"]
         )  #: datetime at which vacation was enabled on wanikani.
         self.preferences = Preferences(self._resource["preferences"])
+
+    @property
+    def max_level_granted_by_subscription(self):
+        """This is deprecated due to upstream changes in API."""
+        return self.subscription.max_level_granted
 
     def __str__(self):
         return "UserInformation{{ username:{}, level:{}, profile_url:{} started_at:{}, current_vacation_started_at:{} }}".format(
