@@ -40,6 +40,6 @@ setup(
     test_suite="tests",
     tests_require=test_requirements,
     url="https://github.com/Kaniwani/wanikani_api",
-    version="0.5.0",
+    version="version='0.5.1'",
     zip_safe=False,
 )
