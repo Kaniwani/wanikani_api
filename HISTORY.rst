@@ -4,6 +4,11 @@ History
 
 0.5.0 (2020-08-18)
 ------------------
+* Remove mock responses that included stage names.
+
+
+0.5.0 (2020-08-18)
+------------------
 * Remove `passed` from resource.
 * Remove `srs_stage_name` from assignments and reviews
 
