@@ -2,6 +2,11 @@
 History
 =======
 
+0.5.0 (2020-08-18)
+------------------
+* Remove `passed` from resource.
+* Remove `srs_stage_name` from assignments and reviews
+
 0.4.0 (2020-04-30)
 ------------------
 * Add Preferences to User Information
