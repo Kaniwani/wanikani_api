@@ -85,11 +85,11 @@ ___________
 
     >>> assignments = wk_api.assignments(subject_types="vocabulary")
     >>> for assignment in assignments:
-    >>>    print(assignment.srs_stage_name)
+    >>>    print(assignment.srs_stage)
     >>>    print(assignment.subject.meaning) # The client will automatically go and fetch this subject for you.
-    "Burned"
+    9
     "One"
-    "Burned"
+    9
     "One Thing"
 
 
