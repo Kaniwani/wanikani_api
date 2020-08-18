@@ -34,7 +34,7 @@ def test_real_connection_to_subjects():
     assert len(subjects.current_page.data) > 0
     assert subjects.current_page.data[0].resource in ["vocabulary", "kanji", "radical"]
 
-def test_real_connection_to_subjects():
+def test_real_connection_to_assignments():
     client = Client(api_key)
     assignments = client.assignments()
     assert len(assignments.current_page.data) > 0

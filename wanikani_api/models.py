@@ -334,14 +334,12 @@ class Assignment(Resource, Subjectable):
         self.subject_id = self._resource["subject_id"]
         self.subject_type = self._resource["subject_type"]
         self.srs_stage = self._resource["srs_stage"]
-        self.srs_stage_name = self._resource["srs_stage_name"]
         self.unlocked_at = parse8601(self._resource["unlocked_at"])
         self.started_at = parse8601(self._resource["started_at"])
         self.passed_at = parse8601(self._resource["passed_at"])
         self.burned_at = parse8601(self._resource["burned_at"])
         self.available_at = parse8601(self._resource["available_at"])
         self.resurrected_at_at = parse8601(self._resource["resurrected_at"])
-        self.passed = self._resource["passed"]
         self.hidden = self._resource["hidden"]
 
 
@@ -442,9 +440,7 @@ class Review(Resource, Subjectable):
         self.assignment_id = self._resource["assignment_id"]
         self.subject_id = self._resource["subject_id"]
         self.starting_srs_stage = self._resource["starting_srs_stage"]
-        self.starting_srs_stage_name = self._resource["starting_srs_stage_name"]
         self.ending_srs_stage = self._resource["ending_srs_stage"]
-        self.ending_srs_stage_name = self._resource["ending_srs_stage_name"]
         self.incorrect_meaning_answers = self._resource["incorrect_meaning_answers"]
         self.incorrect_reading_answers = self._resource["incorrect_reading_answers"]
 
