@@ -6,7 +6,7 @@ coverage==4.5.2
 tox==3.10.0
 flake8==3.6.0
 watchdog==0.9.0
-twine==1.12.1
+twine==3.4.1
 
 pytest==4.5.0
 pytest-runner==4.2
