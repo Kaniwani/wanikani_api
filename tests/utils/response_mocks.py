@@ -1,28 +1,28 @@
-USER_INFORMATION ={
-  "object": "user",
-  "url": "https://api.wanikani.com/v2/user",
-  "data_updated_at": "2020-05-01T05:20:41.769053Z",
-  "data": {
-    "id": "7a18daeb-4067-4e77-b0ea-230c7c347ea8",
-    "username": "Tadgh11",
-    "level": 12,
-    "profile_url": "https://www.wanikani.com/users/Tadgh11",
-    "started_at": "2013-07-09T12:02:54.952786Z",
-    "subscription": {
-      "active": True,
-      "type": "lifetime",
-      "max_level_granted": 60,
-      "period_ends_at": None
-    },
-    "current_vacation_started_at": None,
-    "preferences": {
-      "lessons_batch_size": 5,
-      "lessons_autoplay_audio": True,
-      "reviews_autoplay_audio": False,
-      "lessons_presentation_order": "ascending_level_then_subject",
-      "reviews_display_srs_indicator": True
+USER_INFORMATION = {
+    "object": "user",
+    "url": "https://api.wanikani.com/v2/user",
+    "data_updated_at": "2020-05-01T05:20:41.769053Z",
+    "data": {
+        "id": "7a18daeb-4067-4e77-b0ea-230c7c347ea8",
+        "username": "Tadgh11",
+        "level": 12,
+        "profile_url": "https://www.wanikani.com/users/Tadgh11",
+        "started_at": "2013-07-09T12:02:54.952786Z",
+        "subscription": {
+            "active": True,
+            "type": "lifetime",
+            "max_level_granted": 60,
+            "period_ends_at": None
+        },
+        "current_vacation_started_at": None,
+        "preferences": {
+            "lessons_batch_size": 5,
+            "lessons_autoplay_audio": True,
+            "reviews_autoplay_audio": False,
+            "lessons_presentation_order": "ascending_level_then_subject",
+            "reviews_display_srs_indicator": True
+        }
     }
-  }
 }
 
 SUBJECT = {
@@ -91,10 +91,10 @@ SUBJECTS_PAGE = {
     "data_updated_at": "2018-07-05T22:22:07.129381Z",
     "data": [
         {
-            "id": 3,
+            "id": 1,
             "object": "radical",
             "url": "https://api.wanikani.com/v2/subjects/1",
-            "data_updated_at": "2018-05-21T21:51:35.051365Z",
+            "data_updated_at": "2022-07-24T01:22:18.573676Z",
             "data": {
                 "created_at": "2012-02-27T18:08:16.000000Z",
                 "level": 1,
@@ -102,90 +102,99 @@ SUBJECTS_PAGE = {
                 "hidden_at": None,
                 "document_url": "https://www.wanikani.com/radicals/ground",
                 "characters": "一",
-                "auxiliary_meanings": [],
                 "character_images": [
                     {
-                        "url": "https://cdn.wanikani.com/images/legacy/1054-subject-1-normal-weight-black-original.png?1520987606",
+                        "url": "https://files.wanikani.com/a7w32gazaor51ii0fbtxzk0wpmpc",
+                        "metadata": {
+                            "inline_styles": False
+                        },
+                        "content_type": "image/svg+xml"
+                    },
+                    {
+                        "url": "https://files.wanikani.com/fxufa23ht9uh0tkedo1zx5jemaio",
+                        "metadata": {
+                            "inline_styles": True
+                        },
+                        "content_type": "image/svg+xml"
+                    },
+                    {
+                        "url": "https://files.wanikani.com/4lxmimfbwuvl07s11dq0f9til0mb",
                         "metadata": {
                             "color": "#000000",
                             "dimensions": "1024x1024",
-                            "style_name": "original",
+                            "style_name": "original"
                         },
-                        "content_type": "image/png",
+                        "content_type": "image/png"
                     },
                     {
-                        "url": "https://cdn.wanikani.com/images/legacy/1054-subject-1-normal-weight-black-1024px.png?1520987606",
+                        "url": "https://files.wanikani.com/3n3dlzyjjgou47qb4h4uewghcfcx",
                         "metadata": {
                             "color": "#000000",
                             "dimensions": "1024x1024",
-                            "style_name": "1024px",
+                            "style_name": "1024px"
                         },
-                        "content_type": "image/png",
+                        "content_type": "image/png"
                     },
                     {
-                        "url": "https://cdn.wanikani.com/images/legacy/1054-subject-1-normal-weight-black-512px.png?1520987606",
+                        "url": "https://files.wanikani.com/9d5fax4vrjp28vms1jb11ouu37vi",
                         "metadata": {
                             "color": "#000000",
                             "dimensions": "512x512",
-                            "style_name": "512px",
+                            "style_name": "512px"
                         },
-                        "content_type": "image/png",
+                        "content_type": "image/png"
                     },
                     {
-                        "url": "https://cdn.wanikani.com/images/legacy/1054-subject-1-normal-weight-black-256px.png?1520987606",
+                        "url": "https://files.wanikani.com/gfwzjl41i5v5oiwrsjz5zz957nww",
                         "metadata": {
                             "color": "#000000",
                             "dimensions": "256x256",
-                            "style_name": "256px",
+                            "style_name": "256px"
                         },
-                        "content_type": "image/png",
+                        "content_type": "image/png"
                     },
                     {
-                        "url": "https://cdn.wanikani.com/images/legacy/1054-subject-1-normal-weight-black-128px.png?1520987606",
+                        "url": "https://files.wanikani.com/m79ver1yfujpkcfa0bo5tcueuxk3",
                         "metadata": {
                             "color": "#000000",
                             "dimensions": "128x128",
-                            "style_name": "128px",
+                            "style_name": "128px"
                         },
-                        "content_type": "image/png",
+                        "content_type": "image/png"
                     },
                     {
-                        "url": "https://cdn.wanikani.com/images/legacy/1054-subject-1-normal-weight-black-64px.png?1520987606",
+                        "url": "https://files.wanikani.com/gcqkjhbw9aguieat8yrqxz09qszn",
                         "metadata": {
                             "color": "#000000",
                             "dimensions": "64x64",
-                            "style_name": "64px",
+                            "style_name": "64px"
                         },
-                        "content_type": "image/png",
+                        "content_type": "image/png"
                     },
                     {
-                        "url": "https://cdn.wanikani.com/images/legacy/1054-subject-1-normal-weight-black-32px.png?1520987606",
+                        "url": "https://files.wanikani.com/7czfgjlgsjxx8sndvfkezts6ugj1",
                         "metadata": {
                             "color": "#000000",
                             "dimensions": "32x32",
-                            "style_name": "32px",
+                            "style_name": "32px"
                         },
-                        "content_type": "image/png",
-                    },
-                    {
-                        "url": "https://cdn.wanikani.com/images/legacy/576-subject-1-without-css-original.svg?1520987227",
-                        "metadata": {"inline_styles": False},
-                        "content_type": "image/svg+xml",
-                    },
-                    {
-                        "url": "https://cdn.wanikani.com/images/legacy/98-subject-1-with-css-original.svg?1520987072",
-                        "metadata": {"inline_styles": True},
-                        "content_type": "image/svg+xml",
-                    },
+                        "content_type": "image/png"
+                    }
                 ],
                 "meanings": [
-                    {"meaning": "Ground", "primary": True, "accepted_answer": True}
+                    {
+                        "meaning": "Ground",
+                        "primary": True,
+                        "accepted_answer": True
+                    }
                 ],
+                "auxiliary_meanings": [],
                 "amalgamation_subject_ids": [
                     440,
                     449,
                     450,
                     451,
+                    468,
                     488,
                     531,
                     533,
@@ -199,6 +208,7 @@ SUBJECTS_PAGE = {
                     724,
                     783,
                     808,
+                    885,
                     913,
                     932,
                     965,
@@ -207,13 +217,14 @@ SUBJECTS_PAGE = {
                     1020,
                     1085,
                     1113,
+                    1119,
                     1126,
                     1137,
                     1178,
                     1198,
-                    1240,
                     1241,
                     1249,
+                    1326,
                     1340,
                     1367,
                     1372,
@@ -229,8 +240,6 @@ SUBJECTS_PAGE = {
                     1559,
                     1591,
                     1655,
-                    1674,
-                    1706,
                     1769,
                     1851,
                     1852,
@@ -245,21 +254,25 @@ SUBJECTS_PAGE = {
                     2138,
                     2148,
                     2171,
+                    2172,
                     2182,
-                    2263,
+                    2212,
                     2277,
                     2334,
                     2375,
                     2419,
-                    2437,
+                    2437
                 ],
-            },
+                "meaning_mnemonic": "This radical consists of a single, horizontal stroke. What's the biggest, single, horizontal stroke? That's the <radical>ground</radical>. Look at the ground, look at this radical, now look at the ground again. Kind of the same, right?",
+                "lesson_position": 0,
+                "spaced_repetition_system_id": 2
+            }
         },
         {
-            "id": 1,
+            "id": 534,
             "object": "kanji",
             "url": "https://api.wanikani.com/v2/subjects/534",
-            "data_updated_at": "2018-05-21T21:51:48.658813Z",
+            "data_updated_at": "2022-05-30T19:39:55.744373Z",
             "data": {
                 "created_at": "2012-03-02T02:11:55.000000Z",
                 "level": 4,
@@ -268,28 +281,47 @@ SUBJECTS_PAGE = {
                 "document_url": "https://www.wanikani.com/kanji/%E5%A4%AE",
                 "characters": "央",
                 "meanings": [
-                    {"meaning": "Center", "primary": True, "accepted_answer": True},
-                    {"meaning": "Central", "primary": False, "accepted_answer": True},
-                    {"meaning": "Centre", "primary": False, "accepted_answer": True},
+                    {
+                        "meaning": "Center",
+                        "primary": True,
+                        "accepted_answer": True
+                    },
+                    {
+                        "meaning": "Centre",
+                        "primary": False,
+                        "accepted_answer": True
+                    }
                 ],
+                "auxiliary_meanings": [],
                 "readings": [
                     {
                         "type": "onyomi",
                         "primary": True,
                         "reading": "おう",
-                        "accepted_answer": True,
+                        "accepted_answer": True
                     }
                 ],
-                "auxiliary_meanings": [],
-                "component_subject_ids": [29, 18],
-                "amalgamation_subject_ids": [2726],
-            },
+                "component_subject_ids": [
+                    18,
+                    29
+                ],
+                "amalgamation_subject_ids": [
+                    2726
+                ],
+                "visually_similar_subject_ids": [],
+                "meaning_mnemonic": "If someone has a <radical>big</radical> <radical>head</radical> you have to try to focus on the <kanji>center</kanji> of it when you talk to them.",
+                "meaning_hint": "You don't want to get caught with your eyes wandering all over their big head. Stare right at the center of their face. Ah geez, their eyes are kinda far away from here. You can really only see their nose...",
+                "reading_mnemonic": "This is the <kanji>center</kanji> of the <ja><reading>王</reading></ja>'s (<ja>おう</ja>) head so you have to be extra careful not to look anywhere else.",
+                "reading_hint": "The <ja>王</ja> will definitely cut off your normal-sized head if he sees you looking all over his big head and not at the center.",
+                "lesson_position": 0,
+                "spaced_repetition_system_id": 1
+            }
         },
         {
-            "id": 2,
+            "id": 2467,
             "object": "vocabulary",
             "url": "https://api.wanikani.com/v2/subjects/2467",
-            "data_updated_at": "2018-05-21T21:52:43.041390Z",
+            "data_updated_at": "2021-09-01T18:22:40.891504Z",
             "data": {
                 "created_at": "2012-02-28T08:04:47.000000Z",
                 "level": 1,
@@ -298,16 +330,149 @@ SUBJECTS_PAGE = {
                 "document_url": "https://www.wanikani.com/vocabulary/%E4%B8%80",
                 "characters": "一",
                 "meanings": [
-                    {"meaning": "One", "primary": True, "accepted_answer": True}
+                    {
+                        "meaning": "One",
+                        "primary": True,
+                        "accepted_answer": True
+                    }
+                ],
+                "auxiliary_meanings": [
+                    {
+                        "type": "whitelist",
+                        "meaning": "1"
+                    }
                 ],
                 "readings": [
-                    {"primary": True, "reading": "いち", "accepted_answer": True}
+                    {
+                        "primary": True,
+                        "reading": "いち",
+                        "accepted_answer": True
+                    }
                 ],
-                "parts_of_speech": ["numeral"],
-                "auxiliary_meanings": [],
-                "component_subject_ids": [440],
-            },
-        },
+                "parts_of_speech": [
+                    "numeral"
+                ],
+                "component_subject_ids": [
+                    440
+                ],
+                "meaning_mnemonic": "As is the case with most vocab words that consist of a single kanji, this vocab word has the same meaning as the kanji it parallels, which is <vocabulary>one</vocabulary>.",
+                "reading_mnemonic": "When a vocab word is all alone and has no okurigana (hiragana attached to kanji) connected to it, it usually uses the kun'yomi reading. Numbers are an exception, however. When a number is all alone, with no kanji or okurigana, it is going to be the on'yomi reading, which you learned with the kanji.  Just remember this exception for alone numbers and you'll be able to read future number-related vocab to come.",
+                "context_sentences": [
+                    {
+                        "en": "Let’s meet up once.",
+                        "ja": "一ど、あいましょう。"
+                    },
+                    {
+                        "en": "First place was an American.",
+                        "ja": "一いはアメリカ人でした。"
+                    },
+                    {
+                        "en": "I’m the weakest (person) in the world.",
+                        "ja": "ぼくはせかいで一ばんよわい。"
+                    }
+                ],
+                "pronunciation_audios": [
+                    {
+                        "url": "https://files.wanikani.com/aeevlg446own3mcs6rye6k4wfq37",
+                        "metadata": {
+                            "gender": "female",
+                            "source_id": 21630,
+                            "pronunciation": "いち",
+                            "voice_actor_id": 1,
+                            "voice_actor_name": "Kyoko",
+                            "voice_description": "Tokyo accent"
+                        },
+                        "content_type": "audio/ogg"
+                    },
+                    {
+                        "url": "https://files.wanikani.com/w6loj76y9t8ppripy1eindt5dg3y",
+                        "metadata": {
+                            "gender": "female",
+                            "source_id": 21630,
+                            "pronunciation": "いち",
+                            "voice_actor_id": 1,
+                            "voice_actor_name": "Kyoko",
+                            "voice_description": "Tokyo accent"
+                        },
+                        "content_type": "audio/webm"
+                    },
+                    {
+                        "url": "https://files.wanikani.com/j5dy9yyxpzsywaxifq1c7yc3ctal",
+                        "metadata": {
+                            "gender": "male",
+                            "source_id": 2711,
+                            "pronunciation": "いち",
+                            "voice_actor_id": 2,
+                            "voice_actor_name": "Kenichi",
+                            "voice_description": "Tokyo accent"
+                        },
+                        "content_type": "audio/webm"
+                    },
+                    {
+                        "url": "https://files.wanikani.com/tfdkyds03nhrbs6to3e0q4avbg1u",
+                        "metadata": {
+                            "gender": "male",
+                            "source_id": 2711,
+                            "pronunciation": "いち",
+                            "voice_actor_id": 2,
+                            "voice_actor_name": "Kenichi",
+                            "voice_description": "Tokyo accent"
+                        },
+                        "content_type": "audio/webm"
+                    },
+                    {
+                        "url": "https://files.wanikani.com/vtyum09bj9tf2gle7i4ip04iao6s",
+                        "metadata": {
+                            "gender": "female",
+                            "source_id": 21630,
+                            "pronunciation": "いち",
+                            "voice_actor_id": 1,
+                            "voice_actor_name": "Kyoko",
+                            "voice_description": "Tokyo accent"
+                        },
+                        "content_type": "audio/webm"
+                    },
+                    {
+                        "url": "https://files.wanikani.com/5g89i8489j2joklaqdoy89rzhlqf",
+                        "metadata": {
+                            "gender": "male",
+                            "source_id": 2711,
+                            "pronunciation": "いち",
+                            "voice_actor_id": 2,
+                            "voice_actor_name": "Kenichi",
+                            "voice_description": "Tokyo accent"
+                        },
+                        "content_type": "audio/ogg"
+                    },
+                    {
+                        "url": "https://files.wanikani.com/jkdnvm82i2kl6my5ts67idq2qdc6",
+                        "metadata": {
+                            "gender": "male",
+                            "source_id": 2711,
+                            "pronunciation": "いち",
+                            "voice_actor_id": 2,
+                            "voice_actor_name": "Kenichi",
+                            "voice_description": "Tokyo accent"
+                        },
+                        "content_type": "audio/mpeg"
+                    },
+                    {
+                        "url": "https://files.wanikani.com/dwikzn441ltuq4evi7bmt5g3v7q2",
+                        "metadata": {
+                            "gender": "female",
+                            "source_id": 21630,
+                            "pronunciation": "いち",
+                            "voice_actor_id": 1,
+                            "voice_actor_name": "Kyoko",
+                            "voice_description": "Tokyo accent"
+                        },
+                        "content_type": "audio/mpeg"
+                    }
+                ],
+                "lesson_position": 44,
+                "spaced_repetition_system_id": 2
+            }
+        }
     ],
 }
 

@@ -195,6 +195,10 @@ class Subject(Resource):
         self.auxiliary_meanings = [
             AuxiliaryMeaning(auxiliary_meaning_json) for auxiliary_meaning_json in resource_data["auxiliary_meanings"]
         ]
+        self.slug = resource_data["slug"]
+        self.meaning_mnemonic = resource_data["meaning_mnemonic"]
+        self.lesson_position = resource_data["lesson_position"]
+        self.spaced_repitition_system_id  = resource_data["spaced_repetition_system_id"]
 
     def __str__(self) -> str:
         return f"{['['+meaning.meaning+']' if meaning.primary else meaning.meaning for meaning in self.meanings]}:{[character for character in self.characters] if self.characters else 'UNAVAILABLE'}"
@@ -222,6 +226,8 @@ class Radical(Subject):
         return f"Radical: {[meaning.meaning for meaning in self.meanings]}:{[character for character in self.characters] if self.characters else 'UNAVAILABLE'}"
 
 
+
+
 class Vocabulary(Subject):
     """
     A model for the Vocabulary Resource
@@ -240,6 +246,14 @@ class Vocabulary(Subject):
         self.readings = [
             Reading(reading_json) for reading_json in self._resource["readings"]
         ]  #: A list of :class:`.models.Reading` related to this Vocabulary.
+        self.reading_mnemonic = self._resource["reading_mnemonic"]
+
+        self.context_sentences = [
+            ContextSentence(context_sentence_json) for context_sentence_json in self._resource["context_sentences"]
+        ]
+        self.pronunciation_audios = [
+            PronunciationAudio(pronunciation_json) for pronunciation_json in self._resource["pronunciation_audios"]
+        ]
 
     def __str__(self):
         return f"Vocabulary: {super(Vocabulary, self).__str__()}"
@@ -263,6 +277,9 @@ class Kanji(Subject):
         self.readings = [
             Reading(reading_json) for reading_json in self._resource["readings"]
         ]  #: A list of :class:`.models.Reading` related to this Vocabulary.
+        self.reading_mnemonic = self._resource["reading_mnemonic"]
+        self.meaning_hint = self._resource["meaning_hint"]
+        self.reading_hint = self._resource["reading_hint"]
 
     def __str__(self):
         return f"Kanji: {super(Kanji, self).__str__()}"
@@ -304,6 +321,35 @@ class Meaning:
 
     def __str__(self) -> str:
         return self.meaning
+
+
+class PronunciationAudio:
+    """
+    This class holds the link to the pronunciation audio, as well as the related metadata.
+    """
+    class PronunciationMetadata:
+        def __init__(self, metadata_json):
+            self.gender = metadata_json["gender"]
+            self.source_id = metadata_json["source_id"]
+            self.pronunciation = metadata_json["pronunciation"]
+            self.voice_actor_id = metadata_json["voice_actor_id"]
+            self.voice_actor_name = metadata_json["voice_actor_name"]
+            self.voice_description = metadata_json["voice_description"]
+    def __init__(self, pronunciation_audio):
+        self.url = pronunciation_audio["url"]
+        self.content_type = pronunciation_audio["content_type"]
+        self.metadata = self.PronunciationMetadata(pronunciation_audio["metadata"])
+
+
+
+
+class ContextSentence:
+    """
+    Class to hold english and japanese context sentence information
+    """
+    def __init__(self, sentence_json):
+        self.english = sentence_json["en"]
+        self.japanese = sentence_json["ja"]
 
 
 class Reading:
