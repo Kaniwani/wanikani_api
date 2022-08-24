@@ -49,7 +49,7 @@ SINGLE_SUBJECT = {
     "id": 1,
     "object": "radical",
     "url": "https://api.wanikani.com/v2/subjects/1",
-    "data_updated_at": "2018-12-05T20:47:15.603277Z",
+    "data_updated_at": "2022-07-24T01:22:18.573676Z",
     "data": {
         "created_at": "2012-02-27T18:08:16.000000Z",
         "level": 1,
@@ -59,19 +59,169 @@ SINGLE_SUBJECT = {
         "characters": "一",
         "character_images": [
             {
-                "url": "https://cdn.wanikani.com/images/legacy/1054-subject-1-normal-weight-black-original.png?1520987606",
+                "url": "https://files.wanikani.com/a7w32gazaor51ii0fbtxzk0wpmpc",
+                "metadata": {
+                    "inline_styles": False
+                },
+                "content_type": "image/svg+xml"
+            },
+            {
+                "url": "https://files.wanikani.com/fxufa23ht9uh0tkedo1zx5jemaio",
+                "metadata": {
+                    "inline_styles": True
+                },
+                "content_type": "image/svg+xml"
+            },
+            {
+                "url": "https://files.wanikani.com/4lxmimfbwuvl07s11dq0f9til0mb",
                 "metadata": {
                     "color": "#000000",
                     "dimensions": "1024x1024",
-                    "style_name": "original",
+                    "style_name": "original"
                 },
-                "content_type": "image/png",
+                "content_type": "image/png"
+            },
+            {
+                "url": "https://files.wanikani.com/3n3dlzyjjgou47qb4h4uewghcfcx",
+                "metadata": {
+                    "color": "#000000",
+                    "dimensions": "1024x1024",
+                    "style_name": "1024px"
+                },
+                "content_type": "image/png"
+            },
+            {
+                "url": "https://files.wanikani.com/9d5fax4vrjp28vms1jb11ouu37vi",
+                "metadata": {
+                    "color": "#000000",
+                    "dimensions": "512x512",
+                    "style_name": "512px"
+                },
+                "content_type": "image/png"
+            },
+            {
+                "url": "https://files.wanikani.com/gfwzjl41i5v5oiwrsjz5zz957nww",
+                "metadata": {
+                    "color": "#000000",
+                    "dimensions": "256x256",
+                    "style_name": "256px"
+                },
+                "content_type": "image/png"
+            },
+            {
+                "url": "https://files.wanikani.com/m79ver1yfujpkcfa0bo5tcueuxk3",
+                "metadata": {
+                    "color": "#000000",
+                    "dimensions": "128x128",
+                    "style_name": "128px"
+                },
+                "content_type": "image/png"
+            },
+            {
+                "url": "https://files.wanikani.com/gcqkjhbw9aguieat8yrqxz09qszn",
+                "metadata": {
+                    "color": "#000000",
+                    "dimensions": "64x64",
+                    "style_name": "64px"
+                },
+                "content_type": "image/png"
+            },
+            {
+                "url": "https://files.wanikani.com/7czfgjlgsjxx8sndvfkezts6ugj1",
+                "metadata": {
+                    "color": "#000000",
+                    "dimensions": "32x32",
+                    "style_name": "32px"
+                },
+                "content_type": "image/png"
             }
         ],
-        "meanings": [{"meaning": "Ground", "primary": True, "accepted_answer": True}],
+        "meanings": [
+            {
+                "meaning": "Ground",
+                "primary": True,
+                "accepted_answer": True
+            }
+        ],
         "auxiliary_meanings": [],
-        "amalgamation_subject_ids": [2],
-    },
+        "amalgamation_subject_ids": [
+            440,
+            449,
+            450,
+            451,
+            468,
+            488,
+            531,
+            533,
+            568,
+            590,
+            609,
+            633,
+            635,
+            709,
+            710,
+            724,
+            783,
+            808,
+            885,
+            913,
+            932,
+            965,
+            971,
+            1000,
+            1020,
+            1085,
+            1113,
+            1119,
+            1126,
+            1137,
+            1178,
+            1198,
+            1241,
+            1249,
+            1326,
+            1340,
+            1367,
+            1372,
+            1376,
+            1379,
+            1428,
+            1431,
+            1463,
+            1491,
+            1506,
+            1521,
+            1547,
+            1559,
+            1591,
+            1655,
+            1769,
+            1851,
+            1852,
+            1855,
+            1868,
+            1869,
+            1888,
+            1970,
+            2091,
+            2104,
+            2128,
+            2138,
+            2148,
+            2171,
+            2172,
+            2182,
+            2212,
+            2277,
+            2334,
+            2375,
+            2419,
+            2437
+        ],
+        "meaning_mnemonic": "This radical consists of a single, horizontal stroke. What's the biggest, single, horizontal stroke? That's the <radical>ground</radical>. Look at the ground, look at this radical, now look at the ground again. Kind of the same, right?",
+        "lesson_position": 0,
+        "spaced_repetition_system_id": 2
+    }
 }
 
 EMPTY_SUBJECTS_PAGE = {
@@ -269,7 +419,7 @@ SUBJECTS_PAGE = {
             }
         },
         {
-            "id": 534,
+            "id": 2,
             "object": "kanji",
             "url": "https://api.wanikani.com/v2/subjects/534",
             "data_updated_at": "2022-05-30T19:39:55.744373Z",
@@ -318,7 +468,7 @@ SUBJECTS_PAGE = {
             }
         },
         {
-            "id": 2467,
+            "id": 3,
             "object": "vocabulary",
             "url": "https://api.wanikani.com/v2/subjects/2467",
             "data_updated_at": "2021-09-01T18:22:40.891504Z",
@@ -488,67 +638,61 @@ ASSIGNMENTS_PAGE = {
     "data_updated_at": "2018-06-30T16:40:52.513654Z",
     "data": [
         {
-            "id": 85899,
+            "id": 210688274,
             "object": "assignment",
-            "url": "https://api.wanikani.com/v2/assignments/85899",
-            "data_updated_at": "2018-05-09T21:17:31.000000Z",
+            "url": "https://api.wanikani.com/v2/assignments/210688274",
+            "data_updated_at": "2021-08-09T13:08:32.510479Z",
             "data": {
-                "created_at": "2017-04-15T14:53:56.818837Z",
-                "subject_id": 2,
-                "subject_type": "vocabulary",
-                "level": 5,
-                "srs_stage": 9,
-                "unlocked_at": "2017-04-15T14:53:56.818837Z",
-                "started_at": "2017-04-15T14:53:56.818837Z",
-                "passed_at": None,
-                "burned_at": "2018-01-03T00:08:22.451866Z",
-                "available_at": None,
-                "resurrected_at": None,
-                "passed": True,
-                "hidden": False,
-            },
-        },
-        {
-            "id": 86555,
-            "object": "assignment",
-            "url": "https://api.wanikani.com/v2/assignments/86555",
-            "data_updated_at": "2018-05-09T21:17:31.000000Z",
-            "data": {
-                "created_at": "2017-04-15T14:50:51.503084Z",
-                "subject_id": 3,
-                "subject_type": "vocabulary",
-                "level": 5,
-                "srs_stage": 9,
-                "unlocked_at": "2017-04-15T14:50:51.503084Z",
-                "started_at": "2017-04-15T14:50:51.503084Z",
-                "passed_at": None,
-                "burned_at": "2018-02-19T23:02:25.053105Z",
-                "available_at": None,
-                "resurrected_at": None,
-                "passed": True,
-                "hidden": False,
-            },
-        },
-        {
-            "id": 86606,
-            "object": "assignment",
-            "url": "https://api.wanikani.com/v2/assignments/86606",
-            "data_updated_at": "2018-05-09T21:17:31.000000Z",
-            "data": {
-                "created_at": "2017-04-24T15:17:28.712677Z",
+                "created_at": "2020-12-09T21:36:31.745922Z",
                 "subject_id": 1,
                 "subject_type": "vocabulary",
-                "level": 6,
+                "srs_stage": 8,
+                "unlocked_at": "2020-12-09T21:36:31.739267Z",
+                "started_at": "2020-12-09T23:24:56.021005Z",
+                "passed_at": "2020-12-17T21:49:13.130832Z",
+                "burned_at": None,
+                "available_at": "2021-12-05T18:00:00.000000Z",
+                "resurrected_at": None,
+                "hidden": False
+            }
+        },
+        {
+            "id": 210688287,
+            "object": "assignment",
+            "url": "https://api.wanikani.com/v2/assignments/210688287",
+            "data_updated_at": "2021-07-16T00:37:57.764169Z",
+            "data": {
+                "created_at": "2020-12-09T21:36:31.913653Z",
+                "subject_id": 2,
+                "subject_type": "vocabulary",
+                "srs_stage": 8,
+                "unlocked_at": "2020-12-09T21:36:31.905996Z",
+                "started_at": "2020-12-09T23:26:34.608307Z",
+                "passed_at": "2020-12-19T21:31:47.175944Z",
+                "burned_at": None,
+                "available_at": "2021-11-12T23:00:00.000000Z",
+                "resurrected_at": None,
+                "hidden": False
+            }
+        },
+        {
+            "id": 210688308,
+            "object": "assignment",
+            "url": "https://api.wanikani.com/v2/assignments/210688308",
+            "data_updated_at": "2021-11-21T19:30:31.513789Z",
+            "data": {
+                "created_at": "2020-12-09T21:36:32.314040Z",
+                "subject_id": 3,
+                "subject_type": "vocabulary",
                 "srs_stage": 9,
-                "unlocked_at": "2017-04-24T15:17:28.712677Z",
-                "started_at": "2017-04-24T15:17:28.712677Z",
-                "passed_at": "2017-05-10T13:52:56.699204Z",
-                "burned_at": "2018-02-19T22:46:09.144931Z",
+                "unlocked_at": "2020-12-09T21:36:32.301446Z",
+                "started_at": "2020-12-09T23:27:17.833377Z",
+                "passed_at": "2020-12-15T23:17:18.377500Z",
+                "burned_at": "2021-11-21T19:30:31.465624Z",
                 "available_at": None,
                 "resurrected_at": None,
-                "passed": True,
-                "hidden": False,
-            },
+                "hidden": False
+            }
         },
     ],
 }

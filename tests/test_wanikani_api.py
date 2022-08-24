@@ -109,6 +109,7 @@ def test_singular_subject_retrieval(requests_mock):
 
 def test_client_uses_cache(requests_mock):
     mock_subjects(requests_mock)
+    mock_single_subject(requests_mock)
     mock_assignments(requests_mock)
     v2_api_key = "arbitrary_api_key"
     client = Client(v2_api_key, subject_cache_enabled=True)
