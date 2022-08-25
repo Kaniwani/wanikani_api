@@ -116,7 +116,7 @@ class Client:
         are ignored, and the subject with that ID in question is fetched.
 
         :param int[] ids: Filters based on a list of IDs. Does not cause other parameters to be ignored.
-        :param str[] types: The specific :class:`.models.Subject` types you wish to retrieve. Possible values are: ``["kanji", "vocabulary", "radicals"]``
+        :param str[] types: The specific :class:`.models.Subject` types you wish to retrieve. Possible values are: ``["kanji", "vocabulary", "radical"]``
         :param str[] slugs: The wanikani slug
         :param int[] levels: Include only :class:`.models.Subject` from the specified levels.
         :param bool hidden: Return :class:`.models.Subject` which are or are not hidden from the user-facing application
@@ -179,7 +179,7 @@ class Client:
         :param int[] ids: Return only results with the given IDs
         :param created_at: Timestamp when resource was created
         :param int[] subject_ids: Return only :class:`.models.Assignment`s which are tied to the given subject_ids
-        :param str[] subject_types: The specific :class:`.models.Subject` types you wish to retrieve. Possible values are: ``["kanji", "vocabulary", "radicals"]``
+        :param str[] subject_types: The specific :class:`.models.Subject` types you wish to retrieve. Possible values are: ``["kanji", "vocabulary", "radical"]``
         :param int[] levels: Include only :class:`.models.Assignment` where the subjects are from the specified levels.
         :param datetime available_before: Return assignment reviews available before timestamp
         :param datetime available_after: Return assignment reviews available after timestamp
@@ -235,7 +235,7 @@ class Client:
         :param bool fetch_all: if set to True, instead of fetching only first page of results, will fetch them all.
         :param int[] ids: Return only results with the given IDs
         :param int[] subject_ids: Return only :class:`.models.Assignment`s which are tied to the given subject_ids
-        :param str[] subject_types: The specific :class:`.models.Subject` types you wish to retrieve. Possible values are: ``["kanji", "vocabulary", "radicals"]``
+        :param str[] subject_types: The specific :class:`.models.Subject` types you wish to retrieve. Possible values are: ``["kanji", "vocabulary", "radical"]``
         :param datetime updated_after: Return results which have been updated after the timestamp
         :param int percentages_greater_than: Return results where the percentage_correct is greater than the value. [0-100]
         :param int percentages_less_than: Return results where the percentage_correct is less than the value. [0-100]
@@ -282,7 +282,7 @@ class Client:
         :param bool fetch_all: if set to True, instead of fetching only first page of results, will fetch them all.
         :param int[] ids: Return only results with the given IDs
         :param int[] subject_ids: Return only :class:`.models.Assignment`s which are tied to the given subject_ids
-        :param str[] subject_types: The specific :class:`.models.Subject` types you wish to retrieve. Possible values are: ``["kanji", "vocabulary", "radicals"]``
+        :param str[] subject_types: The specific :class:`.models.Subject` types you wish to retrieve. Possible values are: ``["kanji", "vocabulary", "radical"]``
         :param bool hidden: Return only results where the related subject has been hidden.
         :param datetime updated_after: Return results which have been updated after the timestamp
         :return: An iterator over all Study Materials
