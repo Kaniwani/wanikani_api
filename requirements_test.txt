@@ -10,5 +10,5 @@ twine==1.12.1
 
 pytest==4.5.0
 pytest-runner==4.2
-pytest-mock==1.10.0
+pytest-mock==3.13.0
 requests-mock==1.6.0
