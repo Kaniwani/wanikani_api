@@ -259,6 +259,30 @@ class Vocabulary(Subject):
         return f"Vocabulary: {super(Vocabulary, self).__str__()}"
 
 
+class KanaVocabulary(Subject):
+    """
+    A model for the Kana Vocabulary Resource
+    """
+
+    resource = "kana_vocabulary"
+
+    def __init__(self, json_data, *args, **kwargs):
+        super().__init__(json_data, *args, **kwargs)
+        self.parts_of_speech = self._resource[
+            "parts_of_speech"
+        ]  #: A list of strings, each of which is a part of speech.
+
+        self.context_sentences = [
+            ContextSentence(context_sentence_json) for context_sentence_json in self._resource["context_sentences"]
+        ]
+        self.pronunciation_audios = [
+            PronunciationAudio(pronunciation_json) for pronunciation_json in self._resource["pronunciation_audios"]
+        ]
+
+    def __str__(self):
+        return f"Kana Vocabulary: {super(KanaVocabulary, self).__str__()}"
+
+
 class Kanji(Subject):
     """
     A model for the Kanji Resource
@@ -521,6 +545,7 @@ resources = {
     Reset.resource: Reset,
     Kanji.resource: Kanji,
     Vocabulary.resource: Vocabulary,
+    KanaVocabulary.resource: KanaVocabulary,
     Radical.resource: Radical,
     Summary.resource: Summary,
     Page.resource: Page,
